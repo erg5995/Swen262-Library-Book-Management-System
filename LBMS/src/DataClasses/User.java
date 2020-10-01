@@ -1,5 +1,9 @@
 package DataClasses;
 
+/**
+ * Dataclass for users
+ * Author: Thomas Linse
+ */
 public class User {
     /**
      * enum for the type of user, used to
