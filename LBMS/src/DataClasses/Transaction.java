@@ -15,6 +15,11 @@ public class Transaction
     private double fine;
     private boolean isOverdue;
 
+    /**
+     * constructor can take in LocalDate or LocalDateTime for dueDate,
+     * but always save it as LocalDate since it doesn't matter what
+     * time it was checked out or returned
+     */
     public Transaction(Book book, User user, LocalDate dueDate)
     {
         this.book = book;
@@ -28,6 +33,9 @@ public class Transaction
         this(book, user, dueDateTime.toLocalDate());
     }
 
+    /**
+     * Getter methods
+     */
     public Book getBook() { return book; }
     public User getUser() { return user; }
     public LocalDate dueDate() { return dueDate; }
@@ -35,7 +43,16 @@ public class Transaction
     public double getFine() { return fine; }
     public boolean isOverdue() { return isOverdue; }
 
+    /**
+     * Methods to alter fine: either set or add to a fine
+     */
     public void setFine(double amount) { fine = amount; }
     public void addToFine(double amount) { fine += amount; }
+
+    /**
+     * Setter method for isOverdue. Once a book is overdue,
+     * it can't go back to now being overdue so this will
+     * only set it to true
+     */
     public void pastDueDate() { isOverdue = true; }
 }

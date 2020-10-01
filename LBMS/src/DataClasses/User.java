@@ -29,7 +29,7 @@ public class User {
     private double debt;
 
     /**
-     * Constructors- default constructor sets User to VISITOR role
+     * Constructors- constructor sets User to VISITOR role by default
      */
     public User(String fname, String lname, String address, String phone, UserRole role)
     {
