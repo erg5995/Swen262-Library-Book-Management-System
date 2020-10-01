@@ -16,4 +16,10 @@ public class Report
         booksPurchased = booksBought;
         totalBookFines = totalFines;
     }
+
+    public int getNumVisitors() { return numVisitors; }
+    public int getNumBooksOwned() { return numBooksOwned; }
+    public double getAvgVisitTimeInHours() { return avgVisitTimeInHours; }
+    public double getTotalBookFines() { return totalBookFines; }
+    public List<Book> getBooksPurchased() { return booksPurchased; }
 }
