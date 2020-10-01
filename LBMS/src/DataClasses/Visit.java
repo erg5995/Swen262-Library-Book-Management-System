@@ -1,6 +1,8 @@
 package DataClasses;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * Dataclass for visits
@@ -10,7 +12,11 @@ public class Visit
 {
 
     private User visitor;
-    private LocalDateTime entryTime, exitTime;
+    //entry time holds the date and time
+    private LocalDateTime entryTime;
+    //exit time just holds the time since it
+    //will be the same date as entry time
+    private LocalTime exitTime;
 
     /**
      * Constructor requires User and start time, but
@@ -27,22 +33,21 @@ public class Visit
      * Getter methods
      */
     public User getVisitor() { return visitor; }
-    public LocalDateTime getEntryTime() { return entryTime; }
-    public LocalDateTime getExitTime() { return exitTime; }
+    public LocalDate getEntryDate() { return entryTime.toLocalDate(); }
+    public LocalTime getEntryTime() { return entryTime.toLocalTime(); }
+    public LocalTime getExitTime() { return exitTime; }
 
     /**
      * @return time spent at the library
-     * @throws NullPointerException when exitTime hasn't been set
      */
-    public double getTimeSpent() throws NullPointerException
+    public double getTimeSpent()
     {
-        if (exitTime == null)
-            throw new NullPointerException("Visit hasn't ended yet.");
         return exitTime.getHour() - entryTime.getHour() + (exitTime.getMinute() - entryTime.getMinute()) / 60.;
     }
 
     /**
      * The end time is the only thing that will need to be set
      */
-    public void setExitTime(LocalDateTime endTime) { exitTime = endTime; }
+    public void setExitTime(LocalTime endTime) { exitTime = endTime; }
+    public void setExitTime(LocalDateTime endTime) { exitTime = endTime.toLocalTime(); }
 }

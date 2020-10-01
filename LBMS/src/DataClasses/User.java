@@ -89,11 +89,11 @@ public class User {
         numBooksChecked += num;
         return true;
     }
-    public void checkInBooks(int num) throws ArithmeticException
+    public boolean checkInBooks(int num)
     {
-        if (num > numBooksChecked)
-            throw new ArithmeticException("Can't check in more books than you have checked out.");
+        if (num > numBooksChecked)return false;
         numBooksChecked -= num;
+        return true;
     }
 
     /**
