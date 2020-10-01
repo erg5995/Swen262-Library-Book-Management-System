@@ -27,4 +27,11 @@ public class Transaction
     {
         this(book, user, dueDateTime.toLocalDate());
     }
+
+    public Book getBook() { return book; }
+    public User getUser() { return user; }
+    public LocalDate dueDate() { return dueDate; }
+    public LocalDate getDateChecked() { return dateChecked; }
+    public double getFine() { return fine; }
+    public boolean isOverdue() { return isOverdue; }
 }
