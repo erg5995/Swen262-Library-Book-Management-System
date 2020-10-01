@@ -31,6 +31,17 @@ public class Visit
     public LocalDateTime getExitTime() { return exitTime; }
 
     /**
+     * @return time spent at the library
+     * @throws NullPointerException when exitTime hasn't been set
+     */
+    public double getTimeSpent() throws NullPointerException
+    {
+        if (exitTime == null)
+            throw new NullPointerException("Visit hasn't ended yet.");
+        return exitTime.getHour() - entryTime.getHour() + (exitTime.getMinute() - entryTime.getMinute()) / 60.;
+    }
+
+    /**
      * The end time is the only thing that will need to be set
      */
     public void setExitTime(LocalDateTime endTime) { exitTime = endTime; }
