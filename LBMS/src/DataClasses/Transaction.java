@@ -34,4 +34,8 @@ public class Transaction
     public LocalDate getDateChecked() { return dateChecked; }
     public double getFine() { return fine; }
     public boolean isOverdue() { return isOverdue; }
+
+    public void setFine(double amount) { fine = amount; }
+    public void addToFine(double amount) { fine += amount; }
+    public void pastDueDate() { isOverdue = true; }
 }
