@@ -13,17 +13,18 @@ public class Report
      * numBooksOwned: max # of books owned by the library during specified time
      * booksPurchased: all books that were purchased for the library during " "
      */
-    private int numVisitors, numBooksOwned;
-    private double avgVisitTimeInHours, totalBookFines;
-    private List<Book> booksPurchased;
+    private int numVisitors, numBooksOwned, numBooksPurchased;
+    private int[] avgVisitTime;
+    private double collectedFines, outstandingFines;
 
-    public Report(int visitors, int booksOwned, double avgTime, List<Book> booksBought, double totalFines)
+    public Report(int visitors, int booksOwned, int booksBought, int[] avgTime, double collected, double outstanding)
     {
         numVisitors = visitors;
         numBooksOwned = booksOwned;
-        avgVisitTimeInHours = avgTime;
-        booksPurchased = booksBought;
-        totalBookFines = totalFines;
+        avgVisitTime = avgTime;
+        numBooksPurchased = booksBought;
+        collectedFines = collected;
+        outstandingFines = outstanding;
     }
 
     /**
@@ -32,7 +33,17 @@ public class Report
      */
     public int getNumVisitors() { return numVisitors; }
     public int getNumBooksOwned() { return numBooksOwned; }
-    public double getAvgVisitTimeInHours() { return avgVisitTimeInHours; }
-    public double getTotalBookFines() { return totalBookFines; }
-    public List<Book> getBooksPurchased() { return booksPurchased; }
+    public int[] getAvgVisitTimeInHours() { return avgVisitTime; }
+    public double getCollectedFines() { return collectedFines; }
+    public double getOutstandingFines() { return outstandingFines; }
+    public int getNumBooksPurchased() { return numBooksPurchased; }
+
+    public String toString()
+    {
+        String ret = "Number of Books: " + numBooksOwned + "\nNumber of Visitors: " + numVisitors + "\nAverage Length ";
+        ret += "of Visit: " + String.format("%02d", avgVisitTime[0]) + ":" + String.format("%02d", avgVisitTime[1]);
+        ret += ":" + String.format("%02d", avgVisitTime[2]) + "\nNumber of Books Purchased: " + numBooksPurchased;
+        ret += "\nFines Collected: $" + String.format("%.2f", collectedFines) + "\nFines Outstanding: $";
+        return ret + String.format("%.2f", outstandingFines);
+    }
 }
