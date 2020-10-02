@@ -40,9 +40,18 @@ public class Visit
     /**
      * @return time spent at the library
      */
-    public double getTimeSpent()
+    public int[] getTimeSpent()
     {
-        return exitTime.getHour() - entryTime.getHour() + (exitTime.getMinute() - entryTime.getMinute()) / 60.;
+        int[] time = new int[3];
+        time[0] = exitTime.getHour() - entryTime.getHour();
+        time[1] = exitTime.getMinute() - entryTime.getMinute();
+        time[2] = exitTime.getSecond() - entryTime.getSecond();
+        for (int i = 2; i > 0; i--)
+            if (time[i] < 0) {
+                time[i - 1]--;
+                time[i] += 60;
+            }
+        return time;
     }
 
     /**
