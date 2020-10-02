@@ -101,4 +101,9 @@ public class User {
      */
     public void hire() { type = UserRole.EMPLOYEE; }
     public void fire() { type = UserRole.VISITOR; }
+
+    public boolean isSame(String fname, String lname, String address, String phone)
+    {
+        return firstName.equals(fname) && lastName.equals(lname) && this.address.equals(address) && this.phone.equals(phone);
+    }
 }
