@@ -68,6 +68,8 @@ public class Book {
         return numCopiesOut;
     }
 
+    public int getNumCopiesLeft() { return numCopies - numCopiesOut; }
+
     //setters
 
     public void setIsbn(String newIsbn){
@@ -101,5 +103,7 @@ public class Book {
     public void setNumCopiesOut(int newNumCopiesOut){
         numCopiesOut = newNumCopiesOut;
     }
+
+    public void checkOutCopy() { numCopiesOut++; }
 
 }

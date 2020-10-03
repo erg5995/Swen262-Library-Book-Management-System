@@ -1,5 +1,6 @@
 import DataClasses.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -25,6 +26,10 @@ public class Database
         return false;
     }
     public void addUser(User user) { users.put(user.getId(), user); }
+    public void addUser(String fname, String lname, String address, String phone)
+    {
+        addUser(new User(fname, lname, address, phone));
+    }
     public User getUser(int id) { return users.get(id); }
 
     public void addVisit(Visit visit) { visits.add(visit); }
@@ -70,5 +75,24 @@ public class Database
                     return false;
             }
         return true;
+    }
+
+    public boolean checkOutBooks(List<Integer> books)
+    {
+        for (int id : books)
+            if (librarySearch.get(id).getNumCopiesLeft() == 0)
+                return false;
+        for (int id : books)
+            librarySearch.get(id).checkOutCopy();
+        return true;
+    }
+    public void addTransaction(Transaction trans) { checkedOutBooks.add(trans); }
+    public void addTransaction(Book book, User user, LocalDate dueDate)
+    {
+        addTransaction(new Transaction(book, user, dueDate));
+    }
+    public void addTransaction(int bookID, int userID, LocalDate dueDate)
+    {
+        addTransaction(librarySearch.get(bookID), users.get(userID), dueDate);
     }
 }
