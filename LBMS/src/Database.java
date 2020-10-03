@@ -89,6 +89,16 @@ public class Database
         addTransaction(librarySearch.get(bookID), users.get(userID), dueDate);
     }
 
+    public List<Transaction> findBorrowedBooks(User user)
+    {
+        List<Transaction> borrowed = new ArrayList<>();
+        for (Transaction item : checkedOutBooks)
+            if (user.equals(item.getUser()))
+                borrowed.add(item);
+        return borrowed;
+    }
+    public List<Transaction> findBorrowedBooks(int userId) { return findBorrowedBooks(users.get(userId)); }
+
     /**
      * check methods
      */
