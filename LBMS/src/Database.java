@@ -18,13 +18,6 @@ public class Database
     //maybe call readData()?
     public Database() {}
 
-    public boolean hasUser(String fname, String lname, String address, String phone)
-    {
-        for (User user : users.values())
-            if (user.isSame(fname, lname, address, phone))
-                return true;
-        return false;
-    }
     public void addUser(User user) { users.put(user.getId(), user); }
     public void addUser(String fname, String lname, String address, String phone)
     {
@@ -95,4 +88,24 @@ public class Database
     {
         addTransaction(librarySearch.get(bookID), users.get(userID), dueDate);
     }
+
+    /**
+     * check methods
+     */
+    public boolean hasUser(String fname, String lname, String address, String phone)
+    {
+        for (User user : users.values())
+            if (user.isSame(fname, lname, address, phone))
+                return true;
+        return false;
+    }
+    public boolean isValidUser(int userID) { return users.get(userID) != null; }
+    public boolean isValidBook(String bookID) { return booksOwned.get(bookID) != null; }
+    public boolean userCanCheckOut(int userID, int numBooks)
+    {
+        return users.get(userID).getNumBooksChecked() + numBooks > User.MAX_BOOKS_CHECKED;
+    }
+    //might not need- if caller has reference to User than they can just call hasDebt()
+    public boolean hasOutstandingFine(int userID) { return users.get(userID).hasDebt(); }
+
 }
