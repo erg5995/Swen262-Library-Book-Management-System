@@ -62,13 +62,13 @@ public class PublishDateSortStrategy implements BookSortStrategy {
             return false;
         } else if(Integer.parseInt(date1[2]) > Integer.parseInt(date2[2])) {
             return true;
-        } else if(Integer.parseInt(date1[0]) < Integer.parseInt(date2[2])) {
+        } else if(Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
             return false;
-        } else if(Integer.parseInt(date1[0]) > Integer.parseInt(date2[2])) {
+        } else if(Integer.parseInt(date1[0]) > Integer.parseInt(date2[0])) {
             return true;
-        } else if(Integer.parseInt(date1[1]) < Integer.parseInt(date2[2])) {
+        } else if(Integer.parseInt(date1[1]) < Integer.parseInt(date2[1])) {
             return false;
-        } else if(Integer.parseInt(date1[1]) > Integer.parseInt(date2[2])) {
+        } else if(Integer.parseInt(date1[1]) > Integer.parseInt(date2[1])) {
             return true;
         } else {
             return true;
