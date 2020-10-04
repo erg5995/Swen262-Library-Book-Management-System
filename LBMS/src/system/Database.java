@@ -124,6 +124,14 @@ public class Database
         return ret;
     }
 
+    public double pay(int userID, double amount)
+    {
+        User user = users.get(userID);
+        if (amount > user.getDebt())
+            return -1;
+        return user.addPayment(amount);
+    }
+
     /**
      * check methods
      */
@@ -142,5 +150,4 @@ public class Database
     }
     //might not need- if caller has reference to User than they can just call hasDebt()
     public boolean hasOutstandingFine(int userID) { return users.get(userID).hasDebt(); }
-
 }
