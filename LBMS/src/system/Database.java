@@ -18,7 +18,12 @@ public class Database
     private Map<Integer, User> users;
 
     //maybe call readData()?
-    public Database() {}
+    public Database()
+    {
+        librarySearch = new ArrayList<>();
+        storeSearch = new ArrayList<>();
+        borrowSearch = new ArrayList<>();
+    }
 
     public void addUser(User user) { users.put(user.getId(), user); }
     public int addUser(String fname, String lname, String address, String phone)
@@ -95,6 +100,7 @@ public class Database
 
     public List<Transaction> findBorrowedBooks(User user)
     {
+        borrowSearch.clear();
         for (Transaction item : checkedOutBooks)
             if (user.equals(item.getUser()))
                 borrowSearch.add(item);
@@ -102,13 +108,14 @@ public class Database
     }
     public List<Transaction> findBorrowedBooks(int userId) { return findBorrowedBooks(users.get(userId)); }
 
-    public String returnBooks(int userID, List<Integer> bookIDs)
+    public String returnBooks(int userID, List<Integer> bookIDs, LocalDate date)
     {
         double fines = 0;
         for (int i = 0; i < bookIDs.size(); i++) {
             Transaction trans = borrowSearch.get(bookIDs.get(i));
             checkedOutBooks.remove(trans);
             trans.getBook().returnCopy();
+            trans.close(date);
             if (trans.isOverdue())
                 fines += trans.getFine();
             else
@@ -122,6 +129,27 @@ public class Database
         for (int bookID : bookIDs)
             ret += "," + bookID;
         return ret;
+    }
+
+    public double pay(int userID, double amount)
+    {
+        User user = users.get(userID);
+        if (amount > user.getDebt())
+            return -1;
+        return user.addPayment(amount);
+    }
+
+    public List<Book> buyBooks(int quantity, List<Integer> bookIDs)
+    {
+        List<Book> books = new ArrayList<>();
+        Book book;
+        for (int bookID : bookIDs) {
+            book = storeSearch.get(bookID);
+            book.setNumCopies(book.getNumCopies() + quantity);
+            books.add(book);
+            booksOwned.putIfAbsent(book.getIsbn(), book);
+        }
+        return books;
     }
 
     /**
@@ -142,5 +170,4 @@ public class Database
     }
     //might not need- if caller has reference to User than they can just call hasDebt()
     public boolean hasOutstandingFine(int userID) { return users.get(userID).hasDebt(); }
-
 }

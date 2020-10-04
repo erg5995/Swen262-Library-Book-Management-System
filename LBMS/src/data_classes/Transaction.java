@@ -58,6 +58,7 @@ public class Transaction
                 addToFine(2 * (daysPastDue - 1) / 7);
         }
     }
+    public void close(LocalDate date) { dateChecked = date; }
 
     /**
      * Methods to alter fine: either set or add to a fine
