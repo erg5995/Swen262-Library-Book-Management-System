@@ -1,8 +1,5 @@
 import DataClasses.Book;
-import DataClasses.User;
 import DataClasses.Visit;
-import SysStates.Open;
-import SysStates.SysState;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,7 +19,7 @@ public class Manager {
         database = new Database();
         //calendar = new Calendar();
 
-        state = new Open();
+        state = new Open(this, database);
 
         ongoingVisits = new ArrayList<Visit>();
 
@@ -72,6 +69,10 @@ public class Manager {
 
     public void addVisit(Visit visit){
         ongoingVisits.add(visit);
+    }
+
+    public void setState(SysState newState){
+        state = newState;
     }
 
 

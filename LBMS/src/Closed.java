@@ -1,21 +1,14 @@
-package SysStates;
-
 import DataClasses.Book;
 import DataClasses.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+public class Closed implements SysState {
 
-public class Open implements SysState{
-
-    //why tf is it doing this
     private Manager manager;
-    
 
     public String startVisit(int id, LocalDateTime time){
-
-
         return "not implemented";
     }
 
@@ -28,5 +21,6 @@ public class Open implements SysState{
         return false;
 
     }
+
 
 }
