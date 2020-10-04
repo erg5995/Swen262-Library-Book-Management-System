@@ -2,15 +2,18 @@ package system;
 
 import data_classes.Book;
 import data_classes.Visit;
+import sys_state.Closed;
+import sys_state.Open;
 import sys_state.SysState;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Manager {
 
-    //private system.Calendar calendar;
+    private Calendar calendar;
 
     private Database database;
 
@@ -18,11 +21,24 @@ public class Manager {
 
     private List<Visit> ongoingVisits;
 
+    public SysState[] states;
+
+
+
+
     public Manager(){
         database = new Database();
-        //calendar = new system.Calendar();
+        calendar = new Calendar();
 
-        //state = new sys_state.Open(this, database);
+        Open open = new Open(this, database);
+
+        Closed closed = new Closed(this, database);
+
+        states[0] = open;
+
+        states[1] = closed;
+
+        state = new Open(this, database);
 
         ongoingVisits = new ArrayList<Visit>();
 
@@ -96,8 +112,8 @@ public class Manager {
     }
 
     //this needs to be added to uml
-    public void setState(SysState newState){
-        state = newState;
+    public void setState(int index){
+        state = states[index];
     }
 
 
