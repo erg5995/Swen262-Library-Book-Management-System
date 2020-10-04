@@ -1,6 +1,4 @@
-package DataClasses;
-
-import java.util.List;
+package data_classes;
 
 /**
  * Data class for reports

@@ -1,6 +1,6 @@
-package Commands;
+package commands;
 
-public class DepartCommand implements Command{
+public class BorrowedCommand implements Command{
 
 
 

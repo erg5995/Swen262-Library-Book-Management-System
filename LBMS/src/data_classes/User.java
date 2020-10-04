@@ -1,4 +1,4 @@
-package DataClasses;
+package data_classes;
 
 /**
  * Dataclass for users

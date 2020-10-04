@@ -1,17 +1,19 @@
-import DataClasses.*;
+package system;
+
+import data_classes.*;
 
 import java.time.LocalDate;
 import java.util.*;
 
 /**
- * Database class that stores all required info
+ * system.Database class that stores all required info
  * Author: Thomas Linse
  */
 public class Database
 {
     private Map<String, Book> booksOwned, booksInStore;
     private List<Book> librarySearch, storeSearch;
-    private List<Transaction> checkedOutBooks, returnedBooks;
+    private List<Transaction> checkedOutBooks, returnedBooks, borrowSearch;
     private List<Visit> visits;
     private Map<Integer, User> users;
 
@@ -91,11 +93,10 @@ public class Database
 
     public List<Transaction> findBorrowedBooks(User user)
     {
-        List<Transaction> borrowed = new ArrayList<>();
         for (Transaction item : checkedOutBooks)
             if (user.equals(item.getUser()))
-                borrowed.add(item);
-        return borrowed;
+                borrowSearch.add(item);
+        return borrowSearch;
     }
     public List<Transaction> findBorrowedBooks(int userId) { return findBorrowedBooks(users.get(userId)); }
 

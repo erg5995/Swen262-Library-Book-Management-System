@@ -1,6 +1,6 @@
-package Commands;
+package commands;
 
-public class RegisterCommand implements Command{
+public class DepartCommand implements Command{
 
 
 
