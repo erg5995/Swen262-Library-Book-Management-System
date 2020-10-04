@@ -102,6 +102,28 @@ public class Database
     }
     public List<Transaction> findBorrowedBooks(int userId) { return findBorrowedBooks(users.get(userId)); }
 
+    public String returnBooks(int userID, List<Integer> bookIDs)
+    {
+        double fines = 0;
+        for (int i = 0; i < bookIDs.size(); i++) {
+            Transaction trans = borrowSearch.get(bookIDs.get(i));
+            checkedOutBooks.remove(trans);
+            trans.getBook().returnCopy();
+            if (trans.isOverdue())
+                fines += trans.getFine();
+            else
+                bookIDs.remove(i--);
+            returnedBooks.add(trans);
+        }
+        if (fines == 0)
+            return "success";
+        users.get(userID).addFine(fines);
+        String ret = "overdue,$" + String.format("%.00f", fines);
+        for (int bookID : bookIDs)
+            ret += "," + bookID;
+        return ret;
+    }
+
     /**
      * check methods
      */
