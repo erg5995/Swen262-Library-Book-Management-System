@@ -5,6 +5,7 @@ import DataClasses.Book;
 import java.util.Arrays;
 import java.util.List;
 
+//Yoink https://www.geeksforgeeks.org/quick-sort/
 public class CopiesSortStrategy implements BookSortStrategy {
 
     public void sort(List<Book> books) {
@@ -49,6 +50,14 @@ public class CopiesSortStrategy implements BookSortStrategy {
         books[high] = temp;
 
         return i+1;
+    }
+
+    private boolean compareStringsAlphabetically(String str1, String str2) {
+        if(str1.charAt(0) < str2.charAt(0)) {
+            return true;
+        }else {
+            return compareStringsAlphabetically(str1.substring(1), str2.substring(1));
+        }
     }
 
 }
