@@ -1,6 +1,7 @@
 package sys_state;
 
 import data_classes.Book;
+import data_classes.Transaction;
 import data_classes.User;
 import data_classes.Visit;
 import system.Calendar;
@@ -103,31 +104,59 @@ public class Open implements SysState {
         }
 
         database.checkOutBooks(books);
-        return "borrow," + calendar.getCurrentTime().plusDays(7);
+        for(Integer id: books) {
+            database.addTransaction(user.getId(), id, calendar.getCurrentTime().toLocalDate().plusDays(7));
+        }
+        return "borrow," + calendar.getCurrentTime().toLocalDate().plusDays(7);
     }
 
     public String checkInBook(List<Integer> books, User user){
 
+        //response format: 	return,success;
+
+        //errors: invalid user id, invalid book ids
+
+        //alternate response: overdue + fine applied
+
        if(!database.hasUser(user.getFirstName(),user.getLastName(),user.getAddress(),user.getPhone())) {
-           //probably return a string about the failure
+           return "return,invalid-visitor-id";
        }
        else{
+           List<Transaction> borrowedBooks = database.findBorrowedBooks(user);
+           List<Transaction> overlap = new ArrayList<Transaction>();
+
+
+           for(Integer id: books){
+
+           }
+
            //if the user has debt, it should return a different string
            if(user.hasDebt()){
                //need something to calculate the debt?
                //double fine =
                //need a way to check which books are overdue, to be able to return the correct IDs,
                //might be besst to access transactions through a getter to check if overdue, and add the fines
+
+
            }
            //if the user doesn't have a string, a different string is returned
            else{
+               ArrayList<Integer> invalid = new ArrayList<>();
                //if invalid book
-               //whole transaction is a failure
+               for(Integer id: books){
+                   if(!database.isValidBook("" + id))
+                   {
+                       invalid.add(id);
+                   }
+               }
+               if(!invalid.isEmpty()){
+                   //whole transaction is invalid if any books aren't valid
+                   return "return,invalid-book-id," + invalid;
+               }
 
-               //else
+               database.returnBooks(user.getId(),books);
+               return "return,success";
                //transaction is a success and should be returned as such.
-
-
            }
 
        }
