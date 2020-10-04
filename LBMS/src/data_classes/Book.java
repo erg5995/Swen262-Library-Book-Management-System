@@ -104,5 +104,6 @@ public class Book {
     }
 
     public void checkOutCopy() { numCopiesOut++; }
+    public void returnCopy() { numCopiesOut--; }
 
 }
