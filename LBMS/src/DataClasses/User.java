@@ -13,7 +13,7 @@ public class User {
      */
     public enum UserRole {EMPLOYEE, VISITOR}
 
-    private final int MAX_BOOKS_CHECKED = 5;
+    public final static int MAX_BOOKS_CHECKED = 5;
 
     /**
      * private variables for the user: idCounter is static
@@ -59,6 +59,7 @@ public class User {
     public String getPhone() { return phone; }
     public UserRole getType() { return type; }
     public double getDebt() { return debt; }
+    public boolean hasDebt() { return debt > 0; }
 
     /**
      * methods for altering the debt of the user
@@ -101,4 +102,9 @@ public class User {
      */
     public void hire() { type = UserRole.EMPLOYEE; }
     public void fire() { type = UserRole.VISITOR; }
+
+    public boolean isSame(String fname, String lname, String address, String phone)
+    {
+        return firstName.equals(fname) && lastName.equals(lname) && this.address.equals(address) && this.phone.equals(phone);
+    }
 }
