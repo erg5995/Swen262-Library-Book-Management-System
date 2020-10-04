@@ -21,9 +21,11 @@ public class Database
     public Database() {}
 
     public void addUser(User user) { users.put(user.getId(), user); }
-    public void addUser(String fname, String lname, String address, String phone)
+    public int addUser(String fname, String lname, String address, String phone)
     {
-        addUser(new User(fname, lname, address, phone));
+        User user = new User(fname, lname, address, phone);
+        addUser(user);
+        return user.getId();
     }
     public User getUser(int id) { return users.get(id); }
 
