@@ -33,7 +33,7 @@ public class Open implements SysState {
         return "arrive, " + id + ", CURRENTDATE, " + time;
     }
 
-    public boolean checkOutBook(List<Integer> books){
+    public String checkOutBook(List<Integer> books){
 
 
         //notes: this method is a mess. I think this needs to be passed in a list of books? Because the checks and such
@@ -52,14 +52,14 @@ public class Open implements SysState {
 
         //may need to add parameter to pass in a user id here to use this?
         if((database.checkOutBooks(isbns))&& (database.userCanCheckOut(1,isbns.size()))){
-            return true;
+            return "";
         }
         else {
-            return false;
+            return "";
         }
     }
 
-    public boolean checkInBook(List<Integer> books, User user){
+    public String checkInBook(List<Integer> books, User user){
 
        if(!database.hasUser(user.getFirstName(),user.getLastName(),user.getAddress(),user.getPhone())) {
            //probably return a string about the failure
@@ -86,7 +86,7 @@ public class Open implements SysState {
        }
 
 
-        return false;
+        return "";
 
     }
 
