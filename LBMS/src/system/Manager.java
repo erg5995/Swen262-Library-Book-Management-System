@@ -30,15 +30,15 @@ public class Manager {
         database = new Database();
         calendar = new Calendar();
 
-        Open open = new Open(this, database);
+        Open open = new Open(this, database,calendar);
 
-        Closed closed = new Closed(this, database);
+        Closed closed = new Closed(this, database,calendar);
 
         states[0] = open;
 
         states[1] = closed;
 
-        state = new Open(this, database);
+        //state = new Open(this, database,calendar);
 
         ongoingVisits = new ArrayList<Visit>();
 
@@ -51,47 +51,28 @@ public class Manager {
      */
     public String startVisit(int id)
     {
-
         //this will be handled by the states.
-
-
-
-        //placeholder
-        state.startVisit(id, LocalDateTime.MAX);
-        return state.startVisit(id, LocalDateTime.MAX);
-
-
+        return state.startVisit(id, calendar.getCurrentTime());
     }
 
     public String checkOutBook(int userId, List<Integer> bookISBNs){
         //to be handled by states
-
-        //placeholder
-        ArrayList<Book> books = new ArrayList<Book>();
-        books.add(new Book("","", new String[]{""},"","",0,0,0));
-
-        state.checkOutBook(bookISBNs);
-        return "not implemented";
+        return state.checkOutBook(bookISBNs, userId);
     }
 
     public String checkInBook(int userId, List<Integer> bookISBNs){
 
         //to be handled by states
-        //placeholder
-        ArrayList<Book> books = new ArrayList<Book>();
-        books.add(new Book("","", new String[]{""},"","",0,0,0));
-        state.checkOutBook(bookISBNs);
-        return "not implemented";
+
+        return state.checkOutBook(bookISBNs, userId);
+
     }
 
     public void shutdownSystem(){
         //end all ongoing visits here, and save data in database
 
         for(Visit visit: ongoingVisits){
-
-            //placeholder, will need to return the time from the calendar class
-            // LocalDateTime exitTime = calendar.getDateTime();
-            LocalDateTime exitTime = LocalDateTime.now();
+            LocalDateTime exitTime = calendar.getCurrentTime();
             visit.setExitTime(exitTime);
             database.addVisit(visit);
 
@@ -99,12 +80,17 @@ public class Manager {
         ongoingVisits.clear();
 
         //database.saveData();
+        // database
+
+        //update fines and overdues
+        // to be done in database
+
     }
 
     public void startUpSystem(){
         //initialize data from database
         //database.readData();
-        //maybe update fines, and overdue book booleans?
+        //
     }
 
     public void addVisit(Visit visit){
@@ -116,7 +102,7 @@ public class Manager {
         state = states[index];
     }
 
-
-
-
+    public List<Visit> getOngoingVisits() {
+        return ongoingVisits;
+    }
 }
