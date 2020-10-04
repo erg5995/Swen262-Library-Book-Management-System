@@ -1,10 +1,12 @@
-import DataClasses.*;
+package system;
+
+import data_classes.*;
 
 import java.time.LocalDate;
 import java.util.*;
 
 /**
- * Database class that stores all required info
+ * system.Database class that stores all required info
  * Author: Thomas Linse
  */
 public class Database

@@ -1,6 +1,6 @@
 package book_sort_strategy;
 
-import DataClasses.Book;
+import data_classes.Book;
 
 import java.util.List;
 

@@ -1,8 +1,11 @@
-import DataClasses.Book;
-import DataClasses.User;
-import DataClasses.Visit;
+package sys_state;
 
-import java.lang.reflect.Array;
+import data_classes.Book;
+import data_classes.User;
+import data_classes.Visit;
+import system.Database;
+import system.Manager;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package Commands;
+package commands;
 
-public class PayCommand implements Command{
+public class InfoSearchCommand implements Command{
 
 
 

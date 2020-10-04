@@ -1,4 +1,4 @@
-package DataClasses;
+package data_classes;
 
 /**
  *  Class Book
