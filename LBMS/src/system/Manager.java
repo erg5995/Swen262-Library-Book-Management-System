@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Manager {
 
-    //private Calendar calendar;
+    //private system.Calendar calendar;
 
     private Database database;
 
@@ -20,7 +20,7 @@ public class Manager {
 
     public Manager(){
         database = new Database();
-        //calendar = new Calendar();
+        //calendar = new system.Calendar();
 
         //state = new sys_state.Open(this, database);
 
