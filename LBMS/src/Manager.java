@@ -19,7 +19,7 @@ public class Manager {
         database = new Database();
         //calendar = new Calendar();
 
-        state = new Open(this, database);
+        //state = new Open(this, database);
 
         ongoingVisits = new ArrayList<Visit>();
 
@@ -48,29 +48,50 @@ public class Manager {
         //to be handled by states
 
         //placeholder
-        state.checkOutBook(new Book("","", new String[]{""},"","",0,0,0));
+        ArrayList<Book> books = new ArrayList<Book>();
+        books.add(new Book("","", new String[]{""},"","",0,0,0));
+
+        state.checkOutBook(books);
         return "not implemented";
     }
 
     public String checkInBook(int userId, List<Integer> bookISBNs){
         //to be handled by states
         //placeholder
-        state.checkOutBook(new Book("","", new String[]{""},"","",0,0,0));
+        ArrayList<Book> books = new ArrayList<Book>();
+        books.add(new Book("","", new String[]{""},"","",0,0,0));
+        state.checkOutBook(books);
         return "not implemented";
     }
 
     public void shutdownSystem(){
-        //idk what to do here
+        //end all ongoing visits here, and save data in database
+
+        for(Visit visit: ongoingVisits){
+
+            //placeholder, will need to return the time from the calendar class
+            // LocalDateTime exitTime = calendar.getDateTime();
+            LocalDateTime exitTime = LocalDateTime.now();
+            visit.setExitTime(exitTime);
+            database.addVisit(visit);
+
+        }
+        ongoingVisits.clear();
+
+        //database.saveData();
     }
 
     public void startUpSystem(){
-        //idk what to do here
+        //initialize data from database
+        //database.readData();
+        //maybe update fines, and overdue book booleans?
     }
 
     public void addVisit(Visit visit){
         ongoingVisits.add(visit);
     }
 
+    //this needs to be added to uml
     public void setState(SysState newState){
         state = newState;
     }

@@ -10,7 +10,6 @@ package DataClasses;
 
 public class Book {
 
-
     //attributes
 
     private String isbn;

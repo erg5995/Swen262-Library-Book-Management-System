@@ -9,15 +9,18 @@ public class Closed implements SysState {
     private Manager manager;
 
     public String startVisit(int id, LocalDateTime time){
-        return "not implemented";
+        return "arrive,library-closed";
     }
 
-    public boolean checkOutBook(Book book){
+    public boolean checkOutBook(List<Book> books){
+        //they cannot check out a book while the library is closed
+
         return false;
 
     }
 
     public boolean checkInBook(List<Book> books, User user){
+        //apparently users can check in a book while library is closed, need to handle this
         return false;
 
     }
