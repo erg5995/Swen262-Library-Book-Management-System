@@ -51,16 +51,17 @@ public class Manager {
         ArrayList<Book> books = new ArrayList<Book>();
         books.add(new Book("","", new String[]{""},"","",0,0,0));
 
-        state.checkOutBook(books);
+        state.checkOutBook(bookISBNs);
         return "not implemented";
     }
 
     public String checkInBook(int userId, List<Integer> bookISBNs){
+
         //to be handled by states
         //placeholder
         ArrayList<Book> books = new ArrayList<Book>();
         books.add(new Book("","", new String[]{""},"","",0,0,0));
-        state.checkOutBook(books);
+        state.checkOutBook(bookISBNs);
         return "not implemented";
     }
 

@@ -30,7 +30,7 @@ public class Open implements SysState {
         return "arrive, " + id + ", CURRENTDATE, " + time;
     }
 
-    public boolean checkOutBook(List<Book> books){
+    public boolean checkOutBook(List<Integer> books){
 
 
         //notes: this method is a mess. I think this needs to be passed in a list of books? Because the checks and such
@@ -45,9 +45,7 @@ public class Open implements SysState {
 
         ArrayList<Integer> isbns = new ArrayList<Integer>();
 
-        for(Book book: books){
-            isbns.add(Integer.parseInt(book.getIsbn()));
-        }
+
 
         //may need to add parameter to pass in a user id here to use this?
         if((database.checkOutBooks(isbns))&& (database.userCanCheckOut(1,isbns.size()))){
@@ -58,7 +56,7 @@ public class Open implements SysState {
         }
     }
 
-    public boolean checkInBook(List<Book> books, User user){
+    public boolean checkInBook(List<Integer> books, User user){
 
        if(!database.hasUser(user.getFirstName(),user.getLastName(),user.getAddress(),user.getPhone())) {
            //probably return a string about the failure
