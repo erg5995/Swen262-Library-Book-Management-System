@@ -1,5 +1,8 @@
-import DataClasses.Book;
-import DataClasses.Visit;
+package system;
+
+import data_classes.Book;
+import data_classes.Visit;
+import sys_state.SysState;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,7 +22,7 @@ public class Manager {
         database = new Database();
         //calendar = new Calendar();
 
-        //state = new Open(this, database);
+        //state = new sys_state.Open(this, database);
 
         ongoingVisits = new ArrayList<Visit>();
 

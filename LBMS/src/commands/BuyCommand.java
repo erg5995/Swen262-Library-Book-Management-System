@@ -1,6 +1,6 @@
-package Commands;
+package commands;
 
-public class BorrowedCommand implements Command{
+public class BuyCommand implements Command{
 
 
 
