@@ -78,7 +78,7 @@ public class Open implements SysState {
         //error: invalid book id
         ArrayList<Integer> invalid = new ArrayList<Integer>();
         for (Integer id: books){
-            if(!database.isValidBook("" + id)){
+            if(!database.isValidLibraryID(id)){
                 invalid.add(id);
             }
         }
@@ -126,7 +126,7 @@ public class Open implements SysState {
            ArrayList<Integer> invalid = new ArrayList<>();
            //if invalid book
            for(Integer id: books){
-               if(!database.isValidBook("" + id)){
+               if(!database.isValidBorrowID(id)){
                    invalid.add(id);
                }
            }
