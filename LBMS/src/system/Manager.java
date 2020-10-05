@@ -1,5 +1,6 @@
 package system;
 
+import book_sort_strategy.BookSortStrategy;
 import commands.*;
 import data_classes.Book;
 import data_classes.User;
@@ -134,8 +135,8 @@ public class Manager {
     }
 
 
-    public String infoSearch(Book book, boolean forLibrary){
-        Command infoSearch = new InfoSearchCommand(book, forLibrary);
+    public String infoSearch(Book book, boolean forLibrary, BookSortStrategy strategy){
+        Command infoSearch = new InfoSearchCommand(book, forLibrary, database, strategy);
         return infoSearch.execute();
     }
 
