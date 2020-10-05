@@ -32,17 +32,14 @@ public class InfoSearchCommand implements Command{
         }
         else {
             List<Book> toSort = database.bookInfoSearch(book, true);
-
             strategy.sort(toSort);
-
             String formatString = "\n";
 
+            String placeholder = "THIS IS A PLACEHOLDER FOR BOOK ID";
             for(Book book: toSort){
-                formatString = formatString + book.getNumCopies() + database;
+                formatString = formatString + book.getNumCopies() + placeholder + book.toString() + "\n";
             }
-
-
-            return "info," + toSort.size() + ",";
+            return "info," + toSort.size() + formatString + ";";
         }
     }
 }
