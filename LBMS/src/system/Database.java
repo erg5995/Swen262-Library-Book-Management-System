@@ -194,8 +194,8 @@ public class Database
         for (Transaction trans : checkedOutBooks)
             trans.update(today);
         numBooksBought.add(0, 0);
-        fines.add(0, 0);
-        payments.add(0, 0);
+        fines.add(0, 0.);
+        payments.add(0, 0.);
     }
 
     /**
