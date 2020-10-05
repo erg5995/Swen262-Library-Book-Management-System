@@ -152,6 +152,16 @@ public class Database
         return books;
     }
 
+    public Report generateReport(int days, LocalDate day)
+    {
+        day = day.minusDays(days);
+        int numBooks = 0;
+        for (Book book : booksOwned.values())
+            numBooks += book.getNumCopies();
+        //Report rep = new Report(users.size(), numBooks, );
+        return null;
+    }
+
     /**
      * check methods
      */
@@ -163,7 +173,10 @@ public class Database
         return false;
     }
     public boolean isValidUser(int userID) { return users.get(userID) != null; }
-    public boolean isValidBook(String bookID) { return booksOwned.get(bookID) != null; }
+    public boolean isValidBookISBN(String bookISBN) { return booksOwned.get(bookISBN) != null; }
+    public boolean isValidLibraryID(int bookID) { return bookID > -1 && bookID < librarySearch.size(); }
+    public boolean isValidBorrowID(int bookID) { return bookID > -1 && bookID < borrowSearch.size(); }
+    public boolean isValidStoreID(int bookID) { return bookID > -1 && bookID < storeSearch.size(); }
     public boolean userCanCheckOut(int userID, int numBooks)
     {
         return users.get(userID).getNumBooksChecked() + numBooks > User.MAX_BOOKS_CHECKED;
