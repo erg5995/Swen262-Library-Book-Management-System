@@ -107,7 +107,7 @@ public class Manager {
     }
 
     public String buy(int numCopiesEach, List<Integer> bookIds){
-        Command buyCommand = new BuyCommand(numCopiesEach,bookIds);
+        Command buyCommand = new BuyCommand(numCopiesEach,bookIds, database);
         return buyCommand.execute();
     }
 
