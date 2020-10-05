@@ -48,7 +48,7 @@ public class Transaction
      */
     public void update(LocalDate date)
     {
-        int daysPastDue = (date.getYear() - dueDate.getYear()) * 365 + date.getDayOfYear() - dueDate.getDayOfYear() + 1;
+        int daysPastDue = TimeBetween.numDays(dueDate, date);
         if (daysPastDue > 0) {
             pastDueDate();
             setFine(10);
