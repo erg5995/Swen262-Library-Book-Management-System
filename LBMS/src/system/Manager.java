@@ -112,7 +112,7 @@ public class Manager {
     }
 
     public String pay(int userId, double amount){
-        Command payCommand = new PayCommand(userId, amount);
+        Command payCommand = new PayCommand(userId, amount, database);
         return payCommand.execute();
     }
 

@@ -26,6 +26,6 @@ public class BuyCommand implements Command{
             bookString = bookString + book.toString()+ "," + numCompiesEach + "\n";
         }
 
-        return "buy,success," + bookIds.size() + "\n" + bookString;
+        return "buy,success," + bookIds.size() + "\n" + bookString + ";";
     }
 }

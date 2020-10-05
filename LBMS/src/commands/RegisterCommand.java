@@ -25,12 +25,12 @@ public class RegisterCommand implements Command{
     }
     public String execute() {
         if(database.hasUser(firstName,lastName,address,phone)){
-            return "register,duplicate";
+            return "register,duplicate;";
         }
         else {
             User user = new User(firstName, lastName, address, phone);
             database.addUser(user);
-            return "register," + user.getId() + "," + calendar.getCurrentTime().toLocalDate();
+            return "register," + user.getId() + "," + calendar.getCurrentTime().toLocalDate() + ";";
         }
     }
 }
