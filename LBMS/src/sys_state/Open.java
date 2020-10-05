@@ -58,21 +58,17 @@ public class Open implements SysState {
 
     /**
      * Checks out book for user
-     * @param books - isbns of books user wants to check out
+     * @param books - ids of books user wants to check out
      * @param userID - id of user who wants to check the books out
      * @return String in proper response format: borrow,due date;
      */
     public String checkOutBook(List<Integer> books, int userID){
         ArrayList<Integer> isbns = new ArrayList<Integer>();
-
         //response format: borrow,due date;
-
 
         //errors: invalid id, invalid book id, book limit exceeded, outstanding fine
 
         User user = database.getUser(userID);
-
-
         //error: invalid id
 
         if(user == null){
@@ -91,7 +87,6 @@ public class Open implements SysState {
             return "borrow,invalid-book-id," + invalid;
         }
 
-
         //error: has outstanding fine
         if(user.hasDebt()){
             return "borrow,outstanding-fine," + user.getDebt();
@@ -102,14 +97,20 @@ public class Open implements SysState {
         {
             return "borrow,book-limit-exceeded";
         }
-
         database.checkOutBooks(books);
         for(Integer id: books) {
-            database.addTransaction(user.getId(), id, calendar.getCurrentTime().toLocalDate().plusDays(7));
+            database.addTransaction(id, user.getId(), calendar.getCurrentTime().toLocalDate().plusDays(7));
         }
         return "borrow," + calendar.getCurrentTime().toLocalDate().plusDays(7);
     }
 
+
+    /**
+     *
+     * @param books - list of book ids to return to library
+     * @param user - user who wishes to return the books
+     * @return string in the proper response format: return,success;
+     */
     public String checkInBook(List<Integer> books, User user){
 
         //response format: 	return,success;
@@ -122,48 +123,29 @@ public class Open implements SysState {
            return "return,invalid-visitor-id";
        }
        else{
-           List<Transaction> borrowedBooks = database.findBorrowedBooks(user);
-           List<Transaction> overlap = new ArrayList<Transaction>();
-
-
+           ArrayList<Integer> invalid = new ArrayList<>();
+           //if invalid book
            for(Integer id: books){
-
-           }
-
-           //if the user has debt, it should return a different string
-           if(user.hasDebt()){
-               //need something to calculate the debt?
-               //double fine =
-               //need a way to check which books are overdue, to be able to return the correct IDs,
-               //might be besst to access transactions through a getter to check if overdue, and add the fines
-
-
-           }
-           //if the user doesn't have a string, a different string is returned
-           else{
-               ArrayList<Integer> invalid = new ArrayList<>();
-               //if invalid book
-               for(Integer id: books){
-                   if(!database.isValidBook("" + id))
-                   {
-                       invalid.add(id);
-                   }
+               if(!database.isValidBook("" + id)){
+                   invalid.add(id);
                }
-               if(!invalid.isEmpty()){
-                   //whole transaction is invalid if any books aren't valid
-                   return "return,invalid-book-id," + invalid;
-               }
-
-               database.returnBooks(user.getId(),books);
+           }
+           if(!invalid.isEmpty()){
+               //whole transaction is invalid if any books aren't valid
+               return "return,invalid-book-id," + invalid;
+            }
+           String result = database.returnBooks(user.getId(),books,calendar.getCurrentTime().toLocalDate());
+           //returned books and it succeeded
+           if (result.equals("success")){
                return "return,success";
-               //transaction is a success and should be returned as such.
+           }
+           else{
+               //this will happen if there is a fine due to overdue books
+               return "return," + result;
            }
 
+           }
        }
-
-
-        return "";
-
     }
 
-}
+

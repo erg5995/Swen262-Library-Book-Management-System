@@ -27,8 +27,7 @@ public class Closed implements SysState {
 
     public String checkOutBook(List<Integer> books, int userID){
         //they cannot check out a book while the library is closed
-
-        return "";
+        return "borrow,library-closed";
 
     }
 
