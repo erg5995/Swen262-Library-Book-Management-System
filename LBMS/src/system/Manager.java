@@ -132,10 +132,13 @@ public class Manager {
         return departCommand.execute();
     }
 
-    /*
-    public String infoSearch(Book book, boolean ){}
 
-     */
+    public String infoSearch(Book book, boolean forLibrary){
+        Command infoSearch = new InfoSearchCommand(book, forLibrary);
+        return infoSearch.execute();
+    }
+
+
 
     public String dateTime(){
         Command dateTime = new DatetimeCommand();
