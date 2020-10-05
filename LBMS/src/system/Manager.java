@@ -1,5 +1,6 @@
 package system;
 
+import commands.*;
 import data_classes.Book;
 import data_classes.Visit;
 import sys_state.Closed;
@@ -30,15 +31,15 @@ public class Manager {
         database = new Database();
         calendar = new Calendar();
 
-        Open open = new Open(this, database);
+        Open open = new Open(this, database,calendar);
 
-        Closed closed = new Closed(this, database);
+        Closed closed = new Closed(this, database,calendar);
 
         states[0] = open;
 
         states[1] = closed;
 
-        state = new Open(this, database);
+        //state = new Open(this, database,calendar);
 
         ongoingVisits = new ArrayList<Visit>();
 
@@ -51,47 +52,27 @@ public class Manager {
      */
     public String startVisit(int id)
     {
-
         //this will be handled by the states.
-
-
-
-        //placeholder
-        state.startVisit(id, LocalDateTime.MAX);
-        return state.startVisit(id, LocalDateTime.MAX);
-
-
+        return state.startVisit(id, calendar.getCurrentTime());
     }
 
     public String checkOutBook(int userId, List<Integer> bookISBNs){
         //to be handled by states
-
-        //placeholder
-        ArrayList<Book> books = new ArrayList<Book>();
-        books.add(new Book("","", new String[]{""},"","",0,0,0));
-
-        state.checkOutBook(bookISBNs);
-        return "not implemented";
+        return state.checkOutBook(bookISBNs, userId);
     }
 
     public String checkInBook(int userId, List<Integer> bookISBNs){
 
         //to be handled by states
-        //placeholder
-        ArrayList<Book> books = new ArrayList<Book>();
-        books.add(new Book("","", new String[]{""},"","",0,0,0));
-        state.checkOutBook(bookISBNs);
-        return "not implemented";
+        return state.checkOutBook(bookISBNs, userId);
+
     }
 
     public void shutdownSystem(){
         //end all ongoing visits here, and save data in database
 
         for(Visit visit: ongoingVisits){
-
-            //placeholder, will need to return the time from the calendar class
-            // LocalDateTime exitTime = calendar.getDateTime();
-            LocalDateTime exitTime = LocalDateTime.now();
+            LocalDateTime exitTime = calendar.getCurrentTime();
             visit.setExitTime(exitTime);
             database.addVisit(visit);
 
@@ -99,12 +80,17 @@ public class Manager {
         ongoingVisits.clear();
 
         //database.saveData();
+        // database
+
+        //update fines and overdues
+        // to be done in database
+
     }
 
     public void startUpSystem(){
         //initialize data from database
         //database.readData();
-        //maybe update fines, and overdue book booleans?
+        //
     }
 
     public void addVisit(Visit visit){
@@ -116,7 +102,58 @@ public class Manager {
         state = states[index];
     }
 
+    public List<Visit> getOngoingVisits() {
+        return ongoingVisits;
+    }
+
+    public String buy(int numCopiesEach, List<Integer> bookIds){
+        Command buyCommand = new BuyCommand(numCopiesEach,bookIds);
+        return buyCommand.execute();
+    }
+
+    public String pay(int userId, double amount){
+        Command payCommand = new PayCommand(userId, amount);
+        return payCommand.execute();
+    }
+
+    public String borrowed(int userId){
+        Command borrowedCommand = new BorrowedCommand(userId);
+        return borrowedCommand.execute();
+    }
+
+    public String register(String firstName, String lastName, String address, String phone)
+    {
+        Command registerCommand = new RegisterCommand(firstName,lastName,address,phone);
+        return registerCommand.execute();
+    }
+
+    public String depart(int userId){
+        Command departCommand = new DepartCommand(userId);
+        return departCommand.execute();
+    }
 
 
+    public String infoSearch(Book book, boolean forLibrary){
+        Command infoSearch = new InfoSearchCommand(book, forLibrary);
+        return infoSearch.execute();
+    }
+
+
+
+    public String dateTime(){
+        Command dateTime = new DatetimeCommand();
+        return dateTime.execute();
+    }
+
+    public String report(int days){
+        Command reportCommand = new ReportCommand(days);
+        return reportCommand.execute();
+
+    }
+
+    public String advance(int numDays, int numHours){
+        Command advanceCommand = new AdvanceCommand(numDays,numHours);
+        return advanceCommand.execute();
+    }
 
 }

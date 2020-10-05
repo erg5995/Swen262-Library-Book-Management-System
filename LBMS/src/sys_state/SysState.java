@@ -12,7 +12,7 @@ public interface SysState {
 
     public String startVisit(int id, LocalDateTime time);
 
-    public String checkOutBook(List<Integer> books);
+    public String checkOutBook(List<Integer> books, int userID);
 
     public String checkInBook(List<Integer> books, User user);
 
