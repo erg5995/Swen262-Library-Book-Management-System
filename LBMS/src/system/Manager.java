@@ -123,7 +123,7 @@ public class Manager {
 
     public String register(String firstName, String lastName, String address, String phone)
     {
-        Command registerCommand = new RegisterCommand(firstName,lastName,address,phone);
+        Command registerCommand = new RegisterCommand(firstName,lastName,address,phone, calendar,database);
         return registerCommand.execute();
     }
 
