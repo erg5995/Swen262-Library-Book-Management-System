@@ -2,6 +2,7 @@ package system;
 
 import commands.*;
 import data_classes.Book;
+import data_classes.User;
 import data_classes.Visit;
 import sys_state.Closed;
 import sys_state.Open;
@@ -128,7 +129,7 @@ public class Manager {
     }
 
     public String depart(int userId){
-        Command departCommand = new DepartCommand(userId);
+        Command departCommand = new DepartCommand(userId,this, calendar, database);
         return departCommand.execute();
     }
 
@@ -154,6 +155,35 @@ public class Manager {
     public String advance(int numDays, int numHours){
         Command advanceCommand = new AdvanceCommand(numDays,numHours);
         return advanceCommand.execute();
+    }
+
+    public boolean isVisiting(User user)
+    {
+        for(Visit visit: ongoingVisits){
+            if(visit.getVisitor().equals(user)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public void endVisit(Visit visit){
+        ongoingVisits.remove(visit);
+        LocalDateTime exitTime = calendar.getCurrentTime();
+        visit.setExitTime(exitTime);
+        database.addVisit(visit);
+
+    }
+
+    public Visit getVisit(User user){
+        for(Visit visit: ongoingVisits){
+            if(visit.getVisitor().equals(user)){
+                return visit;
+            }
+        }
+        //this shouldn't ever happen
+        return null;
     }
 
 }
