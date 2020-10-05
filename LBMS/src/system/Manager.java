@@ -1,5 +1,6 @@
 package system;
 
+import commands.*;
 import data_classes.Book;
 import data_classes.Visit;
 import sys_state.Closed;
@@ -63,7 +64,6 @@ public class Manager {
     public String checkInBook(int userId, List<Integer> bookISBNs){
 
         //to be handled by states
-
         return state.checkOutBook(bookISBNs, userId);
 
     }
@@ -105,4 +105,52 @@ public class Manager {
     public List<Visit> getOngoingVisits() {
         return ongoingVisits;
     }
+
+    public String buy(int numCopiesEach, List<Integer> bookIds){
+        Command buyCommand = new BuyCommand(numCopiesEach,bookIds);
+        return buyCommand.execute();
+    }
+
+    public String pay(int userId, double amount){
+        Command payCommand = new PayCommand(userId, amount);
+        return payCommand.execute();
+    }
+
+    public String borrowed(int userId){
+        Command borrowedCommand = new BorrowedCommand(userId);
+        return borrowedCommand.execute();
+    }
+
+    public String register(String firstName, String lastName, String address, String phone)
+    {
+        Command registerCommand = new RegisterCommand(firstName,lastName,address,phone);
+        return registerCommand.execute();
+    }
+
+    public String depart(int userId){
+        Command departCommand = new DepartCommand(userId);
+        return departCommand.execute();
+    }
+
+    /*
+    public String infoSearch(Book book, boolean ){}
+
+     */
+
+    public String dateTime(){
+        Command dateTime = new DatetimeCommand();
+        return dateTime.execute();
+    }
+
+    public String report(int days){
+        Command reportCommand = new ReportCommand(days);
+        return reportCommand.execute();
+
+    }
+
+    public String advance(int numDays, int numHours){
+        Command advanceCommand = new AdvanceCommand(numDays,numHours);
+        return advanceCommand.execute();
+    }
+
 }
