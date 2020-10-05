@@ -187,6 +187,18 @@ public class Database
     }
 
     /**
+     * updates all necessary data that a day has passed
+     */
+    public void nightlyUpdate(LocalDate today)
+    {
+        for (Transaction trans : checkedOutBooks)
+            trans.update(today);
+        numBooksBought.add(0, 0);
+        fines.add(0, 0);
+        payments.add(0, 0);
+    }
+
+    /**
      * check methods
      */
     public boolean hasUser(String fname, String lname, String address, String phone)
