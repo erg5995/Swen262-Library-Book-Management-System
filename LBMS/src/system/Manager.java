@@ -106,50 +106,85 @@ public class Manager {
 
         //database.saveData();
         // database
-
-        //update fines and overdues
-        // to be done in database
-
     }
 
+    /**
+     * starts up system - tells database to re-initialize it's data.
+     */
     public void startUpSystem(){
         //initialize data from database
         //database.readData();
         //
     }
 
+    /**
+     * adds visit to ongoingVisits list
+     * @param visit - visit to add
+     */
     public void addVisit(Visit visit){
         ongoingVisits.add(visit);
     }
 
-    //this needs to be added to uml
+    /**
+     * Changes library state to a new state depending on the specified index
+     * @param index - index of states array to set to: 0 sets it to open, 1 sets it to closed
+     */
     public void setState(int index){
 
         if(index == 1){
-
+            database.nightlyUpdate(calendar.getCurrentTime().toLocalDate().plusDays(1));
         }
         state = states[index];
     }
 
+    /**
+     * returns list of ongoing visits
+     * @return list of ongoing visits
+     */
     public List<Visit> getOngoingVisits() {
         return ongoingVisits;
     }
 
+    /**
+     * Creates and executes the Buy Command
+     * @param numCopiesEach - num copies to buy
+     * @param bookIds - id of books to buy
+     * @return String in response format
+     */
     public String buy(int numCopiesEach, List<Integer> bookIds){
         Command buyCommand = new BuyCommand(numCopiesEach,bookIds, database);
         return buyCommand.execute();
     }
 
+    /**
+     * Creates and executes the Pay Command
+     * @param userId - user who is paying fines
+     * @param amount - amount to pay off
+     * @return String in response format
+     */
     public String pay(int userId, double amount){
         Command payCommand = new PayCommand(userId, amount, database);
         return payCommand.execute();
     }
 
+    /**
+     * Creates and executes the Borrowed Command
+     * @param userId - User who has borrowed books
+     * @return String in response format
+     */
     public String borrowed(int userId){
         Command borrowedCommand = new BorrowedCommand(userId);
         return borrowedCommand.execute();
     }
 
+    /**
+     * Creates and executes Register Command
+     * @param firstName - users first name
+     * @param lastName -  users last name
+     * @param address - users address
+     * @param phone - users phone number
+     * @return String in response format
+     */
     public String register(String firstName, String lastName, String address, String phone)
     {
         Command registerCommand = new RegisterCommand(firstName,lastName,address,phone, calendar,database);
@@ -183,6 +218,7 @@ public class Manager {
     public String advance(int numDays, int numHours){
         Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar,this);
         String result = advanceCommand.execute();
+        //TODO Change the nightly update into the new method TJ is writing.
         database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
         return result;
     }
