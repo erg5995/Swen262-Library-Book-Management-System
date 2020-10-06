@@ -10,7 +10,7 @@ public class Client {
     private static String WRONG_PARAM = "wrong parameters";
     private static String NOT_INTEGER = "must be an integer value";
 
-    system.Manager manager = new system.Manager();
+    private static system.Manager manager = new system.Manager();
 
     public static void main(String[] args) {
 
@@ -76,14 +76,13 @@ public class Client {
             case "buy":
 
                 int quantity = Integer.parseInt(tokenizedRequest[1]);
-                List<String> books = new ArrayList<>();
+                List<Integer> books = new ArrayList<>();
 
                 for(int i = 2; i < tokenizedRequest.length; i++) {
-                    books.add(tokenizedRequest[i]);
+                    books.add(Integer.parseInt(tokenizedRequest[i]));
                 }
 
-//                ICommand buy = new BuyCommand(quantity, books);
-//                response = buy.execute();
+                manager.buy(quantity, books);
 
                 break;
 
