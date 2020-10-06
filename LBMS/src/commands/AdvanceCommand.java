@@ -1,5 +1,8 @@
 package commands;
 
+import system.Calendar;
+import system.Manager;
+
 /**
  * Description: For simulation purposes. This method will advance the simulated date of
  * the library ahead by a specified number of days and/or hours. The total number of
@@ -12,13 +15,20 @@ public class AdvanceCommand implements Command {
 
     private int numDays;
     private int numHours;
+    private Calendar calendar;
+    private Manager manager;
 
-    public AdvanceCommand(int day) {
+    public AdvanceCommand(int day, Calendar calend, Manager manage) {
         this.numDays = day;
+        calendar = calend;
+        manager = manage;
     }
 
-    public AdvanceCommand(int day, int hour){
+    public AdvanceCommand(int day, int hour, Calendar calend, Manager manage){
         this.numHours = hour;
+        this.numDays = day;
+        calendar = calend;
+        manager = manage;
     }
 
     private boolean checkValidDay() {
@@ -46,6 +56,8 @@ public class AdvanceCommand implements Command {
 
         output.append("success");
 
+        calendar.advanceDay(numDays);
+        calendar.advanceHour(numHours);
         return output.toString();
     }
 }

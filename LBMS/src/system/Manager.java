@@ -181,8 +181,10 @@ public class Manager {
     }
 
     public String advance(int numDays, int numHours){
-        Command advanceCommand = new AdvanceCommand(numDays,numHours);
-        return advanceCommand.execute();
+        Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar,this);
+        String result = advanceCommand.execute();
+        database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
+        return result;
     }
 
     public boolean isVisiting(User user)
