@@ -241,7 +241,7 @@ public class Manager {
      * @return String in response format
      */
     public String advance(int numDays, int numHours){
-        Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar,this);
+        Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar);
         String result = advanceCommand.execute();
         database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
         return result;
