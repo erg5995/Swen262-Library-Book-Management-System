@@ -229,9 +229,8 @@ public class Manager {
      * @return String in response format
      */
     public String report(int days){
-        Command reportCommand = new ReportCommand(days);
+        Command reportCommand = new ReportCommand(days, this);
         return reportCommand.execute();
-
     }
 
     /**
@@ -290,4 +289,11 @@ public class Manager {
         return null;
     }
 
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
+    public Database getDatabase() {
+        return database;
+    }
 }
