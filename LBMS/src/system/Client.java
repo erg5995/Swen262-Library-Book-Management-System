@@ -82,7 +82,7 @@ public class Client {
                     books.add(Integer.parseInt(tokenizedRequest[i]));
                 }
 
-                manager.buy(quantity, books);
+                response = manager.buy(quantity, books);
 
                 break;
 
