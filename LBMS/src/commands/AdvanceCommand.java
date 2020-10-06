@@ -16,19 +16,16 @@ public class AdvanceCommand implements Command {
     private int numDays;
     private int numHours;
     private Calendar calendar;
-    private Manager manager;
 
-    public AdvanceCommand(int day, Calendar calend, Manager manage) {
+    public AdvanceCommand(int day, Calendar calend) {
         this.numDays = day;
         calendar = calend;
-        manager = manage;
     }
 
-    public AdvanceCommand(int day, int hour, Calendar calend, Manager manage){
+    public AdvanceCommand(int day, int hour, Calendar calend){
         this.numHours = hour;
         this.numDays = day;
         calendar = calend;
-        manager = manage;
     }
 
     private boolean checkValidDay() {
