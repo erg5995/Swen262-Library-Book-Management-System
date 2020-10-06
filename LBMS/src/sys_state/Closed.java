@@ -12,6 +12,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * State class that represents the library in its closed state
+ */
 public class Closed implements SysState {
 
     private Manager manager;
@@ -24,6 +27,12 @@ public class Closed implements SysState {
         calendar = theCalendar;
     }
 
+    /**
+     * Does not start the visit since the library is closed
+     * @param id - id of visitor
+     * @param time - time to start visit
+     * @return String in response format
+     */
     public String startVisit(int id, LocalDateTime time){
         return "arrive,library-closed";
     }
@@ -31,9 +40,9 @@ public class Closed implements SysState {
     /**
      * check out book method, does not check out book since LBMS does not perform
      * that task while in the closed state.
-     * @param books
-     * @param userID
-     * @return
+     * @param books - books to not check out
+     * @param userID - id of user to check out
+     * @return String in response format
      */
     public String checkOutBook(List<Integer> books, int userID){
         //they cannot check out a book while the library is closed
@@ -41,6 +50,13 @@ public class Closed implements SysState {
 
     }
 
+
+    /**
+     * checks in book and treats it like it was checked in the next day
+     * @param books - books to check in
+     * @param user - user who is returning books
+     * @return String in response format
+     */
     public String checkInBook(List<Integer> books, User user){
         //apparently users can check in a book while library is closed, need to handle this
         // set return time to be the next opening time and day
