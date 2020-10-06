@@ -20,9 +20,9 @@ public class DatetimeCommand implements Command{
     public String execute(){
         LocalDateTime currentTime = calendar.getCurrentTime();
         StringBuilder output = new StringBuilder();
-        output.append("datetime, ");
+        output.append("datetime,");
         output.append(currentTime.getYear() + "/" + currentTime.getMonthValue() + "/" + currentTime.getDayOfMonth());
-        output.append(", ");
+        output.append(",");
         output.append(currentTime.getHour() + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
 
         return output.toString();
