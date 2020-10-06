@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manager class - in charge of all system operations, and executing various commands. Holds the system Calendar and Database
+ *
+ * Author: Michael Driscoll
+ */
 public class Manager {
 
     private Calendar calendar;
@@ -27,8 +32,10 @@ public class Manager {
     public SysState[] states;
 
 
-
-
+    /**
+     * Constructor for the Manager object
+     * Creates states and puts them into an array for easy switching.
+     */
     public Manager(){
         database = new Database();
         calendar = new Calendar();
@@ -41,16 +48,14 @@ public class Manager {
 
         states[1] = closed;
 
-        //state = new Open(this, database,calendar);
-
         ongoingVisits = new ArrayList<Visit>();
-
     }
 
     /**
-     *
+     * Starts a visit for the indicated user
+     * Utilizes the State pattern to handle starting a visit depending on the Library's state (open or closed)
      * @param id id of the user to start visit for
-     * @return
+     * @return String in response format
      */
     public String startVisit(int id)
     {
@@ -58,11 +63,25 @@ public class Manager {
         return state.startVisit(id, calendar.getCurrentTime());
     }
 
+    /**
+     * Checks out book for the indicated user
+     * Utilizes the State pattern to handle book check outs depending on the Library's state(open or closed)
+     * @param userId - id of the user who wishes to check out books
+     * @param bookISBNs - list of book ids to check out
+     * @return String in response format
+     */
     public String checkOutBook(int userId, List<Integer> bookISBNs){
         //to be handled by states
         return state.checkOutBook(bookISBNs, userId);
     }
 
+    /**
+     * Checks in books for the indicated user
+     * Utilizes State pattern to handle the check in depending on the Library's state.
+     * @param userId - id of the user to check in the books
+     * @param bookISBNs - list of book ids to check in
+     * @return String in response format
+     */
     public String checkInBook(int userId, List<Integer> bookISBNs){
 
         //to be handled by states
@@ -70,6 +89,11 @@ public class Manager {
 
     }
 
+    /**
+     * Method for shutting down the system
+     * Ends all ongoing visits, and reads them into the database.
+     * Saves data before shutdown.
+     */
     public void shutdownSystem(){
         //end all ongoing visits here, and save data in database
 
@@ -77,7 +101,6 @@ public class Manager {
             LocalDateTime exitTime = calendar.getCurrentTime();
             visit.setExitTime(exitTime);
             database.addVisit(visit);
-
         }
         ongoingVisits.clear();
 
@@ -86,7 +109,6 @@ public class Manager {
 
         //update fines and overdues
         // to be done in database
-        database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
 
     }
 
@@ -102,6 +124,10 @@ public class Manager {
 
     //this needs to be added to uml
     public void setState(int index){
+
+        if(index == 1){
+
+        }
         state = states[index];
     }
 
