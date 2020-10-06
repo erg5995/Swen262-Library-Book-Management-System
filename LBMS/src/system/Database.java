@@ -16,6 +16,8 @@ public class Database
     private List<Transaction> checkedOutBooks, returnedBooks, borrowSearch;
     private List<Visit> visits;
     private Map<Integer, User> users;
+    private List<Integer> numBooksBought;
+    private List<Double> fines, payments;
 
     //maybe call readData()?
     public Database()
@@ -110,22 +112,23 @@ public class Database
 
     public String returnBooks(int userID, List<Integer> bookIDs, LocalDate date)
     {
-        double fines = 0;
+        double totFines = 0;
         for (int i = 0; i < bookIDs.size(); i++) {
             Transaction trans = borrowSearch.get(bookIDs.get(i));
             checkedOutBooks.remove(trans);
             trans.getBook().returnCopy();
             trans.close(date);
             if (trans.isOverdue())
-                fines += trans.getFine();
+                totFines += trans.getFine();
             else
                 bookIDs.remove(i--);
             returnedBooks.add(trans);
         }
-        if (fines == 0)
+        if (totFines == 0)
             return "success";
-        users.get(userID).addFine(fines);
-        String ret = "overdue,$" + String.format("%.00f", fines);
+        fines.set(0, fines.get(0) + totFines);
+        users.get(userID).addFine(totFines);
+        String ret = "overdue,$" + String.format("%.00f", totFines);
         for (int bookID : bookIDs)
             ret += "," + bookID;
         return ret;
@@ -136,6 +139,7 @@ public class Database
         User user = users.get(userID);
         if (amount > user.getDebt())
             return -1;
+        payments.set(0, payments.get(0) + amount);
         return user.addPayment(amount);
     }
 
@@ -148,6 +152,7 @@ public class Database
             book.setNumCopies(book.getNumCopies() + quantity);
             books.add(book);
             booksOwned.putIfAbsent(book.getIsbn(), book);
+            numBooksBought.set(0, numBooksBought.get(0) + quantity);
         }
         return books;
     }
@@ -155,11 +160,42 @@ public class Database
     public Report generateReport(int days, LocalDate day)
     {
         day = day.minusDays(days);
-        int numBooks = 0;
+        int numBooks = 0, booksBought = 0, v;
+        // counts the number of books owned by the library
         for (Book book : booksOwned.values())
             numBooks += book.getNumCopies();
-        //Report rep = new Report(users.size(), numBooks, );
-        return null;
+        // counts the number of books bought in the last (days) days
+        for (int i = 0; i < days; i++)
+            booksBought += numBooksBought.get(i);
+        // calculates the average visit time of the last (days) days
+        int[] time = new int[3], temp;
+        for (v = visits.size() - 1; v >= 0 && !visits.get(v).getEntryDate().isBefore(day); v--) {
+            temp = visits.get(v).getTimeSpent();
+            for (int i = 0; i < 3; i++)
+                time[i] += temp[i];
+        }
+        for (int i = 0; i < 3; i++)
+            time[i] /= (visits.size() - v + 1);
+        //calculates all the fines fined and the payments made in the last (days) days
+        double totFines = 0, totPayments = 0;
+        for (int i = 0; i < days; i++) {
+            totFines += fines.get(i);
+            totPayments += payments.get(i);
+        }
+        // returns a report summarizing all the statistics calculated above
+        return new Report(users.size(), numBooks, booksBought, time, totPayments, totFines - totPayments);
+    }
+
+    /**
+     * updates all necessary data that a day has passed
+     */
+    public void nightlyUpdate(LocalDate today)
+    {
+        for (Transaction trans : checkedOutBooks)
+            trans.update(today);
+        numBooksBought.add(0, 0);
+        fines.add(0, 0.);
+        payments.add(0, 0.);
     }
 
     /**

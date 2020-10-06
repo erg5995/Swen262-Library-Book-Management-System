@@ -31,7 +31,7 @@ public class Report
      */
     public int getNumVisitors() { return numVisitors; }
     public int getNumBooksOwned() { return numBooksOwned; }
-    public int[] getAvgVisitTimeInHours() { return avgVisitTime; }
+    public int[] getAvgVisitTime() { return avgVisitTime; }
     public double getCollectedFines() { return collectedFines; }
     public double getOutstandingFines() { return outstandingFines; }
     public int getNumBooksPurchased() { return numBooksPurchased; }
