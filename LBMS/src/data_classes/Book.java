@@ -1,5 +1,7 @@
 package data_classes;
 
+import java.util.Arrays;
+
 /**
  *  Class Book
  *
@@ -106,4 +108,8 @@ public class Book {
     public void checkOutCopy() { numCopiesOut++; }
     public void returnCopy() { numCopiesOut--; }
 
+    @Override
+    public String toString() {
+        return "" + isbn + "," + title + "," + author+"," + publishDate;
+    }
 }
