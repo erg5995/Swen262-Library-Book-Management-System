@@ -2,10 +2,7 @@ package system;
 
 import data_classes.*;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -212,10 +209,20 @@ public class Database
         fines.add(0, 0.);
         payments.add(0, 0.);
     }
+    public void advanceUpdate(int days, LocalDate newDay)
+    {
+        for (int i = 1; i < days; i++){
+            numBooksBought.add(0, 0);
+            fines.add(0, 0.);
+            payments.add(0, 0.);
+        }
+        nightlyUpdate(newDay);
+    }
 
     /**
      * Serialize methods
      */
+    @SuppressWarnings("unchecked")
     public void readData()
     {
         try {
