@@ -21,7 +21,6 @@ public class Database
     private List<Double> fines, payments;
     private String[] fileNames;
 
-    //maybe call readData()?
     public Database()
     {
         librarySearch = new ArrayList<>();
