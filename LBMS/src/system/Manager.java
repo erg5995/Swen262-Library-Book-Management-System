@@ -44,6 +44,8 @@ public class Manager {
 
         Closed closed = new Closed(this, database,calendar);
 
+        states = new SysState[2];
+
         states[0] = open;
 
         states[1] = closed;
