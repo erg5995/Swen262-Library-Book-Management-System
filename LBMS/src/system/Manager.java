@@ -113,8 +113,7 @@ public class Manager {
      */
     public void startUpSystem(){
         //initialize data from database
-        //database.readData();
-        //
+        database.readData();
     }
 
     /**
@@ -191,30 +190,57 @@ public class Manager {
         return registerCommand.execute();
     }
 
+    /**
+     * Creates and executes depart Command
+     * @param userId - id of user who is leaving
+     * @return String in response format
+     */
     public String depart(int userId){
         Command departCommand = new DepartCommand(userId,this, calendar, database);
         return departCommand.execute();
     }
 
 
+    /**
+     * Creates and executes infoSearch command
+     * boolean dictates whether the search is in the library or book store.
+     * @param book - Query book to search for
+     * @param forLibrary - true if library search, false if for bookstore search
+     * @param strategy - strategy to sort results by
+     * @return String in response format
+     */
     public String infoSearch(Book book, boolean forLibrary, BookSortStrategy strategy){
         Command infoSearch = new InfoSearchCommand(book, forLibrary, database, strategy);
         return infoSearch.execute();
     }
 
 
-
+    /**
+     * Creates and executes DateTime Command
+     * @return String in response format
+     */
     public String dateTime(){
         Command dateTime = new DatetimeCommand();
         return dateTime.execute();
     }
 
+    /**
+     * Creates and executes Report Command
+     * @param days - number of days to report upon
+     * @return String in response format
+     */
     public String report(int days){
         Command reportCommand = new ReportCommand(days);
         return reportCommand.execute();
 
     }
 
+    /**
+     * Creates and executes advance command
+     * @param numDays - num of days to advance
+     * @param numHours - num of hours to advance
+     * @return String in response format
+     */
     public String advance(int numDays, int numHours){
         Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar,this);
         String result = advanceCommand.execute();
@@ -223,6 +249,11 @@ public class Manager {
         return result;
     }
 
+    /**
+     * Tells if user is actively in a visit
+     * @param user - user to check
+     * @return boolean - true if visitor is currently in a visit
+     */
     public boolean isVisiting(User user)
     {
         for(Visit visit: ongoingVisits){
@@ -234,6 +265,10 @@ public class Manager {
 
     }
 
+    /**
+     * Removes visitor from ongoing visits list
+     * @param visit - visit to end
+     */
     public void endVisit(Visit visit){
         ongoingVisits.remove(visit);
         LocalDateTime exitTime = calendar.getCurrentTime();
@@ -242,6 +277,11 @@ public class Manager {
 
     }
 
+    /**
+     * Returns visit by user
+     * @param user - user to get visit by
+     * @return Visit with the specified user
+     */
     public Visit getVisit(User user){
         for(Visit visit: ongoingVisits){
             if(visit.getVisitor().equals(user)){
