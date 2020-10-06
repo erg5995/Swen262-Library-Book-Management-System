@@ -2,6 +2,10 @@ package system;
 
 import data_classes.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -18,6 +22,7 @@ public class Database
     private Map<Integer, User> users;
     private List<Integer> numBooksBought;
     private List<Double> fines, payments;
+    private String[] fileNames;
 
     //maybe call readData()?
     public Database()
@@ -25,6 +30,16 @@ public class Database
         librarySearch = new ArrayList<>();
         storeSearch = new ArrayList<>();
         borrowSearch = new ArrayList<>();
+        fileNames = new String[9];
+        fileNames[0] =" booksOwned.ser";
+        fileNames[1] = "booksInStore.ser";
+        fileNames[2] = "checkedOutBooks.ser";
+        fileNames[3] = "returnedBooks.ser";
+        fileNames[4] = "visits.ser";
+        fileNames[5] = "users.ser";
+        fileNames[6] = "numBooksBought.ser";
+        fileNames[7] = "fines.ser";
+        fileNames[8] = "payments.ser";
     }
 
     public void addUser(User user) { users.put(user.getId(), user); }
@@ -196,6 +211,42 @@ public class Database
         numBooksBought.add(0, 0);
         fines.add(0, 0.);
         payments.add(0, 0.);
+    }
+
+    /**
+     * Serialize methods
+     */
+    public void readData()
+    {
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[0]));
+            booksOwned = (Map<String,Book>) in.readObject();
+            in.close();
+            in = new ObjectInputStream(new FileInputStream(fileNames[1]));
+            booksInStore = (Map<String,Book>) in.readObject();
+            in.close();
+            in = new ObjectInputStream(new FileInputStream(fileNames[2]));
+            checkedOutBooks = (List<Transaction>) in.readObject();
+            in.close();
+            in = new ObjectInputStream(new FileInputStream(fileNames[3]));
+            returnedBooks = (List<Transaction>) in.readObject();
+            in.close();
+            in = new ObjectInputStream(new FileInputStream(fileNames[4]));
+            visits = (List<Visit>) in.readObject();
+            in.close();
+            in = new ObjectInputStream(new FileInputStream(fileNames[5]));
+            users = (Map<Integer, User>) in.readObject();
+            in.close();
+            in = new ObjectInputStream(new FileInputStream(fileNames[6]));
+            numBooksBought = (List<Integer>) in.readObject();
+            in.close();
+            in = new ObjectInputStream(new FileInputStream(fileNames[7]));
+            fines = (List<Double>) in.readObject();
+            in.close();
+            in = new ObjectInputStream(new FileInputStream(fileNames[8]));
+            payments = (List<Double>) in.readObject();
+            in.close();
+        } catch (Exception e) {System.out.println(e + " caught");}
     }
 
     /**
