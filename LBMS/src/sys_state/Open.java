@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * State class that represents the library in its Open state
+ */
 
 
 public class Open implements SysState {

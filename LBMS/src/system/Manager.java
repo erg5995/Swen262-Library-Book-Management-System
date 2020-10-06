@@ -83,7 +83,6 @@ public class Manager {
      * @return String in response format
      */
     public String checkInBook(int userId, List<Integer> bookISBNs){
-
         //to be handled by states
         return state.checkOutBook(bookISBNs, userId);
 
@@ -103,9 +102,8 @@ public class Manager {
             database.addVisit(visit);
         }
         ongoingVisits.clear();
-
         //saves data into database for safe shutdown
-        //database.saveData();
+        database.saveData();
 
     }
 
@@ -245,7 +243,6 @@ public class Manager {
     public String advance(int numDays, int numHours){
         Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar,this);
         String result = advanceCommand.execute();
-        //TODO Change the nightly update into the new method TJ is writing.
         database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
         return result;
     }
