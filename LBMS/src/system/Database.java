@@ -28,7 +28,7 @@ public class Database
         storeSearch = new ArrayList<>();
         borrowSearch = new ArrayList<>();
         fileNames = new String[9];
-        fileNames[0] =" booksOwned.ser";
+        fileNames[0] = "booksOwned.ser";
         fileNames[1] = "booksInStore.ser";
         fileNames[2] = "checkedOutBooks.ser";
         fileNames[3] = "returnedBooks.ser";
@@ -37,6 +37,7 @@ public class Database
         fileNames[6] = "numBooksBought.ser";
         fileNames[7] = "fines.ser";
         fileNames[8] = "payments.ser";
+        readData();
     }
 
     public void addUser(User user) { users.put(user.getId(), user); }
@@ -140,10 +141,10 @@ public class Database
             return "success";
         fines.set(0, fines.get(0) + totFines);
         users.get(userID).addFine(totFines);
-        String ret = "overdue,$" + String.format("%.00f", totFines);
+        StringBuilder ret = new StringBuilder("overdue,$" + String.format("%.00f", totFines));
         for (int bookID : bookIDs)
-            ret += "," + bookID;
-        return ret;
+            ret.append(",").append(bookID);
+        return ret.toString();
     }
 
     public double pay(int userID, double amount)
@@ -229,31 +230,69 @@ public class Database
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[0]));
             booksOwned = (Map<String,Book>) in.readObject();
             in.close();
-            in = new ObjectInputStream(new FileInputStream(fileNames[1]));
+        } catch (Exception e) { e.printStackTrace(); }
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[1]));
             booksInStore = (Map<String,Book>) in.readObject();
             in.close();
-            in = new ObjectInputStream(new FileInputStream(fileNames[2]));
+        } catch (Exception e) { e.printStackTrace(); }
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[2]));
             checkedOutBooks = (List<Transaction>) in.readObject();
             in.close();
-            in = new ObjectInputStream(new FileInputStream(fileNames[3]));
+        } catch (Exception e) { e.printStackTrace(); }
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[3]));
             returnedBooks = (List<Transaction>) in.readObject();
             in.close();
-            in = new ObjectInputStream(new FileInputStream(fileNames[4]));
+        } catch (Exception e) { e.printStackTrace(); }
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[4]));
             visits = (List<Visit>) in.readObject();
             in.close();
-            in = new ObjectInputStream(new FileInputStream(fileNames[5]));
+        } catch (Exception e) { e.printStackTrace(); }
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[5]));
             users = (Map<Integer, User>) in.readObject();
             in.close();
-            in = new ObjectInputStream(new FileInputStream(fileNames[6]));
+        } catch (Exception e) { e.printStackTrace(); }
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[6]));
             numBooksBought = (List<Integer>) in.readObject();
             in.close();
-            in = new ObjectInputStream(new FileInputStream(fileNames[7]));
+        } catch (Exception e) { e.printStackTrace(); }
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[7]));
             fines = (List<Double>) in.readObject();
             in.close();
-            in = new ObjectInputStream(new FileInputStream(fileNames[8]));
+        } catch (Exception e) { e.printStackTrace(); }
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[8]));
             payments = (List<Double>) in.readObject();
             in.close();
-        } catch (Exception e) {System.out.println(e + " caught");}
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+    public void saveData()
+    {
+        writeObject(booksOwned, 0);
+        writeObject(booksInStore, 1);
+        writeObject(checkedOutBooks, 2);
+        writeObject(returnedBooks, 3);
+        writeObject(visits, 4);
+        writeObject(users, 5);
+        writeObject(numBooksBought, 6);
+        writeObject(fines, 7);
+        writeObject(payments, 8);
+    }
+    private void writeObject(Object object, int index)
+    {
+        try {
+            FileOutputStream file = new FileOutputStream(fileNames[index]);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+            out.writeObject(object);
+            out.close();
+            file.close();
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     /**
