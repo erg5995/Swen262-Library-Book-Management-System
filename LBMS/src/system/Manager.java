@@ -104,8 +104,9 @@ public class Manager {
         }
         ongoingVisits.clear();
 
+        //saves data into database for safe shutdown
         //database.saveData();
-        // database
+
     }
 
     /**
