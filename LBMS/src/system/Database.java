@@ -169,6 +169,40 @@ public class Database
         return books;
     }
 
+    public Report generateReport(LocalDate day)
+    {
+        int numBooks = 0, booksBought = 0, v;
+        // counts the number of books owned by the library
+        for (Book book : booksOwned.values())
+            numBooks += book.getNumCopies();
+        // counts the number of books bought
+        for (int i = 0; i < numBooksBought.size(); i++)
+            booksBought += numBooksBought.get(i);
+        // calculates the average visit time
+        int[] time = new int[3], temp;
+        for (v = visits.size() - 1; v >= 0; v--) {
+            temp = visits.get(v).getTimeSpent();
+            for (int i = 0; i < 3; i++)
+                time[i] += temp[i];
+        }
+        // TODO: Why is this 3?
+        for (int i = 0; i < 3; i++)
+            time[i] /= (visits.size() - v + 1);
+        //calculates all the fines fined and the payments made
+        double totFines = 0, totPayments = 0;
+
+        if (fines.size() != payments.size()) {
+            return null;
+        }
+        // TODO: Assume fines.size() == payments.size()
+        for (int i = 0; i < fines.size(); i++) {
+            totFines += fines.get(i);
+            totPayments += payments.get(i);
+        }
+        // returns a report summarizing all the statistics calculated above
+        return new Report(users.size(), numBooks, booksBought, time, totPayments, totFines - totPayments);
+    }
+
     public Report generateReport(int days, LocalDate day)
     {
         day = day.minusDays(days);
