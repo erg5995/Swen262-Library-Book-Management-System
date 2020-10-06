@@ -28,18 +28,25 @@ public class InfoSearchCommand implements Command{
         //this is the case if the sort order is invalid, idk how this could happen from this class....
         if(strategy == null)
         {
-            return "info,invalid-sort-order;";
+            if(forLibrary)
+                return "info,invalid-sort-order;";
+            else
+                return "search,invalid-sort-order;";
         }
         else {
-            List<Book> toSort = database.bookInfoSearch(book, true);
+
+            List<Book> toSort = database.bookInfoSearch(book, forLibrary);
             strategy.sort(toSort);
             String formatString = "\n";
-
-            String placeholder = "THIS IS A PLACEHOLDER FOR BOOK ID";
+            int id = 1;
             for(Book book: toSort){
-                formatString = formatString + book.getNumCopies() + placeholder + book.toString() + "\n";
+                formatString = formatString + book.getNumCopies() + id + book.toString() + "\n";
+                id++;
             }
-            return "info," + toSort.size() + formatString + ";";
+            if(forLibrary)
+                return "info," + toSort.size() + formatString + ";";
+            else
+                return "search," + toSort.size() + formatString + ";";
         }
     }
 }
