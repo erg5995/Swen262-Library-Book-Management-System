@@ -14,6 +14,8 @@ public class Client {
 
     public static void main(String[] args) {
 
+        CreateTempDatabaseFiles.pleaseWriteData();
+
         Scanner scanner = new Scanner(System.in);
         String input = "";
         String response = "";
@@ -31,6 +33,8 @@ public class Client {
             }
 
             response = sendRequest(tokenizedRequest);
+
+            System.out.println(response);
 
         }
     }
@@ -85,6 +89,14 @@ public class Client {
                 response = manager.buy(quantity, books);
 
                 break;
+            case "register":
+
+                String firstName = tokenizedRequest[1];
+                String lastName = tokenizedRequest[2];
+                String address = tokenizedRequest[3];
+                String phone = tokenizedRequest[4];
+
+                response = manager.register(firstName, lastName, address, phone);
 
             default:
                 break;
