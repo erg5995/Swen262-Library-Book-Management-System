@@ -86,6 +86,7 @@ public class Manager {
 
         //update fines and overdues
         // to be done in database
+        database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
 
     }
 
