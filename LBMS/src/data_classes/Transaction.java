@@ -44,6 +44,23 @@ public class Transaction
     public boolean isOverdue() { return isOverdue; }
 
     /**
+     * Methods with inputted dates
+     */
+    public void update(LocalDate date)
+    {
+        int daysPastDue = TimeBetween.numDays(dueDate, date);
+        if (daysPastDue > 0) {
+            pastDueDate();
+            setFine(10);
+            if (daysPastDue > 70)
+                addToFine(20);
+            else
+                addToFine(2 * (daysPastDue - 1) / 7);
+        }
+    }
+    public void close(LocalDate date) { dateChecked = date; }
+
+    /**
      * Methods to alter fine: either set or add to a fine
      */
     public void setFine(double amount) { fine = amount; }

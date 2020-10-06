@@ -6,15 +6,22 @@ import data_classes.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Interface for the library states
+ *
+ * Author: Michael Driscoll
+ */
 public interface SysState {
 
 
-
+    // method to start visit
     public String startVisit(int id, LocalDateTime time);
 
-    public boolean checkOutBook(List<Book> books);
+    // method to check out book
+    public String checkOutBook(List<Integer> books, int userID);
 
-    public boolean checkInBook(List<Book> books, User user);
+    //method to check in book
+    public String checkInBook(List<Integer> books, User user);
 
 
 
