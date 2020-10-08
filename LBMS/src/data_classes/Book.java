@@ -110,6 +110,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return "" + isbn + "," + title + "," + author+"," + publishDate;
+        return "" + isbn + "," + title + ",{" + author+"}," + publishDate;
     }
 }
