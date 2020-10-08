@@ -66,7 +66,7 @@ public class InitDatabase
                 line = line.substring(line.indexOf('\"') + 2);
                 book = new Book(isbn, title, authors.toArray(new String[0]), publisher, nextField(),
                                 Integer.parseInt(line), 0, 0);
-                System.out.println("Title: " + title + "\tAuthors: " + authors + "\tPublisher: " + publisher);
+//                System.out.println("Title: " + title + "\tAuthors: " + authors + "\tPublisher: " + publisher);
                 booksInStore.put(isbn, book);
                 line = in.readLine();
                 authors.clear();
