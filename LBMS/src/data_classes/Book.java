@@ -1,5 +1,6 @@
 package data_classes;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Arrays;
  *  Author: Michael Driscoll
  */
 
-public class Book {
+public class Book implements Serializable {
 
     //attributes
 
