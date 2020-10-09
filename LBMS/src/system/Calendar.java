@@ -88,4 +88,12 @@ public class Calendar {
     public LocalDateTime getCurrentTime() {
         return currentTime;
     }
+
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        output.append(currentTime.getYear() + ":" + currentTime.getMonthValue() + ":" +
+                currentTime.getDayOfMonth());
+
+        return output.toString();
+    }
 }
