@@ -44,6 +44,8 @@ public class Manager {
 
         Closed closed = new Closed(this, database,calendar);
 
+        states = new SysState[2];
+
         states[0] = open;
 
         states[1] = closed;
@@ -240,7 +242,7 @@ public class Manager {
      * @return String in response format
      */
     public String advance(int numDays, int numHours){
-        Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar,this);
+        Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar);
         String result = advanceCommand.execute();
         database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
         return result;

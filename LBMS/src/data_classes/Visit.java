@@ -1,5 +1,6 @@
 package data_classes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -8,7 +9,7 @@ import java.time.LocalTime;
  * Dataclass for visits
  * Author: Thomas Linse
  */
-public class Visit
+public class Visit implements Serializable
 {
 
     private User visitor;

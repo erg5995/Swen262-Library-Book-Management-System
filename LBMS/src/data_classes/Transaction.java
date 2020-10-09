@@ -1,5 +1,6 @@
 package data_classes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
  * Dataclass for transactions
  * Author: Thomas Linse
  */
-public class Transaction
+public class Transaction implements Serializable
 {
     private Book book;
     private User user;

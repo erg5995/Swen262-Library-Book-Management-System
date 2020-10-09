@@ -18,6 +18,8 @@ public class CopiesSortStrategy implements BookSortStrategy {
 
         books = Arrays.asList(booksArr);
 
+        books.removeIf(book -> book.getNumCopiesLeft() <= 0);
+
     }
 
     private void sort(Book[] books, int low, int high) {
@@ -32,11 +34,11 @@ public class CopiesSortStrategy implements BookSortStrategy {
 
     private int partition(Book[] books, int low, int high)
     {
-        int pivot = books[high].getNumCopies();
+        int pivot = books[high].getNumCopiesLeft();
         int i = (low-1);
         for (int j=low; j<high; j++)
         {
-            if (books[j].getNumCopies() < pivot)
+            if (books[j].getNumCopiesLeft() < pivot)
             {
                 i++;
 
@@ -51,14 +53,6 @@ public class CopiesSortStrategy implements BookSortStrategy {
         books[high] = temp;
 
         return i+1;
-    }
-
-    private boolean compareStringsAlphabetically(String str1, String str2) {
-        if(str1.charAt(0) < str2.charAt(0)) {
-            return true;
-        }else {
-            return compareStringsAlphabetically(str1.substring(1), str2.substring(1));
-        }
     }
 
 }
