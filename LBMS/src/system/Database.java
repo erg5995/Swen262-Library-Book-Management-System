@@ -345,6 +345,7 @@ public class Database
     {
         return users.get(userID).getNumBooksChecked() + numBooks > User.MAX_BOOKS_CHECKED;
     }
+    public boolean isEmployee(int userID) { return users.get(userID).getType() == User.UserRole.EMPLOYEE; }
     //might not need- if caller has reference to User than they can just call hasDebt()
     public boolean hasOutstandingFine(int userID) { return users.get(userID).hasDebt(); }
 }
