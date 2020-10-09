@@ -140,6 +140,8 @@ public class Manager {
             }
             ongoingVisits.clear();
 
+            database.saveData();
+
         }
         state = states[index];
     }
