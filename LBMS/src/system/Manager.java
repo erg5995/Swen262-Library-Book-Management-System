@@ -133,6 +133,13 @@ public class Manager {
 
         if(index == 1){
             database.nightlyUpdate(calendar.getCurrentTime().toLocalDate().plusDays(1));
+            for(Visit visit: ongoingVisits){
+                LocalDateTime exitTime = calendar.getCurrentTime();
+                visit.setExitTime(exitTime);
+                database.addVisit(visit);
+            }
+            ongoingVisits.clear();
+
         }
         state = states[index];
     }
