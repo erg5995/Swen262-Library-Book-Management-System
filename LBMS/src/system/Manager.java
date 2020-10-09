@@ -206,7 +206,7 @@ public class Manager {
      * @return String in response format
      */
     public String depart(int userId){
-        Command departCommand = new DepartCommand(userId,this, calendar);
+        Command departCommand = new DepartCommand(userId,(IManager)this);
         return departCommand.execute();
     }
 
