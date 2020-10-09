@@ -31,12 +31,10 @@ public class ReportCommand implements Command{
             return "";
         }
 
-        // if the user did not pass a number of days, generate a report for all
-        // days
+        // if the user did not pass a number of days, generate a report for all days
         if (numDays > 0) {
             output.append("report," + calendar.toString());
-            // TODO
-            output.append(manager.getDatabase().generateReport(0,
+            output.append(manager.getDatabase().generateReport(
                     calendar.getCurrentTime().toLocalDate()).toString());
         } else {
             output.append("report," + calendar.toString());

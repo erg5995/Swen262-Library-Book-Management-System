@@ -185,7 +185,6 @@ public class Database
             for (int i = 0; i < 3; i++)
                 time[i] += temp[i];
         }
-        // TODO: Why is this 3?
         for (int i = 0; i < 3; i++)
             time[i] /= (visits.size() - v + 1);
         //calculates all the fines fined and the payments made
@@ -194,7 +193,6 @@ public class Database
         if (fines.size() != payments.size()) {
             return null;
         }
-        // TODO: Assume fines.size() == payments.size()
         for (int i = 0; i < fines.size(); i++) {
             totFines += fines.get(i);
             totPayments += payments.get(i);
