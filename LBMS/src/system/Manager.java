@@ -197,7 +197,7 @@ public class Manager {
      * @return String in response format
      */
     public String depart(int userId){
-        Command departCommand = new DepartCommand(userId,this, calendar, database);
+        Command departCommand = new DepartCommand(userId,this, calendar);
         return departCommand.execute();
     }
 
@@ -251,13 +251,13 @@ public class Manager {
 
     /**
      * Tells if user is actively in a visit
-     * @param user - user to check
+     * @param userId - userId to check
      * @return boolean - true if visitor is currently in a visit
      */
-    public boolean isVisiting(User user)
+    public boolean isVisiting(int userId)
     {
         for(Visit visit: ongoingVisits){
-            if(visit.getVisitor().equals(user)){
+            if(visit.getVisitor().getId() == userId){
                 return true;
             }
         }
@@ -279,12 +279,12 @@ public class Manager {
 
     /**
      * Returns visit by user
-     * @param user - user to get visit by
+     * @param userId - user id to get visit by
      * @return Visit with the specified user
      */
-    public Visit getVisit(User user){
+    public Visit getVisit(int userId){
         for(Visit visit: ongoingVisits){
-            if(visit.getVisitor().equals(user)){
+            if(visit.getVisitor().getId() == userId){
                 return visit;
             }
         }

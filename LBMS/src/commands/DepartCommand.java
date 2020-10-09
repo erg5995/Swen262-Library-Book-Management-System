@@ -15,20 +15,18 @@ public class DepartCommand implements Command{
     private int userId;
     private Manager manager;
     private Calendar calendar;
-    private Database database;
 
-    public DepartCommand(int userID, Manager manage, Calendar calend, Database data){
+    public DepartCommand(int userID, Manager manage, Calendar calend){
         userId = userID;
         manager = manage;
         calendar = calend;
-        database = data;
     }
     public String execute() {
-        if(!manager.isVisiting(database.getUser(userId))){
+        if(!manager.isVisiting(userId)){
             return "depart,invalid-id;";
         }
         else{
-            Visit visit = manager.getVisit(database.getUser(userId));
+            Visit visit = manager.getVisit(userId);
             manager.endVisit(visit);
 
             LocalTime exit = visit.getExitTime();
