@@ -1,44 +1,39 @@
 package commands;
 
 import system.Calendar;
-import system.Manager;
+import system.Database;
 
 public class ReportCommand implements Command{
 
     private int numDays;
-    private Manager manager;
+    private Database database;
     private Calendar calendar;
 
-    public ReportCommand(Manager manager) {
-        this.manager = manager;
-        if (manager != null) {
-            this.calendar = manager.getCalendar();
-        }
+    public ReportCommand(Database db, Calendar cal) {
+        this(0, db, cal);
     }
 
-    public ReportCommand(int days, Manager manager){
+    public ReportCommand(int days, Database db, Calendar cal){
         this.numDays = days;
-        this.manager = manager;
-        if (manager != null) {
-            this.calendar = manager.getCalendar();
-        }
+        database = db;
+        calendar = cal;
     }
 
     public String execute(){
         StringBuilder output = new StringBuilder();
 
-        if (calendar != null) {
-            return "";
+        if (calendar == null) {
+            return "Error: Calendar null in ReportCommand";
         }
 
         // if the user did not pass a number of days, generate a report for all days
-        if (numDays > 0) {
+        if (numDays == 0) {
             output.append("report," + calendar.toString());
-            output.append(manager.getDatabase().generateReport(
+            output.append(database.generateReport(
                     calendar.getCurrentTime().toLocalDate()).toString());
         } else {
             output.append("report," + calendar.toString());
-            output.append(manager.getDatabase().generateReport(numDays,
+            output.append(database.generateReport(numDays,
                     calendar.getCurrentTime().toLocalDate()).toString());
         }
 
