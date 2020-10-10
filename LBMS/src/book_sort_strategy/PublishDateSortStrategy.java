@@ -51,27 +51,4 @@ public class PublishDateSortStrategy implements BookSortStrategy {
 
         return i+1;
     }
-
-    //True indicates that date 1 is more recent than date 2
-    private static boolean compareDates(String str1, String str2) {
-        //Dates are in MM/DD/YYYY format (probably)
-        String[] date1 = str1.split("[/-]");
-        String[] date2 = str2.split("[/-]");
-
-        if(Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
-            return false;
-        } else if(Integer.parseInt(date1[2]) > Integer.parseInt(date2[2])) {
-            return true;
-        } else if(Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
-            return false;
-        } else if(Integer.parseInt(date1[0]) > Integer.parseInt(date2[0])) {
-            return true;
-        } else if(Integer.parseInt(date1[1]) < Integer.parseInt(date2[1])) {
-            return false;
-        } else if(Integer.parseInt(date1[1]) > Integer.parseInt(date2[1])) {
-            return true;
-        } else {
-            return true;
-        }
-    }
 }

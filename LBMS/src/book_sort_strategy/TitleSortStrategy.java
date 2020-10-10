@@ -52,14 +52,4 @@ public class TitleSortStrategy implements BookSortStrategy {
         return i+1;
     }
 
-    private static boolean compareStringsAlphabetically(String str1, String str2) {
-        if((int)str1.charAt(0) < (int)str2.charAt(0)) {
-            return true;
-        }else if ((int)str1.charAt(0) > (int)str2.charAt(0)){
-            return false;
-        } else {
-            return compareStringsAlphabetically(str1.substring(1), str2.substring(1));
-        }
-    }
-
 }
