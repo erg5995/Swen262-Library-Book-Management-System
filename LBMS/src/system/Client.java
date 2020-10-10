@@ -1,5 +1,11 @@
 package system;
 
+import book_sort_strategy.BookSortStrategy;
+import book_sort_strategy.CopiesSortStrategy;
+import book_sort_strategy.PublishDateSortStrategy;
+import book_sort_strategy.TitleSortStrategy;
+import data_classes.Book;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,13 +21,10 @@ public class Client {
 
     public static void main(String[] args) {
 
-
         String test = "info,title,{author,mc,authorface},3092549082,BigBookPublishers,bogosort";
 
         System.out.println(Arrays.toString(split(test)));
         System.exit(0);
-
-
 
         CreateTempDatabaseFiles.pleaseWriteData();
 
@@ -51,7 +54,7 @@ public class Client {
     private static String[] split(String request) {
         int commas = 0;
         boolean count = true;
-        int[] splitIdxs = new int[request.length()]; //This should p̶r̶o̶b̶a̶b̶l̶y̶  definitely be an array, but whatever
+        int[] splitIdxs = new int[request.length()]; //This should p̶r̶o̶b̶a̶b̶l̶y̶  definitely be a list, but whatever
         int splitIdx = 0;
         for(int i = 0; i < request.length(); i++) {
             if(request.charAt(i) == (',') && count) {
@@ -197,6 +200,74 @@ public class Client {
                 break;
             case "depart":
                 response = manager.depart(Integer.parseInt(tokenizedRequest[1]));
+                break;
+            case "info": //info,title,{authors},[isbn, [publisher,[sort order]]],bool;
+
+                String title = tokenizedRequest[1];
+                String authorList = tokenizedRequest[2].substring(1, tokenizedRequest[2].length() - 1);
+                String[] authors = authorList.split(",");
+
+                String searchingLibrary = tokenizedRequest[tokenizedRequest.length - 1];
+                boolean forLibrary = searchingLibrary.equals("true");
+
+                int length = tokenizedRequest.length;
+
+                Book bookToFind = new Book(null, null, null, null, null, 0, 0, 0);
+                BookSortStrategy strategy = null;
+
+                if(length == 4) {
+                    bookToFind = new Book(null, title, authors, null, null, 0, 0, 0);
+                }else if(length == 5) {
+                    bookToFind = new Book(tokenizedRequest[3], title, authors, null, null, 0, 0, 0);
+                }else if(length == 6) {
+                    bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
+                }else if(length == 7) {
+                    bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
+                    String strat = tokenizedRequest[5];
+
+                    if(strat.equals("author")) {
+//                        strategy = new AuthorSortStrategy();
+                    }else if(strat.equals("checkedcopies")) {
+//                        strategy = new CheckedCopiesSortStrategy();
+                    }else if(strat.equals("copies")) {
+                        strategy = new CopiesSortStrategy();
+                    }else if(strat.equals("publishdate")) {
+                        strategy = new PublishDateSortStrategy();
+                    }else if(strat.equals("title")) {
+                        strategy = new TitleSortStrategy();
+                    }
+                }
+
+                response = manager.infoSearch(bookToFind, forLibrary, strategy);
+                break;
+            case "borrow":
+
+                int userId = Integer.parseInt(tokenizedRequest[1]);
+
+                String[] isbns = tokenizedRequest[2].substring(1, tokenizedRequest[2].length() - 1).split(",");
+
+                List<Integer> ids = new ArrayList<>();
+
+                for(String str: isbns) {
+                    ids.add(Integer.parseInt(str));
+                }
+
+                response = manager.checkOutBook(userId, ids);
+                break;
+            case "borrowed":
+                response = manager.borrowed(Integer.parseInt(tokenizedRequest[1]));
+                break;
+            case "return":
+                userId = Integer.parseInt(tokenizedRequest[1]);
+
+                List<Integer> bookIds = new ArrayList<>();
+
+                for(int i = 2; i < tokenizedRequest.length; i++) {
+                    bookIds.add(Integer.parseInt(tokenizedRequest[i]));
+                }
+
+                manager.checkInBook(userId, bookIds);
+
                 break;
             default:
                 break;
