@@ -240,7 +240,7 @@ public class Manager {
      * @return String in response format
      */
     public String report(int days){
-        Command reportCommand = new ReportCommand(days, this);
+        Command reportCommand = new ReportCommand(days, database, calendar);
         return reportCommand.execute();
     }
 
