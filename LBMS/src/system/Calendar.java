@@ -8,31 +8,28 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-class OpenLibraryTimeTask extends TimerTask {
+class ChangeLibraryStateTask extends TimerTask {
 
     private Manager manager;
+    private Calendar calendar;
 
-    public OpenLibraryTimeTask(Manager manager) {
+    public ChangeLibraryStateTask(Manager manager, Calendar calendar) {
         this.manager = manager;
+        this.calendar = calendar;
     }
 
     public void run() {
-        manager.setState(0); // open
+        LocalDateTime currentTime = calendar.getCurrentTime();
+        LocalDateTime closingTime = calendar.getClosingTime();
+        LocalDateTime openingTime = calendar.getOpeningTime();
+
+        if (currentTime.getHour() >= closingTime.getHour() || currentTime.getHour() < openingTime.getHour()) {
+            manager.setState(1); // close
+        } else {
+            manager.setState(0); // open
+        }
     }
 
-}
-
-class CloseLibraryTimeTask extends TimerTask {
-
-    private Manager manager;
-
-    public CloseLibraryTimeTask(Manager manager) {
-        this.manager = manager;
-    }
-
-    public void run() {
-        manager.setState(1); // closed
-    }
 }
 
 public class Calendar {
@@ -73,17 +70,25 @@ public class Calendar {
     }
 
     public void open() {
-        timer.schedule(new OpenLibraryTimeTask(manager), Date.from(Instant.from(openingTime.atZone(ZoneId.systemDefault()))),
+        timer.schedule(new ChangeLibraryStateTask(manager, this), Date.from(Instant.from(openingTime.atZone(ZoneId.systemDefault()))),
                 MILLISECOND_DAY);
     }
 
     public void close() {
-        timer.schedule(new CloseLibraryTimeTask(manager), Date.from(Instant.from(closingTime.atZone(ZoneId.systemDefault()))),
+        timer.schedule(new ChangeLibraryStateTask(manager, this), Date.from(Instant.from(closingTime.atZone(ZoneId.systemDefault()))),
                 MILLISECOND_DAY);
     }
 
     public LocalDateTime getCurrentTime() {
         return currentTime;
+    }
+
+    public LocalDateTime getOpeningTime() {
+        return openingTime;
+    }
+
+    public LocalDateTime getClosingTime() {
+        return closingTime;
     }
 
     public String toString() {
