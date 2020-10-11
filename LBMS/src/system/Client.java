@@ -21,11 +21,6 @@ public class Client {
 
     public static void main(String[] args) {
 
-        String test = "info,title,{author,mc,authorface},3092549082,BigBookPublishers,bogosort";
-
-        System.out.println(Arrays.toString(split(test)));
-        System.exit(0);
-
         CreateTempDatabaseFiles.pleaseWriteData();
 
         Scanner scanner = new Scanner(System.in);
@@ -36,17 +31,18 @@ public class Client {
 
         while(true) {
 
+            System.out.print("> ");
             input = scanner.nextLine();
             tokenizedReq = split(input);
             confirmedReq = errorCheck(tokenizedReq);
 
             if(confirmedReq[0].equals("error")) {
-                System.out.println("Error: " + confirmedReq[1]);
+                System.out.println("> Error: " + confirmedReq[1]);
             }
 
             response = sendRequest(confirmedReq);
 
-            System.out.println(response);
+            System.out.println("> " + response);
 
         }
     }
@@ -103,7 +99,7 @@ public class Client {
                 if(request.length != 2) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
-                }else if(!isNumeric(request[0])) {
+                }else if(!isNumeric(request[1])) {
                     request[0] = ERROR_MSG;
                     request[1] = "parameter 1 " + NOT_INTEGER;
                 }
