@@ -133,6 +133,15 @@ public class Manager {
 
         if(index == 1){
             database.nightlyUpdate(calendar.getCurrentTime().toLocalDate().plusDays(1));
+            for(Visit visit: ongoingVisits){
+                LocalDateTime exitTime = calendar.getCurrentTime();
+                visit.setExitTime(exitTime);
+                database.addVisit(visit);
+            }
+            ongoingVisits.clear();
+
+            database.saveData();
+
         }
         state = states[index];
     }
@@ -197,7 +206,7 @@ public class Manager {
      * @return String in response format
      */
     public String depart(int userId){
-        Command departCommand = new DepartCommand(userId,this, calendar);
+        Command departCommand = new DepartCommand(userId,(IManager)this);
         return departCommand.execute();
     }
 
@@ -231,7 +240,7 @@ public class Manager {
      * @return String in response format
      */
     public String report(int days){
-        Command reportCommand = new ReportCommand(days, this);
+        Command reportCommand = new ReportCommand(days, database, calendar);
         return reportCommand.execute();
     }
 

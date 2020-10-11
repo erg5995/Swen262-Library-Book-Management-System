@@ -26,16 +26,15 @@ public class Database
         librarySearch = new ArrayList<>();
         storeSearch = new ArrayList<>();
         borrowSearch = new ArrayList<>();
-        fileNames = new String[9];
-        fileNames[0] = "LBMS\\resources\\booksOwned.ser";
-        fileNames[1] = "LBMS\\resources\\booksInStore.ser";
-        fileNames[2] = "LBMS\\resources\\checkedOutBooks.ser";
-        fileNames[3] = "LBMS\\resources\\returnedBooks.ser";
-        fileNames[4] = "LBMS\\resources\\visits.ser";
-        fileNames[5] = "LBMS\\resources\\users.ser";
-        fileNames[6] = "LBMS\\resources\\numBooksBought.ser";
-        fileNames[7] = "LBMS\\resources\\fines.ser";
-        fileNames[8] = "LBMS\\resources\\payments.ser";
+        fileNames = new String[]{"LBMS\\resources\\booksOwned.ser",
+                                 "LBMS\\resources\\booksInStore.ser",
+                                 "LBMS\\resources\\checkedOutBooks.ser",
+                                 "LBMS\\resources\\returnedBooks.ser",
+                                 "LBMS\\resources\\visits.ser",
+                                 "LBMS\\resources\\users.ser",
+                                 "LBMS\\resources\\numBooksBought.ser",
+                                 "LBMS\\resources\\fines.ser",
+                                 "LBMS\\resources\\payments.ser"};
         readData();
     }
 
@@ -175,9 +174,6 @@ public class Database
         // counts the number of books owned by the library
         for (Book book : booksOwned.values())
             numBooks += book.getNumCopies();
-        // counts the number of books bought
-        for (int i = 0; i < numBooksBought.size(); i++)
-            booksBought += numBooksBought.get(i);
         // calculates the average visit time
         int[] time = new int[3], temp;
         for (v = visits.size() - 1; v >= 0; v--) {
@@ -187,13 +183,10 @@ public class Database
         }
         for (int i = 0; i < 3; i++)
             time[i] /= (visits.size() - v + 1);
-        //calculates all the fines fined and the payments made
+        //calculates all the fines fined and the payments made, and the number of books bought for the library
         double totFines = 0, totPayments = 0;
-
-        if (fines.size() != payments.size()) {
-            return null;
-        }
         for (int i = 0; i < fines.size(); i++) {
+            booksBought += numBooksBought.get(i);
             totFines += fines.get(i);
             totPayments += payments.get(i);
         }
@@ -345,6 +338,7 @@ public class Database
     {
         return users.get(userID).getNumBooksChecked() + numBooks > User.MAX_BOOKS_CHECKED;
     }
+    public boolean isEmployee(int userID) { return users.get(userID).getType() == User.UserRole.EMPLOYEE; }
     //might not need- if caller has reference to User than they can just call hasDebt()
     public boolean hasOutstandingFine(int userID) { return users.get(userID).hasDebt(); }
 }
