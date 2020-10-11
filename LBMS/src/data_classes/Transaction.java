@@ -49,18 +49,12 @@ public class Transaction implements Serializable
     {
         int daysPastDue = TimeBetween.numDays(dueDate, date);
         if (daysPastDue > 0) {
-            setFine(10);
+            fine = 10;
             if (daysPastDue > 70)
-                addToFine(20);
+                fine += 20;
             else
-                addToFine(2 * (daysPastDue - 1) / 7);
+                fine += 2 * (daysPastDue - 1) / 7;
         }
     }
     public void close(LocalDate date) { dateChecked = date; }
-
-    /**
-     * Methods to alter fine: either set or add to a fine
-     */
-    public void setFine(double amount) { fine = amount; }
-    public void addToFine(double amount) { fine += amount; }
 }
