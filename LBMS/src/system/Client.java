@@ -21,8 +21,6 @@ public class Client {
 
     public static void main(String[] args) {
 
-        CreateTempDatabaseFiles.pleaseWriteData();
-
         Scanner scanner = new Scanner(System.in);
         String input = "";
         String response = "";

@@ -1,5 +1,6 @@
 package data_classes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -7,13 +8,12 @@ import java.time.LocalDateTime;
  * Dataclass for transactions
  * Author: Thomas Linse
  */
-public class Transaction
+public class Transaction implements Serializable
 {
     private Book book;
     private User user;
     private LocalDate dueDate, dateChecked;
     private double fine;
-    private boolean isOverdue;
 
     /**
      * constructor can take in LocalDate or LocalDateTime for dueDate,
@@ -26,7 +26,6 @@ public class Transaction
         this.user = user;
         this.dueDate = dueDate;
         fine = 0;
-        isOverdue = false;
     }
     public Transaction(Book book, User user, LocalDateTime dueDateTime)
     {
@@ -41,7 +40,7 @@ public class Transaction
     public LocalDate dueDate() { return dueDate; }
     public LocalDate getDateChecked() { return dateChecked; }
     public double getFine() { return fine; }
-    public boolean isOverdue() { return isOverdue; }
+    public boolean isOverdue() { return fine > 0; }
 
     /**
      * Methods with inputted dates
@@ -50,7 +49,6 @@ public class Transaction
     {
         int daysPastDue = TimeBetween.numDays(dueDate, date);
         if (daysPastDue > 0) {
-            pastDueDate();
             setFine(10);
             if (daysPastDue > 70)
                 addToFine(20);
@@ -65,11 +63,4 @@ public class Transaction
      */
     public void setFine(double amount) { fine = amount; }
     public void addToFine(double amount) { fine += amount; }
-
-    /**
-     * Setter method for isOverdue. Once a book is overdue,
-     * it can't go back to now being overdue so this will
-     * only set it to true
-     */
-    public void pastDueDate() { isOverdue = true; }
 }

@@ -26,16 +26,15 @@ public class Database
         librarySearch = new ArrayList<>();
         storeSearch = new ArrayList<>();
         borrowSearch = new ArrayList<>();
-        fileNames = new String[9];
-        fileNames[0] = "booksOwned.ser";
-        fileNames[1] = "booksInStore.ser";
-        fileNames[2] = "checkedOutBooks.ser";
-        fileNames[3] = "returnedBooks.ser";
-        fileNames[4] = "visits.ser";
-        fileNames[5] = "users.ser";
-        fileNames[6] = "numBooksBought.ser";
-        fileNames[7] = "fines.ser";
-        fileNames[8] = "payments.ser";
+        fileNames = new String[]{"LBMS\\resources\\booksOwned.ser",
+                                 "LBMS\\resources\\booksInStore.ser",
+                                 "LBMS\\resources\\checkedOutBooks.ser",
+                                 "LBMS\\resources\\returnedBooks.ser",
+                                 "LBMS\\resources\\visits.ser",
+                                 "LBMS\\resources\\users.ser",
+                                 "LBMS\\resources\\numBooksBought.ser",
+                                 "LBMS\\resources\\fines.ser",
+                                 "LBMS\\resources\\payments.ser"};
         readData();
     }
 
@@ -167,6 +166,32 @@ public class Database
             numBooksBought.set(0, numBooksBought.get(0) + quantity);
         }
         return books;
+    }
+
+    public Report generateReport(LocalDate day)
+    {
+        int numBooks = 0, booksBought = 0, v;
+        // counts the number of books owned by the library
+        for (Book book : booksOwned.values())
+            numBooks += book.getNumCopies();
+        // calculates the average visit time
+        int[] time = new int[3], temp;
+        for (v = visits.size() - 1; v >= 0; v--) {
+            temp = visits.get(v).getTimeSpent();
+            for (int i = 0; i < 3; i++)
+                time[i] += temp[i];
+        }
+        for (int i = 0; i < 3; i++)
+            time[i] /= (visits.size() - v + 1);
+        //calculates all the fines fined and the payments made, and the number of books bought for the library
+        double totFines = 0, totPayments = 0;
+        for (int i = 0; i < fines.size(); i++) {
+            booksBought += numBooksBought.get(i);
+            totFines += fines.get(i);
+            totPayments += payments.get(i);
+        }
+        // returns a report summarizing all the statistics calculated above
+        return new Report(users.size(), numBooks, booksBought, time, totPayments, totFines - totPayments);
     }
 
     public Report generateReport(int days, LocalDate day)
@@ -313,6 +338,7 @@ public class Database
     {
         return users.get(userID).getNumBooksChecked() + numBooks > User.MAX_BOOKS_CHECKED;
     }
+    public boolean isEmployee(int userID) { return users.get(userID).getType() == User.UserRole.EMPLOYEE; }
     //might not need- if caller has reference to User than they can just call hasDebt()
     public boolean hasOutstandingFine(int userID) { return users.get(userID).hasDebt(); }
 }

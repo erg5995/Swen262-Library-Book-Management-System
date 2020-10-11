@@ -1,10 +1,12 @@
 package data_classes;
 
+import java.io.Serializable;
+
 /**
  * Dataclass for users
  * Author: Thomas Linse
  */
-public class User {
+public class User implements Serializable {
     /**
      * enum for the type of user, used to
      * distinguish between what a regular
