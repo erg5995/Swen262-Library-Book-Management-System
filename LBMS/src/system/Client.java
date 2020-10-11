@@ -1,9 +1,6 @@
 package system;
 
-import book_sort_strategy.BookSortStrategy;
-import book_sort_strategy.CopiesSortStrategy;
-import book_sort_strategy.PublishDateSortStrategy;
-import book_sort_strategy.TitleSortStrategy;
+import book_sort_strategy.*;
 import data_classes.Book;
 
 import java.util.ArrayList;
@@ -253,9 +250,9 @@ public class Client {
                     String strat = tokenizedRequest[5];
 
                     if(strat.equals("author")) {
-//                        strategy = new AuthorSortStrategy();
+                        strategy = new AuthorSortStrategy();
                     }else if(strat.equals("checkedcopies")) {
-//                        strategy = new CheckedCopiesSortStrategy();
+                        strategy = new CheckedCopiesSortStrategy();
                     }else if(strat.equals("copies")) {
                         strategy = new CopiesSortStrategy();
                     }else if(strat.equals("publishdate")) {
