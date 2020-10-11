@@ -7,7 +7,6 @@ import book_sort_strategy.TitleSortStrategy;
 import data_classes.Book;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,22 +25,28 @@ public class Client {
         String response = "";
         String[] tokenizedReq = {""};
         String[] confirmedReq = {""};
-
+        System.out.print("> ");
         while(true) {
+            input += scanner.nextLine();
+            if(input.charAt(input.length() - 1) == ';') {
 
-            System.out.print("> ");
-            input = scanner.nextLine();
-            tokenizedReq = split(input);
-            confirmedReq = errorCheck(tokenizedReq);
+                input = input.substring(0, input.length() - 1);
 
-            if(confirmedReq[0].equals("error")) {
-                System.out.println("> Error: " + confirmedReq[1]);
+                tokenizedReq = split(input);
+                confirmedReq = errorCheck(tokenizedReq);
+
+                if(confirmedReq[0].equals("error")) {
+                    System.out.println("> Error: " + confirmedReq[1]);
+                }
+
+                response = sendRequest(confirmedReq);
+
+                System.out.println("> " + response);
+                System.out.print("> ");
+                input = "";
+            }else{
+                System.out.print("> ");
             }
-
-            response = sendRequest(confirmedReq);
-
-            System.out.println("> " + response);
-
         }
     }
 
