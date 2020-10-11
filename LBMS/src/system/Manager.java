@@ -62,6 +62,10 @@ public class Manager {
     public String startVisit(int id)
     {
         //this will be handled by the states.
+        if (calendar == null) {
+            return "";
+        }
+
         return state.startVisit(id, calendar.getCurrentTime());
     }
 
