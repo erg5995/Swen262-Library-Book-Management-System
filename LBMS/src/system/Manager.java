@@ -38,7 +38,7 @@ public class Manager {
      */
     public Manager(){
         database = new Database();
-        calendar = new Calendar();
+        calendar = new Calendar(this);
 
         Open open = new Open(this, database,calendar);
 
@@ -62,6 +62,10 @@ public class Manager {
     public String startVisit(int id)
     {
         //this will be handled by the states.
+        if (calendar == null) {
+            return "";
+        }
+
         return state.startVisit(id, calendar.getCurrentTime());
     }
 
@@ -182,7 +186,7 @@ public class Manager {
      * @return String in response format
      */
     public String borrowed(int userId){
-        Command borrowedCommand = new BorrowedCommand(userId);
+        Command borrowedCommand = new BorrowedCommand(userId, database);
         return borrowedCommand.execute();
     }
 
