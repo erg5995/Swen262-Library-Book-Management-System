@@ -26,12 +26,16 @@ public class ReportCommand implements Command{
             return "Error: Calendar null in ReportCommand";
         }
 
+        if (database == null) {
+            return "Error: Database null in ReportCommand";
+        }
+
         // if the user did not pass a number of days, generate a report for all days
         if (numDays == 0) {
-            output.append("report," + calendar.toString());
+            output.append("report," + calendar.toString()).append(",\n");
             output.append(database.generateReport().toString());
         } else {
-            output.append("report," + calendar.toString());
+            output.append("report," + calendar.toString()).append(",\n");
             output.append(database.generateReport(numDays,
                     calendar.getCurrentTime().toLocalDate()).toString());
         }
