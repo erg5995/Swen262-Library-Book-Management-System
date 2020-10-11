@@ -1,5 +1,6 @@
 package data_classes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -8,7 +9,7 @@ import java.time.LocalTime;
  * Dataclass for visits
  * Author: Thomas Linse
  */
-public class Visit
+public class Visit implements Serializable
 {
 
     private User visitor;
@@ -38,21 +39,9 @@ public class Visit
     public LocalTime getExitTime() { return exitTime; }
 
     /**
-     * @return time spent at the library
+     * @return time spent at the library in form [hour,minute,second]
      */
-    public int[] getTimeSpent()
-    {
-        int[] time = new int[3];
-        time[0] = exitTime.getHour() - entryTime.getHour();
-        time[1] = exitTime.getMinute() - entryTime.getMinute();
-        time[2] = exitTime.getSecond() - entryTime.getSecond();
-        for (int i = 2; i > 0; i--)
-            if (time[i] < 0) {
-                time[i - 1]--;
-                time[i] += 60;
-            }
-        return time;
-    }
+    public int[] getTimeSpent() { return TimeBetween.hourMinuteSecond(entryTime.toLocalTime(), exitTime); }
 
     /**
      * The end time is the only thing that will need to be set

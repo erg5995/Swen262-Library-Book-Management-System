@@ -1,10 +1,12 @@
 package data_classes;
 
+import java.io.Serializable;
+
 /**
  * Dataclass for users
  * Author: Thomas Linse
  */
-public class User {
+public class User implements Serializable {
     /**
      * enum for the type of user, used to
      * distinguish between what a regular
@@ -65,19 +67,10 @@ public class User {
      * methods for altering the debt of the user
      */
     public void addFine(double fine) { debt += fine; }
-    //returns positive number when debt isn't fully paid,
-    //returns zero when debt has been paid for by exact amount,
-    //returns negative number when over paid representing the
-    // amount to give back to the payer
     public double addPayment(double payment)
     {
-        if (payment <= debt) {
-            debt -= payment;
-            return debt;
-        }
-        payment -= debt;
-        debt = 0;
-        return -payment;
+        debt -= payment;
+        return debt;
     }
 
     /**

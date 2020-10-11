@@ -1,5 +1,8 @@
 package data_classes;
 
+import java.io.Serializable;
+import java.util.Arrays;
+
 /**
  *  Class Book
  *
@@ -8,7 +11,7 @@ package data_classes;
  *  Author: Michael Driscoll
  */
 
-public class Book {
+public class Book implements Serializable {
 
     //attributes
 
@@ -104,5 +107,10 @@ public class Book {
     }
 
     public void checkOutCopy() { numCopiesOut++; }
+    public void returnCopy() { numCopiesOut--; }
 
+    @Override
+    public String toString() {
+        return "" + isbn + "," + title + ",{" + author+"}," + publishDate;
+    }
 }

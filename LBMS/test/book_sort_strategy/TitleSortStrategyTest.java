@@ -1,7 +1,12 @@
 package book_sort_strategy;
 
+import org.junit.jupiter.api.Test;
+
 public class TitleSortStrategyTest {
-    @org.junit.jupiter.api.Test
+    @Test
     void sort() {
+
+
+
     }
 }
