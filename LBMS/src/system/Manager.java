@@ -234,7 +234,7 @@ public class Manager {
      * @return String in response format
      */
     public String dateTime(){
-        Command dateTime = new DatetimeCommand();
+        Command dateTime = new DatetimeCommand(calendar);
         return dateTime.execute();
     }
 
