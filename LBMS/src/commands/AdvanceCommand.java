@@ -1,7 +1,6 @@
 package commands;
 
 import system.Calendar;
-import system.Manager;
 
 /**
  * Description: For simulation purposes. This method will advance the simulated date of
