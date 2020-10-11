@@ -167,6 +167,34 @@ public class Client {
                     request[1] = "parameter 2 " + NOT_INTEGER;
                 }
                 break;
+            case "advance":
+                if(request.length < 2 || request.length > 3) {
+                    request[0] = ERROR_MSG;
+                    request[1] = WRONG_PARAM;
+                }else{
+                    for(int i = 1; i < request.length; i++) {
+                        if(!isNumeric(request[i])) {
+                            request[0] = ERROR_MSG;
+                            request[1] = "parameter " + i + " " + NOT_INTEGER;
+                            break;
+                        }
+                    }
+                }
+                break;
+            case "report":
+                if(request.length > 2) {
+                    request[0] = ERROR_MSG;
+                    request[1] = WRONG_PARAM;
+                }else{
+                    for(int i = 1; i < request.length; i++) {
+                        if(!isNumeric(request[i])) {
+                            request[0] = ERROR_MSG;
+                            request[1] = "parameter " + i + " " + NOT_INTEGER;
+                            break;
+                        }
+                    }
+                }
+            case "datetime":
             default:
                 break;
         }
@@ -269,6 +297,33 @@ public class Client {
                 manager.checkInBook(userId, bookIds);
 
                 break;
+            case "pay":
+
+                userId = Integer.parseInt(tokenizedRequest[1]);
+                int amount = Integer.parseInt(tokenizedRequest[2]);
+
+                response = manager.pay(userId, amount);
+                break;
+            case "advance":
+
+                int numDays = Integer.parseInt(tokenizedRequest[1]);
+                int numHours = 0;
+                if(tokenizedRequest.length == 3) {
+                    numHours = Integer.parseInt(tokenizedRequest[2]);
+                }
+
+                response = manager.advance(numDays, numHours);
+                break;
+            case "report":
+                int days = 0;
+                if(tokenizedRequest.length == 2) {
+                    days = Integer.parseInt(tokenizedRequest[1]);
+                }
+
+                response = manager.report(days);
+                break;
+            case "datetime":
+                response = manager.dateTime();
             default:
                 break;
         }
