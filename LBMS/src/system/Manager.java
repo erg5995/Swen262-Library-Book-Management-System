@@ -38,7 +38,6 @@ public class Manager {
      */
     public Manager(){
         database = new Database();
-        calendar = new Calendar(this);
 
         Open open = new Open(this, database,calendar);
 
@@ -51,6 +50,7 @@ public class Manager {
         states[1] = closed;
 
         ongoingVisits = new ArrayList<Visit>();
+        calendar = new Calendar(this);
     }
 
     /**
