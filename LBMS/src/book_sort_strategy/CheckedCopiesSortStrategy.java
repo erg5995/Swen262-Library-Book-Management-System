@@ -5,7 +5,8 @@ import data_classes.Book;
 import java.util.Arrays;
 import java.util.List;
 
-public class TitleSortStrategy implements BookSortStrategy {
+//Yoink https://www.geeksforgeeks.org/quick-sort/
+public class CheckedCopiesSortStrategy implements BookSortStrategy {
 
     @Override
     public void sort(List<Book> books) {
@@ -16,6 +17,8 @@ public class TitleSortStrategy implements BookSortStrategy {
         sort(booksArr, low, high);
 
         books = Arrays.asList(booksArr);
+
+        books.removeIf(book -> book.getNumCopiesLeft() <= 0);
 
     }
 
@@ -31,11 +34,11 @@ public class TitleSortStrategy implements BookSortStrategy {
 
     private int partition(Book[] books, int low, int high)
     {
-        String pivot = books[high].getTitle();
+        int pivot = books[high].getNumCopiesOut();
         int i = (low-1);
         for (int j=low; j<high; j++)
         {
-            if (compareStringsAlphabetically(books[j].getTitle(), pivot))
+            if (books[j].getNumCopiesOut() < pivot)
             {
                 i++;
 
