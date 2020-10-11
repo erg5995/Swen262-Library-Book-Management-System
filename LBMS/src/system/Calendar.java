@@ -43,15 +43,12 @@ public class Calendar {
     private Manager manager;
     private final long MILLISECOND_DAY = 86400 * 1000;
 
-    public Calendar() {
+    public Calendar(Manager manager) {
         this.currentTime = LocalDateTime.now();
         this.timer = new Timer();
         // the date is just to start the recurring timer
         this.openingTime = LocalDateTime.of(2020, Month.OCTOBER, 4, 8, 0, 0);
         this.closingTime = LocalDateTime.of(2020, Month.OCTOBER, 4, 19, 0, 0);
-    }
-
-    public void setManager(Manager manager) {
         this.manager = manager;
         startScheduledTasks();
     }

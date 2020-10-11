@@ -38,7 +38,7 @@ public class Manager {
      */
     public Manager(){
         database = new Database();
-        calendar = new Calendar();
+        calendar = new Calendar(this);
 
         Open open = new Open(this, database,calendar);
 
