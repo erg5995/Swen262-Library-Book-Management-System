@@ -92,8 +92,9 @@ public class Database
         return true;
     }
 
-    public boolean checkOutBooks(List<Integer> books)
+    public boolean checkOutBooks(int userID, List<Integer> books)
     {
+        users.get(userID).checkOutBooks(books.size());
         for (int id : books)
             if (librarySearch.get(id).getNumCopiesLeft() == 0)
                 return false;
@@ -123,6 +124,7 @@ public class Database
 
     public String returnBooks(int userID, List<Integer> bookIDs, LocalDate date)
     {
+        users.get(userID).checkInBooks(bookIDs.size());
         double totFines = 0;
         for (int i = 0; i < bookIDs.size(); i++) {
             Transaction trans = borrowSearch.get(bookIDs.get(i));
