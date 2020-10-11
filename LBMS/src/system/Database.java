@@ -168,7 +168,7 @@ public class Database
         return books;
     }
 
-    public Report generateReport(LocalDate day)
+    public Report generateReport()
     {
         int numBooks = 0, booksBought = 0, v;
         // counts the number of books owned by the library

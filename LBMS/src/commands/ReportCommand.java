@@ -29,8 +29,7 @@ public class ReportCommand implements Command{
         // if the user did not pass a number of days, generate a report for all days
         if (numDays == 0) {
             output.append("report," + calendar.toString());
-            output.append(database.generateReport(
-                    calendar.getCurrentTime().toLocalDate()).toString());
+            output.append(database.generateReport().toString());
         } else {
             output.append("report," + calendar.toString());
             output.append(database.generateReport(numDays,
