@@ -100,7 +100,7 @@ public class Open implements SysState {
         {
             return "borrow,book-limit-exceeded";
         }
-        database.checkOutBooks(books);
+        database.checkOutBooks(userID, books);
         for(Integer id: books) {
             database.addTransaction(id, user.getId(), calendar.getCurrentTime().toLocalDate().plusDays(7));
         }

@@ -1,6 +1,7 @@
 package commands;
 
 import system.Calendar;
+import system.Manager;
 
 import java.time.LocalDateTime;
 
@@ -13,8 +14,8 @@ import java.time.LocalDateTime;
 public class DatetimeCommand implements Command{
     Calendar calendar;
 
-    public DatetimeCommand() {
-        this.calendar = new Calendar();
+    public DatetimeCommand(Calendar calendar) {
+        this.calendar = calendar;
     }
 
     public String execute(){

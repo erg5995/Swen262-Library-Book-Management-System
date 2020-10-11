@@ -5,7 +5,7 @@ import data_classes.Book;
 import java.util.Arrays;
 import java.util.List;
 
-public class TitleSortStrategy implements BookSortStrategy {
+public class AuthorSortStrategy implements BookSortStrategy {
 
     @Override
     public void sort(List<Book> books) {
@@ -31,11 +31,11 @@ public class TitleSortStrategy implements BookSortStrategy {
 
     private int partition(Book[] books, int low, int high)
     {
-        String pivot = books[high].getTitle();
+        String pivot = books[high].getAuthor()[0];
         int i = (low-1);
         for (int j=low; j<high; j++)
         {
-            if (compareStringsAlphabetically(books[j].getTitle(), pivot))
+            if (compareStringsAlphabetically(books[j].getAuthor()[0], pivot))
             {
                 i++;
 
