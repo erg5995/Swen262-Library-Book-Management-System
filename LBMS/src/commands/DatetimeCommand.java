@@ -18,6 +18,10 @@ public class DatetimeCommand implements Command{
     }
 
     public String execute(){
+        if (calendar == null) {
+            return "";
+        }
+
         LocalDateTime currentTime = calendar.getCurrentTime();
         StringBuilder output = new StringBuilder();
         output.append("datetime,");

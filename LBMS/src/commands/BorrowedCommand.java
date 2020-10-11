@@ -20,19 +20,42 @@ public class BorrowedCommand implements Command{
     private Database database;
     private List<Transaction> borrowedBooks;
 
-    public BorrowedCommand(int userID){
-        userId = userID;
+    public BorrowedCommand(int userID, Database database){
+        this.userId = userID;
+        this.database = database;
     }
 
     public String execute(){
         StringBuilder output = new StringBuilder();
-        output.append("borrowed, ");
+        output.append("borrowed,");
 
-        if (!database.isValidUser(userId)) {
-            return "invalid-visitor-id";
+        // check for null
+        if (database == null) {
+            return "";
         }
 
-        return "not implemented";
+        // check for invalid user id
+        if (!database.isValidUser(userId)) {
+            output.append("invalid-visitor-id");
+            return output.toString();
+        }
+
+        // check if the user has no books checked out
+        borrowedBooks = database.findBorrowedBooks(userId);
+        if (borrowedBooks.size() == 0) {
+            output.append("0");
+            return output.toString();
+        }
+
+        for (int i = 0; i < borrowedBooks.size(); i++) {
+            // TODO: find book id
+            output.append(0); // id
+            output.append(borrowedBooks.get(i).getBook().getIsbn()).append(",");
+            output.append(borrowedBooks.get(i).getBook().getTitle()).append(",");
+            output.append(borrowedBooks.get(i).getDateChecked().toString());
+        }
+
+        return output.toString();
     }
 
 }

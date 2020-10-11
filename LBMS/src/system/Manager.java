@@ -182,7 +182,7 @@ public class Manager {
      * @return String in response format
      */
     public String borrowed(int userId){
-        Command borrowedCommand = new BorrowedCommand(userId);
+        Command borrowedCommand = new BorrowedCommand(userId, database);
         return borrowedCommand.execute();
     }
 
