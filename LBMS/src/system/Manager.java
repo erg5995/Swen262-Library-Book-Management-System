@@ -19,7 +19,7 @@ import java.util.List;
  *
  * Author: Michael Driscoll
  */
-public class Manager {
+public class Manager implements IManager{
 
     private Calendar calendar;
 
