@@ -103,13 +103,13 @@ public class Database
         return true;
     }
     public void addTransaction(Transaction trans) { checkedOutBooks.add(trans); }
-    public void addTransaction(Book book, User user, LocalDate dueDate)
+    public void addTransaction(Book book, User user, LocalDate dateChecked, LocalDate dueDate)
     {
-        addTransaction(new Transaction(book, user, dueDate));
+        addTransaction(new Transaction(book, user, dateChecked, dueDate));
     }
-    public void addTransaction(int bookID, int userID, LocalDate dueDate)
+    public void addTransaction(int bookID, int userID, LocalDate dateChecked, LocalDate dueDate)
     {
-        addTransaction(librarySearch.get(bookID), users.get(userID), dueDate);
+        addTransaction(librarySearch.get(bookID), users.get(userID), dateChecked, dueDate);
     }
 
     public List<Transaction> findBorrowedBooks(User user)
