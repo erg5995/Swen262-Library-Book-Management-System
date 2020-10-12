@@ -34,7 +34,7 @@ public class InfoSearchCommand implements Command{
         String formatString = "\n";
         int id = 1;
         for(Book book: toSort){
-            formatString = formatString + book.getNumCopies() + + id + book.toString() + "\n";
+            formatString = formatString + book.getNumCopies() +", " + id +", "+ book.toString() + "\n";
             id++;
         }
         if(forLibrary)
