@@ -112,6 +112,6 @@ public class Book implements Serializable {
     @Override
     public String toString() {
         String authors = Arrays.toString(author);
-        return "" + isbn + "," + title + ",{" + authors.substring(1, authors.length() - 1) + "}," + publishDate + "," + numCopies;
+        return "" + isbn + "," + title + ",{" + authors.substring(1, authors.length() - 1) + "}," + publisher + "," + publishDate + "," + (numCopies - numCopiesOut);
     }
 }
