@@ -18,7 +18,9 @@ public class BuyCommand implements Command{
     public String execute(){
 
         String bookString = "";
-
+        for (int id : bookIds)
+            if (!database.isValidStoreID(id))
+                return "buy,invalid-book-id [" + (id + 1) + "]";
         List<Book> books = database.buyBooks(numCompiesEach,bookIds);
 
 

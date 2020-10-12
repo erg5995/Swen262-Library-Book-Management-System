@@ -19,7 +19,7 @@ import java.util.List;
  *
  * Author: Michael Driscoll
  */
-public class Manager {
+public class Manager implements IManager{
 
     private Calendar calendar;
 
@@ -38,7 +38,7 @@ public class Manager {
      */
     public Manager(){
         database = new Database();
-
+        calendar = new Calendar();
         Open open = new Open(this, database,calendar);
 
         Closed closed = new Closed(this, database,calendar);
@@ -49,8 +49,9 @@ public class Manager {
 
         states[1] = closed;
 
+        calendar.setManager(this);
+
         ongoingVisits = new ArrayList<Visit>();
-        calendar = new Calendar(this);
     }
 
     /**

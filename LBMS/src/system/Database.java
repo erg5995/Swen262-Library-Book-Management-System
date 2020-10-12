@@ -338,7 +338,7 @@ public class Database
     public boolean isValidStoreID(int bookID) { return bookID > -1 && bookID < storeSearch.size(); }
     public boolean userCanCheckOut(int userID, int numBooks)
     {
-        return users.get(userID).getNumBooksChecked() + numBooks > User.MAX_BOOKS_CHECKED;
+        return users.get(userID).getNumBooksChecked() + numBooks <= User.MAX_BOOKS_CHECKED;
     }
     public boolean isEmployee(int userID) { return users.get(userID).getType() == User.UserRole.EMPLOYEE; }
     //might not need- if caller has reference to User than they can just call hasDebt()

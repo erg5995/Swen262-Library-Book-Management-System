@@ -104,8 +104,14 @@ public class Client {
                     request[1] = "parameter 1 " + NOT_INTEGER;
                 }
                 break;
-            case "info": 	//info,title,{authors},[isbn, [publisher,[sort order]]],bool;
-                if(request.length < 4 || request.length > 7) {
+            case "info": 	//info,title,{authors},[isbn, [publisher,[sort order]]];
+                if(request.length < 3 || request.length > 6) {
+                    request[0] = ERROR_MSG;
+                    request[1] = WRONG_PARAM;
+                }
+                break;
+            case "search":
+                if(request.length < 2 || request.length > 6) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }
@@ -118,8 +124,9 @@ public class Client {
                     request[0] = ERROR_MSG;
                     request[1] = "parameter 1 " + NOT_INTEGER;
                 }
-
-                String[] bookIds = request[2].substring(1, request[2].length() - 1).split(",");
+                if (request[2].charAt(0) == '{')
+                    request[2] = request[2].substring(1, request[2].length() - 1);
+                String[] bookIds = request[2].split(",");
                 for(String str: bookIds) {
                     if(!isNumeric(str)) {
                         request[0] = ERROR_MSG;
@@ -129,7 +136,7 @@ public class Client {
                 }
                 break;
             case "borrowed":
-                if(request.length != 3) {
+                if(request.length != 2) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }else if(!isNumeric(request[1])) {
@@ -208,7 +215,7 @@ public class Client {
                 List<Integer> books = new ArrayList<>();
 
                 for(int i = 2; i < tokenizedRequest.length; i++) {
-                    books.add(Integer.parseInt(tokenizedRequest[i]));
+                    books.add(Integer.parseInt(tokenizedRequest[i]) - 1);
                 }
                 response = manager.buy(quantity, books);
                 break;
@@ -227,25 +234,23 @@ public class Client {
                 break;
             case "info": //info,title,{authors},[isbn, [publisher,[sort order]]],bool;
 
-                String title = tokenizedRequest[1];
-                String authorList = tokenizedRequest[2].substring(1, tokenizedRequest[2].length() - 1);
+                String title = tokenizedRequest[1], authorList = tokenizedRequest[2];
+                if (authorList.charAt(0) == '{')
+                    authorList = authorList.substring(1, authorList.length() - 1);
                 String[] authors = authorList.split(",");
-
-                String searchingLibrary = tokenizedRequest[tokenizedRequest.length - 1];
-                boolean forLibrary = searchingLibrary.equals("true");
 
                 int length = tokenizedRequest.length;
 
                 Book bookToFind = new Book(null, null, null, null, null, 0, 0, 0);
                 BookSortStrategy strategy = null;
 
-                if(length == 4) {
+                if(length == 3) {
                     bookToFind = new Book(null, title, authors, null, null, 0, 0, 0);
-                }else if(length == 5) {
+                }else if(length == 4) {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, null, null, 0, 0, 0);
-                }else if(length == 6) {
+                }else if(length == 5) {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
-                }else if(length == 7) {
+                }else if(length == 6) {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
                     String strat = tokenizedRequest[5];
 
@@ -262,18 +267,63 @@ public class Client {
                     }
                 }
 
-                response = manager.infoSearch(bookToFind, forLibrary, strategy);
+                response = manager.infoSearch(bookToFind, true, strategy);
+                break;
+            case "search":
+                title = tokenizedRequest[1];
+
+                length = tokenizedRequest.length;
+
+                bookToFind = new Book(null, null, null, null, null, 0, 0, 0);
+                strategy = null;
+
+                if(length == 2) {
+                    bookToFind = new Book(null, title, null, null, null, 0, 0, 0);
+                }else if(length > 2) {
+
+                    authorList = tokenizedRequest[2];
+
+                    if (authorList.charAt(0) == '{')
+                        authorList = authorList.substring(1, authorList.length() - 1);
+                    authors = authorList.split(",");
+
+                    if(length == 3) {
+                        bookToFind = new Book(null, title, authors, null, null, 0, 0, 0);
+                    } else if (length == 4) {
+                        bookToFind = new Book(tokenizedRequest[3], title, authors, null, null, 0, 0, 0);
+                    } else if (length == 5) {
+                        bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
+                    }else if(length == 6) {
+
+                        String strat = tokenizedRequest[5];
+
+                        if (strat.equals("author")) {
+                            strategy = new AuthorSortStrategy();
+                        } else if (strat.equals("checkedcopies")) {
+                            strategy = new CheckedCopiesSortStrategy();
+                        } else if (strat.equals("copies")) {
+                            strategy = new CopiesSortStrategy();
+                        } else if (strat.equals("publishdate")) {
+                            strategy = new PublishDateSortStrategy();
+                        } else if (strat.equals("title")) {
+                            strategy = new TitleSortStrategy();
+                        }
+
+                    }
+                }
+
+                response = manager.infoSearch(bookToFind, false, strategy);
                 break;
             case "borrow":
 
                 int userId = Integer.parseInt(tokenizedRequest[1]);
 
-                String[] isbns = tokenizedRequest[2].substring(1, tokenizedRequest[2].length() - 1).split(",");
+                String[] isbns = tokenizedRequest[2].split(",");
 
                 List<Integer> ids = new ArrayList<>();
 
                 for(String str: isbns) {
-                    ids.add(Integer.parseInt(str));
+                    ids.add(Integer.parseInt(str) - 1);
                 }
 
                 response = manager.checkOutBook(userId, ids);

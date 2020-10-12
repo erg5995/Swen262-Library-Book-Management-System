@@ -32,9 +32,13 @@ public class InitDatabase
         writeObject(new ArrayList<Transaction>(), "returnedBooks.ser");
         writeObject(new ArrayList<Visit>(), "visits.ser");
         writeObject(new HashMap<Integer, User>(), "users.ser");
-        writeObject(new ArrayList<Integer>(), "numBooksBought.ser");
-        writeObject(new ArrayList<Double>(), "fines.ser");
-        writeObject(new ArrayList<Double>(), "payments.ser");
+        ArrayList<Integer> numBooksBought = new ArrayList<>();
+        numBooksBought.add(0);
+        writeObject(numBooksBought, "numBooksBought.ser");
+        ArrayList<Double> doubleList = new ArrayList<>();
+        doubleList.add(0.);
+        writeObject(doubleList, "fines.ser");
+        writeObject(doubleList, "payments.ser");
 
         HashMap<String, Book> booksInStore = new HashMap<>();
         try {
