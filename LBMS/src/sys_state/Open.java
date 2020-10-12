@@ -44,7 +44,7 @@ public class Open implements SysState {
         if(user == null) {
             return "arrive,invalid-id";
         }
-        manager.addVisit(new Visit(user, time));
+        //manager.addVisit(new Visit(user, time));
 
         //error if user already visiting
         List<Visit> visits = manager.getOngoingVisits();
@@ -54,6 +54,7 @@ public class Open implements SysState {
                 return "arrive,duplicate";
             }
         }
+        manager.addVisit(new Visit(user, time));
 
         //response format: arrive,visitor ID,visit date, visit start time
         return "arrive, " + id + ", " + time.toLocalDate() + ", " + time;
