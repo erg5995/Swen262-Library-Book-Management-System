@@ -48,7 +48,6 @@ public class BorrowedCommand implements Command{
         }
 
         for (int i = 0; i < borrowedBooks.size(); i++) {
-            // TODO: find book id
             output.append(i).append(","); // id
             output.append(borrowedBooks.get(i).getBook().getIsbn()).append(",");
             output.append(borrowedBooks.get(i).getBook().getTitle()).append(",");

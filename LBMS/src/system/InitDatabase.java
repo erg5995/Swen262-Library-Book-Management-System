@@ -18,7 +18,7 @@ public class InitDatabase
      * List<Transaction>    checkedOutBooks.ser
      * List<Transaction>    returnedBooks.ser
      * List<Visit>          visits.ser
-     * List<User>           users.ser
+     * HasMap<Integer, User>users.ser
      * List<Integer>        numBooksBought.ser
      * List<Double>         fines.ser
      * List<Double>         payments.ser
@@ -31,7 +31,7 @@ public class InitDatabase
         writeObject(new ArrayList<Transaction>(), "checkedOutBooks.ser");
         writeObject(new ArrayList<Transaction>(), "returnedBooks.ser");
         writeObject(new ArrayList<Visit>(), "visits.ser");
-        writeObject(new ArrayList<User>(), "users.ser");
+        writeObject(new HashMap<Integer, User>(), "users.ser");
         writeObject(new ArrayList<Integer>(), "numBooksBought.ser");
         writeObject(new ArrayList<Double>(), "fines.ser");
         writeObject(new ArrayList<Double>(), "payments.ser");
