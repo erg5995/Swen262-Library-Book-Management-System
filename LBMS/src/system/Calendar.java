@@ -50,7 +50,7 @@ public class Calendar {
         startScheduledTasks();
     }
 
-    private void startScheduledTasks() {
+    public void startScheduledTasks() {
         // check if the hour is within closing time
         if (currentTime.getHour() >= closingTime.getHour() || currentTime.getHour() < openingTime.getHour()) {
             open();

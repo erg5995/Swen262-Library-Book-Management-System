@@ -1,22 +1,15 @@
 package commands;
 
-import data_classes.TimeBetween;
 import data_classes.Visit;
-import system.Calendar;
-import system.Database;
-import system.IManager;
 import system.Manager;
-
-import java.sql.Time;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class DepartCommand implements Command{
 
     private int userId;
-    private IManager manager;
+    private Manager manager;
 
-    public DepartCommand(int userID, IManager manage){
+    public DepartCommand(int userID, Manager manage){
         userId = userID;
         manager = manage;
     }

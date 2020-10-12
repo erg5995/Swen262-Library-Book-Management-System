@@ -210,7 +210,7 @@ public class Manager {
      * @return String in response format
      */
     public String depart(int userId){
-        Command departCommand = new DepartCommand(userId,(IManager)this);
+        Command departCommand = new DepartCommand(userId,this);
         return departCommand.execute();
     }
 

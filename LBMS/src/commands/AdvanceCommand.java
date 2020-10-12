@@ -54,6 +54,7 @@ public class AdvanceCommand implements Command {
 
         calendar.advanceDay(numDays);
         calendar.advanceHour(numHours);
+        calendar.startScheduledTasks();
         return output.toString();
     }
 }
