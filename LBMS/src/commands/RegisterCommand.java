@@ -30,7 +30,7 @@ public class RegisterCommand implements Command{
         else {
             User user = new User(firstName, lastName, address, phone);
             database.addUser(user);
-            return "register," + user.getId() + "," + calendar.getCurrentTime().toLocalDate() + ";";
+            return "register," + String.format("%010d", user.getId()) + "," + calendar.getCurrentTime().toLocalDate() + ";";
         }
     }
 }

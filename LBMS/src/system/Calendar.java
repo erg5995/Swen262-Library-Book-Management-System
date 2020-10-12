@@ -1,9 +1,6 @@
 package system;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,16 +30,16 @@ class ChangeLibraryStateTask extends TimerTask {
 }
 
 public class Calendar {
-    private LocalDateTime currentTime;
     private Timer timer;
     private final LocalDateTime openingTime;
     private final LocalDateTime closingTime;
     private Manager manager;
     private final long MILLISECOND_DAY = 86400 * 1000;
+    private Clock clock;
 
     public Calendar(Manager manager) {
-        this.currentTime = LocalDateTime.now();
         this.timer = new Timer();
+        clock = Clock.systemDefaultZone();
         // the date is just to start the recurring timer
         this.openingTime = LocalDateTime.of(2020, Month.OCTOBER, 4, 8, 0, 0);
         this.closingTime = LocalDateTime.of(2020, Month.OCTOBER, 4, 19, 0, 0);
@@ -52,7 +49,8 @@ public class Calendar {
 
     private void startScheduledTasks() {
         // check if the hour is within closing time
-        if (currentTime.getHour() >= closingTime.getHour() || currentTime.getHour() < openingTime.getHour()) {
+        int hour = LocalTime.now().getHour();
+        if (hour >= closingTime.getHour() || hour < openingTime.getHour()) {
             open();
             close();
         } else {
@@ -62,11 +60,11 @@ public class Calendar {
     }
 
     public void advanceDay(long day) {
-        currentTime = currentTime.plusDays(day);
+        clock = Clock.offset(clock, Duration.ofDays(day));
     }
 
     public void advanceHour(long hour) {
-        currentTime = currentTime.plusHours(hour);
+        clock = Clock.offset(clock, Duration.ofHours(hour));
     }
 
     public void open() {
@@ -80,7 +78,8 @@ public class Calendar {
     }
 
     public LocalDateTime getCurrentTime() {
-        return currentTime;
+//        return currentTime;
+        return clock.instant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
     public LocalDateTime getOpeningTime() {
@@ -93,6 +92,7 @@ public class Calendar {
 
     public String toString() {
         StringBuilder output = new StringBuilder();
+        LocalDateTime currentTime = getCurrentTime();
         output.append(currentTime.getYear() + ":" + currentTime.getMonthValue() + ":" +
                 currentTime.getDayOfMonth());
 

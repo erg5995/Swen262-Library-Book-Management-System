@@ -57,7 +57,7 @@ public class Open implements SysState {
         manager.addVisit(new Visit(user, time));
 
         //response format: arrive,visitor ID,visit date, visit start time
-        return "arrive, " + id + ", " + time.toLocalDate() + ", " + time;
+        return "arrive, " + id + ", " + time.toLocalDate() + ", " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond();
     }
 
     /**
