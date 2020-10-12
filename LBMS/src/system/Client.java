@@ -105,7 +105,7 @@ public class Client {
                 }
                 break;
             case "info": 	//info,title,{authors},[isbn, [publisher,[sort order]]],bool;
-                if(request.length < 4 || request.length > 7) {
+                if(request.length < 3 || request.length > 7) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }
@@ -227,8 +227,9 @@ public class Client {
                 break;
             case "info": //info,title,{authors},[isbn, [publisher,[sort order]]],bool;
 
-                String title = tokenizedRequest[1];
-                String authorList = tokenizedRequest[2].substring(1, tokenizedRequest[2].length() - 1);
+                String title = tokenizedRequest[1], authorList = tokenizedRequest[2];
+                if (authorList.charAt(0) == '{')
+                    authorList = authorList.substring(1, authorList.length() - 1);
                 String[] authors = authorList.split(",");
 
                 String searchingLibrary = tokenizedRequest[tokenizedRequest.length - 1];
@@ -239,13 +240,13 @@ public class Client {
                 Book bookToFind = new Book(null, null, null, null, null, 0, 0, 0);
                 BookSortStrategy strategy = null;
 
-                if(length == 4) {
+                if(length == 3) {
                     bookToFind = new Book(null, title, authors, null, null, 0, 0, 0);
-                }else if(length == 5) {
+                }else if(length == 4) {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, null, null, 0, 0, 0);
-                }else if(length == 6) {
+                }else if(length == 5) {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
-                }else if(length == 7) {
+                }else if(length == 6) {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
                     String strat = tokenizedRequest[5];
 

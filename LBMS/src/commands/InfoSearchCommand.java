@@ -31,10 +31,10 @@ public class InfoSearchCommand implements Command{
             strategy.sort(toSort);
         }
 
-        String formatString = "\n";
+        StringBuilder formatString = new StringBuilder("\n");
         int id = 1;
         for(Book book: toSort){
-            formatString = formatString + book.getNumCopies() +", " + id +", "+ book.toString() + "\n";
+            formatString.append(id).append(",").append(book.toString()).append("\n");
             id++;
         }
         if(forLibrary)
