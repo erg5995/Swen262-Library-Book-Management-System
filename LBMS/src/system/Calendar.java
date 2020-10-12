@@ -37,13 +37,16 @@ public class Calendar {
     private final long MILLISECOND_DAY = 86400 * 1000;
     private Clock clock;
 
-    public Calendar(Manager manager) {
+    public Calendar() {
         this.timer = new Timer();
         clock = Clock.systemDefaultZone();
         // the date is just to start the recurring timer
         this.openingTime = LocalDateTime.of(2020, Month.OCTOBER, 4, 8, 0, 0);
         this.closingTime = LocalDateTime.of(2020, Month.OCTOBER, 4, 19, 0, 0);
-        this.manager = manager;
+    }
+
+    public void setManager(Manager manage) {
+        this.manager = manage;
         startScheduledTasks();
     }
 
@@ -78,7 +81,6 @@ public class Calendar {
     }
 
     public LocalDateTime getCurrentTime() {
-//        return currentTime;
         return clock.instant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 

@@ -38,7 +38,7 @@ public class Manager implements IManager{
      */
     public Manager(){
         database = new Database();
-
+        calendar = new Calendar();
         Open open = new Open(this, database,calendar);
 
         Closed closed = new Closed(this, database,calendar);
@@ -49,8 +49,9 @@ public class Manager implements IManager{
 
         states[1] = closed;
 
+        calendar.setManager(this);
+
         ongoingVisits = new ArrayList<Visit>();
-        calendar = new Calendar(this);
     }
 
     /**

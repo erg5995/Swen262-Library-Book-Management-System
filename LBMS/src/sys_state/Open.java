@@ -83,7 +83,7 @@ public class Open implements SysState {
         ArrayList<Integer> invalid = new ArrayList<Integer>();
         for (Integer id: books){
             if(!database.isValidLibraryID(id)){
-                invalid.add(id);
+                invalid.add(id + 1);
             }
         }
         if(!invalid.isEmpty())
@@ -103,7 +103,7 @@ public class Open implements SysState {
         }
         database.checkOutBooks(userID, books);
         for(Integer id: books) {
-            database.addTransaction(id, user.getId(), calendar.getCurrentTime().toLocalDate().plusDays(7));
+            database.addTransaction(id, userID, calendar.getCurrentTime().toLocalDate().plusDays(7));
         }
         return "borrow," + calendar.getCurrentTime().toLocalDate().plusDays(7);
     }

@@ -124,8 +124,9 @@ public class Client {
                     request[0] = ERROR_MSG;
                     request[1] = "parameter 1 " + NOT_INTEGER;
                 }
-
-                String[] bookIds = request[2].substring(1, request[2].length() - 1).split(",");
+                if (request[2].charAt(0) == '{')
+                    request[2] = request[2].substring(1, request[2].length() - 1);
+                String[] bookIds = request[2].split(",");
                 for(String str: bookIds) {
                     if(!isNumeric(str)) {
                         request[0] = ERROR_MSG;
@@ -214,7 +215,7 @@ public class Client {
                 List<Integer> books = new ArrayList<>();
 
                 for(int i = 2; i < tokenizedRequest.length; i++) {
-                    books.add(Integer.parseInt(tokenizedRequest[i]));
+                    books.add(Integer.parseInt(tokenizedRequest[i]) - 1);
                 }
                 response = manager.buy(quantity, books);
                 break;
@@ -317,12 +318,12 @@ public class Client {
 
                 int userId = Integer.parseInt(tokenizedRequest[1]);
 
-                String[] isbns = tokenizedRequest[2].substring(1, tokenizedRequest[2].length() - 1).split(",");
+                String[] isbns = tokenizedRequest[2].split(",");
 
                 List<Integer> ids = new ArrayList<>();
 
                 for(String str: isbns) {
-                    ids.add(Integer.parseInt(str));
+                    ids.add(Integer.parseInt(str) - 1);
                 }
 
                 response = manager.checkOutBook(userId, ids);
