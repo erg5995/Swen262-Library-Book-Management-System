@@ -47,10 +47,15 @@ public class Calendar {
 
     public void setManager(Manager manage) {
         this.manager = manage;
-        startScheduledTasks();
+        startScheduledTasks(false);
     }
 
-    public void startScheduledTasks() {
+    public void startScheduledTasks(boolean isDayDiff) {
+        // if it is a new day, close the library
+        if (isDayDiff) {
+            manager.setState(1);
+        }
+
         // check if the hour is within closing time
         int hour = LocalTime.now().getHour();
         if (hour >= closingTime.getHour() || hour < openingTime.getHour()) {

@@ -2,6 +2,8 @@ package commands;
 
 import system.Calendar;
 
+import java.time.LocalDateTime;
+
 /**
  * Description: For simulation purposes. This method will advance the simulated date of
  * the library ahead by a specified number of days and/or hours. The total number of
@@ -52,9 +54,16 @@ public class AdvanceCommand implements Command {
 
         output.append("success");
 
+        LocalDateTime oldDate = calendar.getCurrentTime();
         calendar.advanceDay(numDays);
         calendar.advanceHour(numHours);
-        calendar.startScheduledTasks();
+        LocalDateTime newDate = calendar.getCurrentTime();
+
+        if (newDate.getDayOfMonth() != oldDate.getDayOfMonth()) {
+            calendar.startScheduledTasks(true);
+        } else {
+            calendar.startScheduledTasks(false);
+        }
 
         return output.toString();
     }
