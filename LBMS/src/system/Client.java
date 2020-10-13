@@ -80,7 +80,7 @@ public class Client {
 
         switch (request[0]) {
             case "buy":
-                if(request.length != 3) {
+                if(request.length < 3) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }else if(!isNumeric(request[1])) {
@@ -340,7 +340,7 @@ public class Client {
                     bookIds.add(Integer.parseInt(tokenizedRequest[i]));
                 }
 
-                manager.checkInBook(userId, bookIds);
+                response = manager.checkInBook(userId, bookIds);
 
                 break;
             case "pay":
