@@ -97,6 +97,7 @@ public class Client {
             case "arrive":
             case "depart":
                 if(request.length != 2) {
+                    request = new String[2];
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }else if(!isNumeric(request[1])) {
@@ -118,6 +119,8 @@ public class Client {
                 break;
             case "borrow":
                 if(request.length != 3) {
+                    if (request.length < 2)
+                        request = new String[2];
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }else if(!isNumeric(request[1])) {
