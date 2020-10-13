@@ -62,7 +62,7 @@ public class Database
     {
         found.clear();
         for (Book book : search) {
-            if (!param.getTitle().equals("*") && !param.getTitle().equals(book.getTitle()))
+            if (!"*".equals(param.getTitle()) && !book.getTitle().equals(param.getTitle()))
                 continue;
             if (!checkAuth(param.getAuthor(), book.getAuthor()))
                 continue;

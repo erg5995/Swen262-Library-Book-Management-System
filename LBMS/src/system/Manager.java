@@ -91,7 +91,7 @@ public class Manager implements IManager{
      */
     public String checkInBook(int userId, List<Integer> bookISBNs){
         //to be handled by states
-        return state.checkOutBook(bookISBNs, userId);
+        return state.checkInBook(bookISBNs, userId);
 
     }
 

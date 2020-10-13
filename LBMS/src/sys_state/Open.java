@@ -110,18 +110,18 @@ public class Open implements SysState {
     /**
      *
      * @param books - list of book ids to return to library
-     * @param user - user who wishes to return the books
+     * @param userID - user who wishes to return the books
      * @return string in the proper response format: return,success;
      */
-    public String checkInBook(List<Integer> books, User user){
+    public String checkInBook(List<Integer> books, int userID){
 
         //response format: 	return,success;
 
         //errors: invalid user id, invalid book ids
 
         //alternate response: overdue + fine applied
-
-       if(!database.hasUser(user.getFirstName(),user.getLastName(),user.getAddress(),user.getPhone())) {
+        User user = database.getUser(userID);
+       if(user == null) {
            return "return,invalid-visitor-id";
        }
        else{
@@ -129,7 +129,7 @@ public class Open implements SysState {
            //if invalid book
            for(Integer id: books){
                if(!database.isValidBorrowID(id)){
-                   invalid.add(id);
+                   invalid.add(id + 1);
                }
            }
            if(!invalid.isEmpty()){

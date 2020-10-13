@@ -54,10 +54,10 @@ public class Closed implements SysState {
     /**
      * checks in book and treats it like it was checked in the next day
      * @param books - books to check in
-     * @param user - user who is returning books
+     * @param userID - user who is returning books
      * @return String in response format
      */
-    public String checkInBook(List<Integer> books, User user){
+    public String checkInBook(List<Integer> books, int userID){
         //apparently users can check in a book while library is closed, need to handle this
         // set return time to be the next opening time and day
 
@@ -66,8 +66,8 @@ public class Closed implements SysState {
         //errors: invalid user id, invalid book ids
 
         //alternate response: overdue + fine applied
-
-        if(!database.hasUser(user.getFirstName(),user.getLastName(),user.getAddress(),user.getPhone())) {
+        User user = database.getUser(userID);
+        if(user == null) {
             return "return,invalid-visitor-id";
         }
         else{

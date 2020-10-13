@@ -21,7 +21,7 @@ public interface SysState {
     public String checkOutBook(List<Integer> books, int userID);
 
     //method to check in book
-    public String checkInBook(List<Integer> books, User user);
+    public String checkInBook(List<Integer> books, int user);
 
 
 
