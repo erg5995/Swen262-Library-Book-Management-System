@@ -1,7 +1,5 @@
 package sys_state;
 
-import data_classes.Book;
-import data_classes.Transaction;
 import data_classes.User;
 import data_classes.Visit;
 import system.Calendar;
