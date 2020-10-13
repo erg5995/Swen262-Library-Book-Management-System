@@ -12,7 +12,7 @@ public class CheckedCopiesSortStrategy implements BookSortStrategy {
     public void sort(List<Book> books) {
 
         int low = 0, high = books.size() - 1;
-        Book[] booksArr = (Book[]) books.toArray();
+        Book[] booksArr = books.toArray(new Book[0]);
 
         sort(booksArr, low, high);
 
