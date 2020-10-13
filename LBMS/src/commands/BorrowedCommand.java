@@ -51,7 +51,7 @@ public class BorrowedCommand implements Command{
             output.append(i).append(","); // id
             output.append(borrowedBooks.get(i).getBook().getIsbn()).append(",");
             output.append(borrowedBooks.get(i).getBook().getTitle()).append(",");
-            output.append(borrowedBooks.get(i).getDateChecked().toString()); //throws null pointer
+            output.append(borrowedBooks.get(i).getDateChecked().toString()).append("\n");
         }
 
         return output.toString();
