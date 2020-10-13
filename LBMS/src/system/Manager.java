@@ -258,7 +258,12 @@ public class Manager implements IManager{
     public String advance(int numDays, int numHours){
         Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar);
         String result = advanceCommand.execute();
+
+        if (numDays > 0) {
+            database.advanceUpdate(numDays, calendar.getCurrentTime().toLocalDate());
+        }
         database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
+
         return result;
     }
 
