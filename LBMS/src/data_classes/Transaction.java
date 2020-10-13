@@ -20,16 +20,17 @@ public class Transaction implements Serializable
      * but always save it as LocalDate since it doesn't matter what
      * time it was checked out or returned
      */
-    public Transaction(Book book, User user, LocalDate dueDate)
+    public Transaction(Book book, User user, LocalDate dateChecked, LocalDate dueDate)
     {
         this.book = book;
         this.user = user;
         this.dueDate = dueDate;
+        this.dateChecked = dateChecked;
         fine = 0;
     }
-    public Transaction(Book book, User user, LocalDateTime dueDateTime)
+    public Transaction(Book book, User user, LocalDateTime dateChecked, LocalDateTime dueDateTime)
     {
-        this(book, user, dueDateTime.toLocalDate());
+        this(book, user, dateChecked.toLocalDate(), dueDateTime.toLocalDate());
     }
 
     /**

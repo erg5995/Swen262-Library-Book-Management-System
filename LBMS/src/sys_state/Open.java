@@ -1,7 +1,5 @@
 package sys_state;
 
-import data_classes.Book;
-import data_classes.Transaction;
 import data_classes.User;
 import data_classes.Visit;
 import system.Calendar;
@@ -57,7 +55,7 @@ public class Open implements SysState {
         manager.addVisit(new Visit(user, time));
 
         //response format: arrive,visitor ID,visit date, visit start time
-        return "arrive, " + id + ", " + time.toLocalDate() + ", " + time;
+        return "arrive, " + id + ", " + time.toLocalDate() + ", " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond();
     }
 
     /**
@@ -83,7 +81,7 @@ public class Open implements SysState {
         ArrayList<Integer> invalid = new ArrayList<Integer>();
         for (Integer id: books){
             if(!database.isValidLibraryID(id)){
-                invalid.add(id);
+                invalid.add(id + 1);
             }
         }
         if(!invalid.isEmpty())
@@ -103,7 +101,7 @@ public class Open implements SysState {
         }
         database.checkOutBooks(userID, books);
         for(Integer id: books) {
-            database.addTransaction(id, user.getId(), calendar.getCurrentTime().toLocalDate().plusDays(7));
+            database.addTransaction(id, userID, calendar.getCurrentTime().toLocalDate(), calendar.getCurrentTime().toLocalDate().plusDays(7));
         }
         return "borrow," + calendar.getCurrentTime().toLocalDate().plusDays(7);
     }

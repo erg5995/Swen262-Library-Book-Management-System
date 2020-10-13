@@ -38,7 +38,7 @@ public class Manager implements IManager{
      */
     public Manager(){
         database = new Database();
-
+        calendar = new Calendar();
         Open open = new Open(this, database,calendar);
 
         Closed closed = new Closed(this, database,calendar);
@@ -49,8 +49,9 @@ public class Manager implements IManager{
 
         states[1] = closed;
 
+        calendar.setManager(this);
+
         ongoingVisits = new ArrayList<Visit>();
-        calendar = new Calendar(this);
     }
 
     /**
@@ -210,7 +211,7 @@ public class Manager implements IManager{
      * @return String in response format
      */
     public String depart(int userId){
-        Command departCommand = new DepartCommand(userId,(IManager)this);
+        Command departCommand = new DepartCommand(userId,this);
         return departCommand.execute();
     }
 
@@ -257,7 +258,12 @@ public class Manager implements IManager{
     public String advance(int numDays, int numHours){
         Command advanceCommand = new AdvanceCommand(numDays,numHours,calendar);
         String result = advanceCommand.execute();
+
+        if (numDays > 0) {
+            database.advanceUpdate(numDays, calendar.getCurrentTime().toLocalDate());
+        }
         database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
+
         return result;
     }
 

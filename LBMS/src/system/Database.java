@@ -103,13 +103,13 @@ public class Database
         return true;
     }
     public void addTransaction(Transaction trans) { checkedOutBooks.add(trans); }
-    public void addTransaction(Book book, User user, LocalDate dueDate)
+    public void addTransaction(Book book, User user, LocalDate dateChecked, LocalDate dueDate)
     {
-        addTransaction(new Transaction(book, user, dueDate));
+        addTransaction(new Transaction(book, user, dateChecked, dueDate));
     }
-    public void addTransaction(int bookID, int userID, LocalDate dueDate)
+    public void addTransaction(int bookID, int userID, LocalDate dateChecked, LocalDate dueDate)
     {
-        addTransaction(librarySearch.get(bookID), users.get(userID), dueDate);
+        addTransaction(librarySearch.get(bookID), users.get(userID), dateChecked, dueDate);
     }
 
     public List<Transaction> findBorrowedBooks(User user)
@@ -338,7 +338,7 @@ public class Database
     public boolean isValidStoreID(int bookID) { return bookID > -1 && bookID < storeSearch.size(); }
     public boolean userCanCheckOut(int userID, int numBooks)
     {
-        return users.get(userID).getNumBooksChecked() + numBooks > User.MAX_BOOKS_CHECKED;
+        return users.get(userID).getNumBooksChecked() + numBooks <= User.MAX_BOOKS_CHECKED;
     }
     public boolean isEmployee(int userID) { return users.get(userID).getType() == User.UserRole.EMPLOYEE; }
     //might not need- if caller has reference to User than they can just call hasDebt()

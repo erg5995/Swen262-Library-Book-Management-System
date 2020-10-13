@@ -3,8 +3,14 @@ import data_classes.User;
 import system.Calendar;
 import system.Database;
 
+/**
+ * register,first name,last name,address, phone-number;
+ * first name is the first name of the visitor.
+ * last name is the last name of the visitor.
+ * address is the address of the visitor.
+ * phone-number is the phone number of the visitor.
+ */
 public class RegisterCommand implements Command{
-
 
     private String firstName;
     private String lastName;
@@ -30,7 +36,7 @@ public class RegisterCommand implements Command{
         else {
             User user = new User(firstName, lastName, address, phone);
             database.addUser(user);
-            return "register," + user.getId() + "," + calendar.getCurrentTime().toLocalDate() + ";";
+            return "register," + String.format("%010d", user.getId()) + "," + calendar.getCurrentTime().toLocalDate() + ";";
         }
     }
 }
