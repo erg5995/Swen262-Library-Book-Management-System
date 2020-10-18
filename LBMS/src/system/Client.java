@@ -16,68 +16,76 @@ public class Client {
     private static system.Manager manager = new system.Manager();
 
     public static void main(String[] args) {
+        try {
+            Scanner scanner = new Scanner(System.in);
+            String input = "";
+            String response = "";
+            String[] tokenizedReq = {""};
+            String[] confirmedReq = {""};
+            System.out.print("> ");
+            while (true) {
+                if (Math.random() < .5)
+                input += scanner.nextLine();
+                if (input.charAt(input.length() - 1) == ';') {
 
-        Scanner scanner = new Scanner(System.in);
-        String input = "";
-        String response = "";
-        String[] tokenizedReq = {""};
-        String[] confirmedReq = {""};
-        System.out.print("> ");
-        while(true) {
-            input += scanner.nextLine();
-            if(input.charAt(input.length() - 1) == ';') {
+                    input = input.substring(0, input.length() - 1);
 
-                input = input.substring(0, input.length() - 1);
+                    tokenizedReq = split(input);
+                    confirmedReq = errorCheck(tokenizedReq);
 
-                tokenizedReq = split(input);
-                confirmedReq = errorCheck(tokenizedReq);
+                    if (confirmedReq[0].equals("error")) {
+                        System.out.println("> Error: " + confirmedReq[1]);
+                    }
 
-                if(confirmedReq[0].equals("error")) {
-                    System.out.println("> Error: " + confirmedReq[1]);
+                    response = sendRequest(confirmedReq);
+
+                    System.out.println("> " + response);
+                    System.out.print("> ");
+                    input = "";
+                } else {
+                    System.out.print("> ");
                 }
-
-                response = sendRequest(confirmedReq);
-
-                System.out.println("> " + response);
-                System.out.print("> ");
-                input = "";
-            }else{
-                System.out.print("> ");
             }
+        } catch (Exception e) {
+            manager.shutdownSystem();
+            System.out.println("\n" + e.getMessage());
         }
     }
 
     private static String[] split(String request) {
         int commas = 0;
         boolean count = true;
-        int[] splitIdxs = new int[request.length()]; //This should p̶r̶o̶b̶a̶b̶l̶y̶  definitely be a list, but whatever
+        List<Integer> splitIdxs = new ArrayList<>();
         int splitIdx = 0;
         for(int i = 0; i < request.length(); i++) {
             if(request.charAt(i) == (',') && count) {
-                splitIdxs[splitIdx++] = i;
+                splitIdxs.add(i);
                 commas++;
             }
-            if(request.charAt(i) == ('{')) count = false;
-            if(request.charAt(i) == ('}')) count = true;
+            else if(request.charAt(i) == ('{')) count = false;
+            else if(request.charAt(i) == ('}')) count = true;
         }
-        splitIdxs[splitIdx] = request.length();
+        splitIdxs.add(request.length());
 
         String[] tokenizedRequest = new String[commas + 1];
 
         int startIdx = -1;
         int endIdx = 0;
-        for(int i = 0; i < splitIdxs.length; i++) {
-            if(splitIdxs[i] == 0) break;
-            endIdx = splitIdxs[i];
+        for(int i = 0; i < splitIdxs.size(); i++) {
+            if(splitIdxs.get(i) == 0) break;
+            endIdx = splitIdxs.get(i);
             tokenizedRequest[i] = request.substring(startIdx + 1, endIdx);
-            startIdx = splitIdxs[i];
+            startIdx = splitIdxs.get(i);
         }
 
         return tokenizedRequest;
     }
 
     private static String[] errorCheck(String[] request) {
-
+        if (request.length == 0 || (request.length == 1 && !"report".equals(request[0]) && !"datetime".equals(request[0]))) {
+            request = new String[] {ERROR_MSG, "missing arguments"};
+            return request;
+        }
         switch (request[0]) {
             case "buy":
                 if(request.length < 3) {
@@ -97,7 +105,6 @@ public class Client {
             case "arrive":
             case "depart":
                 if(request.length != 2) {
-                    request = new String[2];
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }else if(!isNumeric(request[1])) {
@@ -112,15 +119,13 @@ public class Client {
                 }
                 break;
             case "search":
-                if(request.length < 2 || request.length > 6) {
+                if(request.length > 6) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }
                 break;
             case "borrow":
                 if(request.length != 3) {
-                    if (request.length < 2)
-                        request = new String[2];
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }else if(!isNumeric(request[1])) {
@@ -174,7 +179,7 @@ public class Client {
                 }
                 break;
             case "advance":
-                if(request.length < 2 || request.length > 3) {
+                if(request.length > 3) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }else{
@@ -201,7 +206,10 @@ public class Client {
                     }
                 }
             case "datetime":
+                break;
             default:
+                request[0] = ERROR_MSG;
+                request[1] = "unrecognized command";
                 break;
         }
 
