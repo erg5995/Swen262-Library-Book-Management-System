@@ -24,7 +24,6 @@ public class Client {
             String[] confirmedReq = {""};
             System.out.print("> ");
             while (true) {
-                if (Math.random() < .5)
                 input += scanner.nextLine();
                 if (input.charAt(input.length() - 1) == ';') {
 
@@ -48,7 +47,7 @@ public class Client {
             }
         } catch (Exception e) {
             manager.shutdownSystem();
-            System.out.println("\n" + e.getMessage());
+            System.out.println("\n\n Exception Found:" + e + "\nShutting down system.");
         }
     }
 
