@@ -7,13 +7,13 @@
 9781411676442,"Had, Hoodwinked and Bamboozled (willie Lynch is Running Wild in the Democratic Party)!! and He Has the Black Community, Just where He Wants Them!!",{Evang. G. E. McTyre, Evangelist Evang. G. E., BHG McTyre BA},"Lulu.com",2006-01,138
 9780873229593,"Lore of Running",{Timothy Noakes},"Human Kinetics",2003,931
 9781408855713,"Harry Potter and the Deathly Hallows",{J. K. Rowling},"Bloomsbury Publishing",2014,619
-9781781100516,"Harry Potter and the Prisoner of Azkaban",{J.K. Rowling},"Pottermore",1999-07-08,448
-9781781100486,"Harry Potter and the Sorcerer's Stone",{J.K. Rowling},"Pottermore",2015-12-08,309
+9781781100516,"Harry Potter and the Prisoner of Azkaban",{J. K. Rowling},"Pottermore",1999-07-08,448
+9781781100486,"Harry Potter and the Sorcerer's Stone",{J. K. Rowling},"Pottermore",2015-12-08,309
 9781338029994,"Harry Potter Coloring Book",{Inc. Scholastic},"Scholastic Incorporated",2015-11-10,96
 9781783296033,"Harry Potter",{Jody Revenson},"Titan Books",2015-09-25,208
 9780062101891,"Harry Potter Page to Screen",{Bob McCabe},"Harper Design",2011-10-25,540
 9780545582971,"Harry Potter and the Order of the Phoenix",{J. K. Rowling},"Scholastic Paperbacks",2013-08-27,870
-9781781107041,"Harry Potter and the Cursed Child â€“ Parts One and Two (Special Rehearsal Edition)",{J.K. Rowling, John Tiffany, Jack Thorne},"Pottermore",2016-07-31,320
+9781781107041,"Harry Potter and the Cursed Child â€“ Parts One and Two (Special Rehearsal Edition)",{J. K. Rowling, John Tiffany, Jack Thorne},"Pottermore",2016-07-31,320
 9780545387200,"The Hunger Games Trilogy",{Suzanne Collins},"Scholastic Inc.",2011-05-01,1000
 9780545452373,"The World of the Hunger Games",{Kate Egan},"Scholastic Inc.",2012-03-23,192
 9780545227247,"Catching Fire (The Second Book of the Hunger Games)",{Suzanne Collins},"Scholastic Inc.",2010-06-01,400
