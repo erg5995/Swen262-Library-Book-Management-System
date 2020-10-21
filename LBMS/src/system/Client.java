@@ -347,7 +347,7 @@ public class Client {
                 List<Integer> bookIds = new ArrayList<>();
 
                 for(int i = 2; i < tokenizedRequest.length; i++) {
-                    bookIds.add(Integer.parseInt(tokenizedRequest[i]));
+                    bookIds.add(Integer.parseInt(tokenizedRequest[i]) - 1);
                 }
 
                 response = manager.checkInBook(userId, bookIds);

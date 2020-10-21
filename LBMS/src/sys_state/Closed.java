@@ -75,7 +75,7 @@ public class Closed implements SysState {
             //if invalid book
             for(Integer id: books){
                 if(!database.isValidBorrowID(id)){
-                    invalid.add(id);
+                    invalid.add(id + 1);
                 }
             }
             if(!invalid.isEmpty()){
