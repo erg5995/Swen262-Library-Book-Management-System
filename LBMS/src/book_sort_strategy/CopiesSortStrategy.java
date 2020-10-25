@@ -2,6 +2,8 @@ package book_sort_strategy;
 
 import data_classes.Book;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,17 +14,14 @@ public class CopiesSortStrategy implements BookSortStrategy {
     public void sort(List<Book> books) {
 
         int low = 0, high = books.size() - 1;
-        Book[] booksArr = books.toArray(new Book[0]);
 
-        sort(booksArr, low, high);
-
-        books = Arrays.asList(booksArr);
+        sort((ArrayList<Book>)books, low, high);
 
         books.removeIf(book -> book.getNumCopiesLeft() <= 0);
 
     }
 
-    private void sort(Book[] books, int low, int high) {
+    private void sort(ArrayList<Book> books, int low, int high) {
         if (low < high)
         {
             int pi = partition(books, low, high);
@@ -32,25 +31,25 @@ public class CopiesSortStrategy implements BookSortStrategy {
         }
     }
 
-    private int partition(Book[] books, int low, int high)
+    private int partition(ArrayList<Book> books, int low, int high)
     {
-        int pivot = books[high].getNumCopiesLeft();
+        int pivot = books.get(high).getNumCopiesLeft();
         int i = (low-1);
         for (int j=low; j<high; j++)
         {
-            if (books[j].getNumCopiesLeft() < pivot)
+            if (books.get(j).getNumCopiesLeft() < pivot)
             {
                 i++;
 
-                Book temp = books[i];
-                books[i] = books[j];
-                books[j] = temp;
+                Book temp = books.get(i);
+                books.set(i, books.get(j));
+                books.set(j, temp);
             }
         }
 
-        Book temp = books[i+1];
-        books[i+1] = books[high];
-        books[high] = temp;
+        Book temp = books.get(i + 1);
+        books.set(i + 1, books.get(high));
+        books.set(high, temp);
 
         return i+1;
     }
