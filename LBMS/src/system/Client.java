@@ -13,9 +13,11 @@ public class Client {
     private static String WRONG_PARAM = "wrong parameters";
     private static String NOT_INTEGER = "must be an integer value";
 
-    private static system.Manager manager = new system.Manager();
+    private static system.Manager manager;
 
     public static void main(String[] args) {
+        manager = new system.Manager();
+        //setup gui
     }
 
     public String input(String input) {
@@ -35,7 +37,7 @@ public class Client {
             return response;
         } catch (Exception e) {
             manager.shutdownSystem();
-            return "Exception Found:" + e + "\nShutting down system.";
+            return "Exception Found: " + e + "\nShutting down system.";
         }
     }
 
