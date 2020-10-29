@@ -142,7 +142,53 @@ public class GUIController
         text5.setText("");
     }
     public void submitPressed(ActionEvent e)
-    {}
+    {
+        String request = "";
+        switch(state) {
+            case BUY:
+            case PAY:
+            case RETURN:
+                request = text1.getText() + "," + text2.getText();
+                break;
+            case INFO:
+            case SEARCH:
+                request = text1.getText();
+                if (text2.getText().length() > 0) {
+                    request += ",{" + text2.getText() + "}";
+                    if (text3.getText().length() > 0) {
+                        request += "," + text3.getText();
+                        if (text4.getText().length() > 0) {
+                            request += "," + text4.getText();
+                            if (text5.getText().length() > 0)
+                                request += "," + text5.getText();
+                        }
+                    }
+                }
+                break;
+            case ARRIVE:
+            case DEPART:
+            case BORROWED:
+                request = text1.getText();
+                break;
+            case BORROW:
+                request = text1.getText() + ",{" + text2.getText() + "}";
+                break;
+            case REPORT:
+                if (text1.getText().length() > 0)
+                    request = text1.getText();
+                break;
+            case ADVANCE:
+                request = text1.getText();
+                if (text2.getText().length() > 0)
+                    request += "," + text2.getText();
+                break;
+            case DATETIME:
+                break;
+            case REGISTER:
+                request = text1.getText() + "," + text2.getText() + "," + text3.getText() + "," + text4.getText();
+        }
+        labelOut.setText(client.input(state + "," + request));
+    }
 
     private void setVisible(int num)
     {

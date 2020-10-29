@@ -16,38 +16,26 @@ public class Client {
     private static system.Manager manager = new system.Manager();
 
     public static void main(String[] args) {
+    }
+
+    public String input(String input) {
         try {
-            Scanner scanner = new Scanner(System.in);
-            String input = "";
             String response = "";
             String[] tokenizedReq = {""};
             String[] confirmedReq = {""};
-            System.out.print("> ");
-            while (true) {
-                input += scanner.nextLine();
-                if (input.charAt(input.length() - 1) == ';') {
 
-                    input = input.substring(0, input.length() - 1);
+            tokenizedReq = split(input);
+            confirmedReq = errorCheck(tokenizedReq);
 
-                    tokenizedReq = split(input);
-                    confirmedReq = errorCheck(tokenizedReq);
-
-                    if (confirmedReq[0].equals("error")) {
-                        System.out.println("> Error: " + confirmedReq[1]);
-                    }
-
-                    response = sendRequest(confirmedReq);
-
-                    System.out.println("> " + response);
-                    System.out.print("> ");
-                    input = "";
-                } else {
-                    System.out.print("> ");
-                }
+            if (confirmedReq[0].equals("error")) {
+                return "Error: " + confirmedReq[1];
             }
+            response = sendRequest(confirmedReq);
+
+            return response;
         } catch (Exception e) {
             manager.shutdownSystem();
-            System.out.println("\n\n Exception Found:" + e + "\nShutting down system.");
+            return "Exception Found:" + e + "\nShutting down system.";
         }
     }
 
