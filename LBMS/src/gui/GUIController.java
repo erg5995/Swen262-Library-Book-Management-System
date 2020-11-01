@@ -1,11 +1,12 @@
 package gui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import system.Client;
 
 import javafx.event.ActionEvent;
-
-import java.awt.*;
 
 public class GUIController
 {
@@ -18,7 +19,10 @@ public class GUIController
     private State state;
     @FXML
     private TextField text1, text2, text3, text4, text5;
-    private Label label1, label2, label3, label4, label5, labelOut;
+    @FXML
+    private Label label1, label2, label3, label4, label5;
+    @FXML
+    private TextArea labelOut;
 
     public GUIController(Client c)
     {

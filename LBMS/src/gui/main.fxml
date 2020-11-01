@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="296.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
+      <children>
+            <Button layoutX="56.0" layoutY="30.0" mnemonicParsing="false" onAction="#searchPressed" text="Search" />
+            <Button layoutX="146.0" layoutY="30.0" mnemonicParsing="false" onAction="#arrivePressed" prefHeight="27.0" prefWidth="63.0" text="Arrive" />
+            <Button layoutX="239.0" layoutY="30.0" mnemonicParsing="false" onAction="#borrowedPressed" prefHeight="27.0" prefWidth="72.0" text="Borrowed" />
+            <Button layoutX="340.0" layoutY="30.0" mnemonicParsing="false" onAction="#infoPressed" prefHeight="27.0" prefWidth="55.0" text="Info" />
+            <Button layoutX="424.0" layoutY="30.0" mnemonicParsing="false" onAction="#advancePressed" text="Advance" />
+            <Button layoutX="519.0" layoutY="30.0" mnemonicParsing="false" onAction="#payPressed" prefHeight="27.0" prefWidth="52.0" text="Pay" />
+            <Button layoutX="56.0" layoutY="75.0" mnemonicParsing="false" onAction="#buyPressed" prefHeight="27.0" prefWidth="57.0" text="Buy" />
+            <Button layoutX="146.0" layoutY="75.0" mnemonicParsing="false" onAction="#departPressed" prefHeight="27.0" prefWidth="63.0" text="Depart" />
+            <Button layoutX="240.0" layoutY="75.0" mnemonicParsing="false" onAction="#returnPressed" prefHeight="27.0" prefWidth="72.0" text="Return" />
+            <Button layoutX="340.0" layoutY="75.0" mnemonicParsing="false" onAction="#borrowPressed" text="Borrow" />
+            <Button layoutX="424.0" layoutY="75.0" mnemonicParsing="false" onAction="#datetimePressed" text="Datetime" />
+            <Button layoutX="517.0" layoutY="75.0" mnemonicParsing="false" onAction="#reportPressed" text="Report" />
+            <Button layoutX="53.0" layoutY="312.0" mnemonicParsing="false" onAction="#registerPressed" text="Register" />
+            <Button layoutX="466.0" layoutY="313.0" mnemonicParsing="false" onAction="#clearPressed" text="Clear" />
+            <Button layoutX="516.0" layoutY="313.0" mnemonicParsing="false" onAction="#submitPressed" text="Submit" />
+            <TextArea fx:id="labelOut" layoutX="328.0" layoutY="121.0" prefHeight="166.0" prefWidth="244.0" />
+            <TextField fx:id="text1" layoutX="130.0" layoutY="128.0" />
+            <TextField fx:id="text2" layoutX="130.0" layoutY="163.0" />
+            <TextField fx:id="text3" layoutX="130.0" layoutY="197.0" />
+            <TextField fx:id="text4" layoutX="130.0" layoutY="230.0" />
+            <TextField fx:id="text5" layoutX="131.0" layoutY="264.0" />
+            <Label fx:id="label1" layoutX="50.0" layoutY="132.0" text="Label" />
+            <Label fx:id="label2" layoutX="50.0" layoutY="169.0" text="Label" />
+            <Label fx:id="label3" layoutX="50.0" layoutY="201.0" text="Label" />
+            <Label fx:id="label4" layoutX="50.0" layoutY="234.0" text="Label" />
+            <Label fx:id="label5" layoutX="50.0" layoutY="268.0" text="Label" />
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>
