@@ -42,7 +42,7 @@ public class InitDatabase
 
         HashMap<String, Book> booksInStore = new HashMap<>();
         try {
-            FileReader file = new FileReader("LBMS\\resources\\books.txt");
+            FileReader file = new FileReader("LBMS/resources/books.txt");
             BufferedReader in = new BufferedReader(file);
 
             String temp, isbn, title, publisher;
@@ -89,7 +89,7 @@ public class InitDatabase
     private static void writeObject(Object object, String fileName)
     {
         try {
-            FileOutputStream file = new FileOutputStream("LBMS\\resources\\" + fileName);
+            FileOutputStream file = new FileOutputStream("LBMS/resources/" + fileName);
             ObjectOutputStream out = new ObjectOutputStream(file);
             out.writeObject(object);
             out.close();

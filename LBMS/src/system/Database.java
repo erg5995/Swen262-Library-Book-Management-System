@@ -26,15 +26,15 @@ public class Database
         librarySearch = new ArrayList<>();
         storeSearch = new ArrayList<>();
         borrowSearch = new ArrayList<>();
-        fileNames = new String[]{"LBMS\\resources\\booksOwned.ser",
-                                 "LBMS\\resources\\booksInStore.ser",
-                                 "LBMS\\resources\\checkedOutBooks.ser",
-                                 "LBMS\\resources\\returnedBooks.ser",
-                                 "LBMS\\resources\\visits.ser",
-                                 "LBMS\\resources\\users.ser",
-                                 "LBMS\\resources\\numBooksBought.ser",
-                                 "LBMS\\resources\\fines.ser",
-                                 "LBMS\\resources\\payments.ser"};
+        fileNames = new String[]{"LBMS/resources/booksOwned.ser",
+                                 "LBMS/resources/booksInStore.ser",
+                                 "LBMS/resources/checkedOutBooks.ser",
+                                 "LBMS/resources/returnedBooks.ser",
+                                 "LBMS/resources/visits.ser",
+                                 "LBMS/resources/users.ser",
+                                 "LBMS/resources/numBooksBought.ser",
+                                 "LBMS/resources/fines.ser",
+                                 "LBMS/resources/payments.ser"};
         readData();
     }
 
