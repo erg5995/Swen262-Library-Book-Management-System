@@ -4,10 +4,13 @@ import book_sort_strategy.*;
 import data_classes.Book;
 import gui.GUIController;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +35,14 @@ public class Client extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setTitle("Library Book Management System");
         primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                Platform.exit();
+                manager.shutdownSystem();
+                System.exit(0);
+            }
+        });
     }
 
     public String input(String input) {
@@ -50,8 +61,7 @@ public class Client extends Application {
 
             return response;
         } catch (Exception e) {
-            manager.shutdownSystem();
-            return "Exception Found: " + e + "\nShutting down system.";
+            return "Exception Caught: " + e + "\nPlease make sure you're input is formatted correctly.";
         }
     }
 

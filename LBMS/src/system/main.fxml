@@ -21,7 +21,7 @@
             <Button layoutX="517.0" layoutY="75.0" mnemonicParsing="false" onAction="#reportPressed" text="Report" />
             <Button layoutX="53.0" layoutY="312.0" mnemonicParsing="false" onAction="#registerPressed" text="Register" />
             <Button layoutX="466.0" layoutY="313.0" mnemonicParsing="false" onAction="#clearPressed" text="Clear" />
-            <Button layoutX="516.0" layoutY="313.0" mnemonicParsing="false" onAction="#submitPressed" text="Submit" />
+            <Button defaultButton="true" layoutX="516.0" layoutY="313.0" mnemonicParsing="false" onAction="#submitPressed" text="Submit" />
             <TextArea fx:id="labelOut" layoutX="328.0" layoutY="121.0" prefHeight="166.0" prefWidth="244.0" />
             <TextField fx:id="text1" layoutX="130.0" layoutY="128.0" />
             <TextField fx:id="text2" layoutX="130.0" layoutY="163.0" />

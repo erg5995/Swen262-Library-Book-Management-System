@@ -191,7 +191,7 @@ public class GUIController
             case REGISTER:
                 request = text1.getText() + "," + text2.getText() + "," + text3.getText() + "," + text4.getText();
         }
-        labelOut.setText(client.input(state.toString().toLowerCase() + "," + request));
+        labelOut.setText(client.input(state.toString().toLowerCase() + "," + request) + "\n\n" + labelOut.getText());
     }
 
     private void setVisible(int num)
