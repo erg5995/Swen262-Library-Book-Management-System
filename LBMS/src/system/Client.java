@@ -2,6 +2,7 @@ package system;
 
 import book_sort_strategy.*;
 import data_classes.Book;
+import gui.GUIController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,7 +28,7 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("src/gui/main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         primaryStage.setScene(new Scene(root));
         primaryStage.setTitle("Library Book Management System");
         primaryStage.show();

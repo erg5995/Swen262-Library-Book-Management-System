@@ -24,10 +24,10 @@ public class GUIController
     @FXML
     private TextArea labelOut;
 
-    public GUIController(Client c)
+    public GUIController()
     {
-        client = c;
-        registerPressed(new ActionEvent());
+        client = new Client();
+//        registerPressed(new ActionEvent()); throws null pointer?
     }
 
     /** Methods for user input */
@@ -191,7 +191,7 @@ public class GUIController
             case REGISTER:
                 request = text1.getText() + "," + text2.getText() + "," + text3.getText() + "," + text4.getText();
         }
-        labelOut.setText(client.input(state + "," + request));
+        labelOut.setText(client.input(state.toString().toLowerCase() + "," + request));
     }
 
     private void setVisible(int num)

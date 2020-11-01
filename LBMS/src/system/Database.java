@@ -212,9 +212,9 @@ public class Database
             temp = visits.get(v).getTimeSpent();
             for (int i = 0; i < 3; i++)
                 time[i] += temp[i];
-        }
+        }   //TODO fix integer division of time
         for (int i = 0; i < 3; i++)
-            time[i] /= (visits.size() - v + 1);
+            time[i] /= (visits.size() - v);
         //calculates all the fines fined and the payments made in the last (days) days
         double totFines = 0, totPayments = 0;
         for (int i = 0; i < days; i++) {
