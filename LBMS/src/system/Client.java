@@ -2,12 +2,17 @@ package system;
 
 import book_sort_strategy.*;
 import data_classes.Book;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-public class Client {
+public class Client extends Application {
 
     private static String ERROR_MSG = "error";
     private static String WRONG_PARAM = "wrong parameters";
@@ -17,7 +22,15 @@ public class Client {
 
     public static void main(String[] args) {
         manager = new system.Manager();
-        //setup gui
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("src/gui/main.fxml"));
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setTitle("Library Book Management System");
+        primaryStage.show();
     }
 
     public String input(String input) {
