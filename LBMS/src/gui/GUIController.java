@@ -101,8 +101,8 @@ public class GUIController
     public void advancePressed(ActionEvent e)
     {
         state = State.ADVANCE;
-        label1.setText("Number of Days:");
-        label2.setText("Number of Hours*:");
+        label1.setText("Num. of Days:");
+        label2.setText("Num. of Hours*:");
         setVisible(2);
         clearPressed(e);
     }
@@ -123,7 +123,7 @@ public class GUIController
     public void reportPressed(ActionEvent e)
     {
         state = State.REPORT;
-        label1.setText("Number of Days*:");
+        label1.setText("Num. of Days*:");
         setVisible(1);
         clearPressed(e);
     }

@@ -35,13 +35,10 @@ public class Client extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setTitle("Library Book Management System");
         primaryStage.show();
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                Platform.exit();
-                manager.shutdownSystem();
-                System.exit(0);
-            }
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            Platform.exit();
+            manager.shutdownSystem();
+            System.exit(0);
         });
     }
 
