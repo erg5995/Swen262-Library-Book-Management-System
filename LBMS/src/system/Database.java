@@ -183,8 +183,7 @@ public class Database
             for (int i = 0; i < 3; i++)
                 time[i] += temp[i];
         }
-        for (int i = 0; i < 3; i++)
-            time[i] /= (visits.size() - v + 1);
+        divideTime(time, visits.size());
         //calculates all the fines fined and the payments made, and the number of books bought for the library
         double totFines = 0, totPayments = 0;
         for (int i = 0; i < fines.size(); i++) {
@@ -204,7 +203,7 @@ public class Database
         for (Book book : booksOwned.values())
             numBooks += book.getNumCopies();
         // counts the number of books bought in the last (days) days
-        for (int i = 0; i < days; i++)
+        for (int i = 0; i < days && i < numBooksBought.size(); i++)
             booksBought += numBooksBought.get(i);
         // calculates the average visit time of the last (days) days
         int[] time = new int[3], temp;
@@ -212,17 +211,26 @@ public class Database
             temp = visits.get(v).getTimeSpent();
             for (int i = 0; i < 3; i++)
                 time[i] += temp[i];
-        }   //TODO fix integer division of time
-        for (int i = 0; i < 3; i++)
-            time[i] /= (visits.size() - v);
+        }
+        divideTime(time, visits.size() - v);
         //calculates all the fines fined and the payments made in the last (days) days
         double totFines = 0, totPayments = 0;
-        for (int i = 0; i < days; i++) {
+        for (int i = 0; i < days && i < fines.size(); i++) {
             totFines += fines.get(i);
             totPayments += payments.get(i);
         }
         // returns a report summarizing all the statistics calculated above
         return new Report(users.size(), numBooks, booksBought, time, totPayments, totFines - totPayments);
+    }
+    private void divideTime(int[] time, int size)
+    {
+        if (size != 0) {
+            for (int i = 0; i < 2; i++) {
+                time[i + 1] += (time[i] % size) * 60;
+                time[i] /= size;
+            }
+            time[2] /= size;
+        }
     }
 
     /**

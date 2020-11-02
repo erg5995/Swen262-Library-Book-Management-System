@@ -117,6 +117,7 @@ public class Client extends Application {
                 break;
             case "arrive":
             case "depart":
+            case "borrowed":
                 if(request.length != 2) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
@@ -154,15 +155,6 @@ public class Client extends Application {
                         request[1] = "parameter 2 " + NOT_INTEGER;
                         break;
                     }
-                }
-                break;
-            case "borrowed":
-                if(request.length != 2) {
-                    request[0] = ERROR_MSG;
-                    request[1] = WRONG_PARAM;
-                }else if(!isNumeric(request[1])) {
-                    request[0] = ERROR_MSG;
-                    request[1] = "parameter 1 " + NOT_INTEGER;
                 }
                 break;
             case "return":
@@ -209,13 +201,13 @@ public class Client extends Application {
                 if(request.length > 2) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
-                }else{
-                    for(int i = 1; i < request.length; i++) {
-                        if(!isNumeric(request[i])) {
-                            request[0] = ERROR_MSG;
-                            request[1] = "parameter " + i + " " + NOT_INTEGER;
-                            break;
-                        }
+                } else if (request.length == 2) {
+                    if (request[1].isEmpty()) {
+                        request = new String[] {"report"};
+                    } else if (!isNumeric(request[1])) {
+                        request[0] = ERROR_MSG;
+                        request[1] = "parameter " + request[1] + " " + NOT_INTEGER;
+                        break;
                     }
                 }
             case "datetime":
@@ -276,19 +268,7 @@ public class Client extends Application {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
                 }else if(length == 6) {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
-                    String strat = tokenizedRequest[5];
-
-                    if(strat.equals("author")) {
-                        strategy = new AuthorSortStrategy();
-                    }else if(strat.equals("checkedcopies")) {
-                        strategy = new CheckedCopiesSortStrategy();
-                    }else if(strat.equals("copies")) {
-                        strategy = new CopiesSortStrategy();
-                    }else if(strat.equals("publishdate")) {
-                        strategy = new PublishDateSortStrategy();
-                    }else if(strat.equals("title")) {
-                        strategy = new TitleSortStrategy();
-                    }
+                    strategy = getBookSortStrategy(tokenizedRequest, strategy);
                 }
 
                 response = manager.infoSearch(bookToFind, true, strategy);
@@ -303,7 +283,7 @@ public class Client extends Application {
 
                 if(length == 2) {
                     bookToFind = new Book(null, title, null, null, null, 0, 0, 0);
-                }else if(length > 2) {
+                } else {
 
                     authorList = tokenizedRequest[2];
 
@@ -318,21 +298,7 @@ public class Client extends Application {
                     } else if (length == 5) {
                         bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
                     }else if(length == 6) {
-
-                        String strat = tokenizedRequest[5];
-
-                        if (strat.equals("author")) {
-                            strategy = new AuthorSortStrategy();
-                        } else if (strat.equals("checkedcopies")) {
-                            strategy = new CheckedCopiesSortStrategy();
-                        } else if (strat.equals("copies")) {
-                            strategy = new CopiesSortStrategy();
-                        } else if (strat.equals("publishdate")) {
-                            strategy = new PublishDateSortStrategy();
-                        } else if (strat.equals("title")) {
-                            strategy = new TitleSortStrategy();
-                        }
-
+                        strategy = getBookSortStrategy(tokenizedRequest, strategy);
                     }
                 }
 
@@ -399,6 +365,28 @@ public class Client extends Application {
         }
 
         return response;
+    }
+
+    private static BookSortStrategy getBookSortStrategy(String[] tokenizedRequest, BookSortStrategy strategy) {
+        String strat = tokenizedRequest[5];
+
+        switch (strat) {
+            case "author":
+                strategy = new AuthorSortStrategy();
+                break;
+            case "checkedcopies":
+                strategy = new CheckedCopiesSortStrategy();
+                break;
+            case "copies":
+                strategy = new CopiesSortStrategy();
+                break;
+            case "publishdate":
+                strategy = new PublishDateSortStrategy();
+                break;
+            case "title":
+                strategy = new TitleSortStrategy();
+        }
+        return strategy;
     }
 
     private static boolean isNumeric(String str) {
