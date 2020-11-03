@@ -64,11 +64,11 @@ public class Database
         for (Book book : search) {
             if (!"*".equals(param.getTitle()) && !book.getTitle().equals(param.getTitle()))
                 continue;
-            if (!checkAuth(param.getAuthor(), book.getAuthor()))
+            if (!checkAuth(param.getAuthorList(), book.getAuthorList()))
                 continue;
             if (param.getIsbn() != null && !param.getIsbn().equals("*") && !param.getIsbn().equals(book.getIsbn()))
                 continue;
-            if (param.getPublisher() != null && !param.getPublisher().equals("*") && !param.getPublisher().equals(book.getPublisher()))
+            if (param.getPublisherString() != null && !param.getPublisherString().equals("*") && !param.getPublisherString().equals(book.getPublisherString()))
                 continue;
             found.add(book);
         }

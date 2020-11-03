@@ -17,8 +17,8 @@ public class Book implements Serializable {
 
     private String isbn;
     private String title;
-    private String[] author;
-    private String publisher;
+    private Author author;
+    private Publisher publisher;
     private String publishDate;
     private int pageCount;
     private int numCopies;
@@ -28,8 +28,8 @@ public class Book implements Serializable {
     public Book(String theIsbn, String theTitle, String[] theAuthor, String thePublisher, String thePublishDate, int thePageCount, int theNumCopies, int theNumCopiesOut){
         isbn = theIsbn;
         title = theTitle;
-        author = theAuthor;
-        publisher = thePublisher;
+        author = new Author(theAuthor);
+        publisher = new Publisher(thePublisher);
         publishDate = thePublishDate;
         pageCount = thePageCount;
         numCopies = theNumCopies;
@@ -46,12 +46,20 @@ public class Book implements Serializable {
         return title;
     }
 
-    public String[] getAuthor(){
-        return author;
+    public String[] getAuthorList(){
+        return author.getAuthorList();
     }
 
-    public String getPublisher(){
-        return publisher;
+    public Author getAuthor() {
+        return this.author;
+    }
+
+    public String getPublisherString(){
+        return publisher.get();
+    }
+
+    public Publisher getPublisher() {
+        return this.publisher;
     }
 
     public String getPublishDate(){
@@ -83,11 +91,11 @@ public class Book implements Serializable {
     }
 
     public void setAuthor(String[] newAuthor){
-        author = newAuthor;
+        author = new Author(newAuthor);
     }
 
     public void setPublisher(String newPublisher){
-        publisher = newPublisher;
+        publisher = new Publisher(newPublisher);
     }
 
     public void setPublishDate(String newPublishDate){
@@ -111,7 +119,7 @@ public class Book implements Serializable {
 
     @Override
     public String toString() {
-        String authors = Arrays.toString(author);
+        String authors = author.toString();
         return "" + isbn + "," + title + ",{" + authors.substring(1, authors.length() - 1) + "}," + publisher + "," + publishDate + "," + (numCopies - numCopiesOut);
     }
 }

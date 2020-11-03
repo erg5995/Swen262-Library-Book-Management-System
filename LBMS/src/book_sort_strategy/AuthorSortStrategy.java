@@ -3,7 +3,6 @@ package book_sort_strategy;
 import data_classes.Book;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AuthorSortStrategy implements BookSortStrategy {
@@ -31,11 +30,11 @@ public class AuthorSortStrategy implements BookSortStrategy {
 
     private int partition(ArrayList<Book> books, int low, int high)
     {
-        String pivot = books.get(high).getAuthor()[0];
+        String pivot = books.get(high).getAuthorList()[0];
         int i = (low-1);
         for (int j=low; j<high; j++)
         {
-            if (compareStringsAlphabetically(books.get(j).getAuthor()[0], pivot))
+            if (compareStringsAlphabetically(books.get(j).getAuthorList()[0], pivot))
             {
                 i++;
 
