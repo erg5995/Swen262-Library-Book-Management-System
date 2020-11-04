@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
+    <AnchorPane prefHeight="296.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
+        <Button layoutX="38.0" layoutY="348.0" mnemonicParsing="false" onAction="#registerPressed" prefHeight="26.0"
+                prefWidth="71.0" text="Register"/>
+        <Button layoutX="429.0" layoutY="348.0" mnemonicParsing="false" onAction="#clearPressed" prefHeight="26.0" prefWidth="71.0" text="Clear"/>
+        <Button defaultButton="true" layoutX="528.0" layoutY="348.0" mnemonicParsing="false" onAction="#submitPressed" prefHeight="26.0" prefWidth="71.0" text="Submit"/>
+        <TextArea fx:id="labelOut" layoutX="277.0" layoutY="121.0" prefHeight="204.0" prefWidth="335.0"/>
+        <TextField fx:id="text1" layoutX="113.0" layoutY="142.0"/>
+        <TextField fx:id="text2" layoutX="113.0" layoutY="177.0"/>
+        <TextField fx:id="text3" layoutX="113.0" layoutY="211.0"/>
+        <TextField fx:id="text4" layoutX="113.0" layoutY="244.0"/>
+        <TextField fx:id="text5" layoutX="114.0" layoutY="278.0"/>
+        <Label fx:id="label1" layoutX="25.0" layoutY="146.0" text="Label"/>
+        <Label fx:id="label2" layoutX="25.0" layoutY="181.0" text="Label"/>
+        <Label fx:id="label3" layoutX="25.0" layoutY="215.0" text="Label"/>
+        <Label fx:id="label4" layoutX="25.0" layoutY="248.0" text="Label"/>
+        <Label fx:id="label5" layoutX="25.0" layoutY="282.0" text="Label"/>
+        <GridPane layoutX="38.0" layoutY="24.0" prefHeight="83.0" prefWidth="588.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="41.4" minHeight="10.0" prefHeight="36.4" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="50.79999999999999" minHeight="10.0" prefHeight="39.199999999999996" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="20.39999999999999" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <Button mnemonicParsing="false" onAction="#searchPressed" prefHeight="26.0" prefWidth="71.0" text="Search"/>
+            <Button mnemonicParsing="false" onAction="#buyPressed" prefHeight="27.0" prefWidth="71.0" text="Buy" GridPane.rowIndex="1"/>
+            <Button mnemonicParsing="false" onAction="#arrivePressed" prefHeight="27.0" prefWidth="71.0" text="Arrive" GridPane.columnIndex="1"/>
+            <Button mnemonicParsing="false" onAction="#departPressed" prefHeight="27.0" prefWidth="71.0" text="Depart" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Button mnemonicParsing="false" onAction="#borrowedPressed" prefHeight="27.0" prefWidth="71.0" text="Borrowed" GridPane.columnIndex="2"/>
+            <Button mnemonicParsing="false" onAction="#returnPressed" prefHeight="27.0" prefWidth="71.0" text="Return" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <Button mnemonicParsing="false" onAction="#infoPressed" prefHeight="27.0" prefWidth="71.0" text="Info" GridPane.columnIndex="3"/>
+            <Button mnemonicParsing="false" onAction="#borrowPressed" prefHeight="26.0" prefWidth="71.0" text="Borrow" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+            <Button mnemonicParsing="false" onAction="#advancePressed" prefHeight="26.0" prefWidth="71.0" text="Advance" GridPane.columnIndex="4"/>
+            <Button mnemonicParsing="false" onAction="#datetimePressed" prefHeight="26.0" prefWidth="71.0" text="Datetime" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+            <Button mnemonicParsing="false" onAction="#payPressed" prefHeight="27.0" prefWidth="71.0" text="Pay" GridPane.columnIndex="5"/>
+            <Button mnemonicParsing="false" onAction="#reportPressed" prefHeight="26.0" prefWidth="71.0" text="Report" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
+        </GridPane>
+    </AnchorPane>
+</VBox>

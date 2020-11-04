@@ -243,6 +243,7 @@ public class Client extends Application {
                 response = manager.depart(Integer.parseInt(tokenizedRequest[1]));
                 break;
             case "info": //info,title,{authors},[isbn, [publisher,[sort order]]],bool;
+            case "search":
 
                 String title = tokenizedRequest[1], authorList = tokenizedRequest[2];
                 if (authorList.charAt(0) == '{')
@@ -265,38 +266,7 @@ public class Client extends Application {
                     strategy = getBookSortStrategy(tokenizedRequest[5]);
                 }
 
-                response = manager.infoSearch(bookToFind, true, strategy);
-                break;
-            case "search":
-                title = tokenizedRequest[1];
-
-                length = tokenizedRequest.length;
-
-                bookToFind = new Book(null, null, null, null, null, 0, 0, 0);
-                strategy = null;
-
-                if(length == 2) {
-                    bookToFind = new Book(null, title, null, null, null, 0, 0, 0);
-                } else {
-
-                    authorList = tokenizedRequest[2];
-
-                    if (authorList.charAt(0) == '{')
-                        authorList = authorList.substring(1, authorList.length() - 1);
-                    authors = authorList.split(",");
-
-                    if(length == 3) {
-                        bookToFind = new Book(null, title, authors, null, null, 0, 0, 0);
-                    } else if (length == 4) {
-                        bookToFind = new Book(tokenizedRequest[3], title, authors, null, null, 0, 0, 0);
-                    } else if (length == 5) {
-                        bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
-                    }else if(length == 6) {
-                        strategy = getBookSortStrategy(tokenizedRequest[5]);
-                    }
-                }
-
-                response = manager.infoSearch(bookToFind, false, strategy);
+                response = manager.infoSearch(bookToFind, tokenizedRequest[0].equals("info"), strategy);
                 break;
             case "borrow":
 
