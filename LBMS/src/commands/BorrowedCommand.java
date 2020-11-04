@@ -49,7 +49,7 @@ public class BorrowedCommand implements Command{
 
         for (int i = 0; i < borrowedBooks.size(); i++) {
             output.append("\n");
-            output.append(i).append(","); // id
+            output.append(i + 1).append(","); // id
             output.append(borrowedBooks.get(i).getBook().getIsbn()).append(",");
             output.append(borrowedBooks.get(i).getBook().getTitle()).append(",");
             output.append(borrowedBooks.get(i).getDateChecked().toString());

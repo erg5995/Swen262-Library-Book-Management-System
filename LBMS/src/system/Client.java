@@ -2,15 +2,12 @@ package system;
 
 import book_sort_strategy.*;
 import data_classes.Book;
-import gui.GUIController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,7 +59,7 @@ public class Client extends Application {
         }
     }
 
-    private static String[] split(String request) {
+    private String[] split(String request) {
         int commas = 0;
         boolean count = true;
         List<Integer> splitIdxs = new ArrayList<>();
@@ -91,7 +88,7 @@ public class Client extends Application {
         return tokenizedRequest;
     }
 
-    private static String[] errorCheck(String[] request) {
+    private String[] errorCheck(String[] request) {
         if (request.length == 0 || (request.length == 1 && !"report".equals(request[0]) && !"datetime".equals(request[0]))) {
             request = new String[] {ERROR_MSG, "missing arguments"};
             return request;
@@ -218,7 +215,7 @@ public class Client extends Application {
         return request;
     }
 
-    private static String sendRequest(String[] tokenizedRequest) {
+    private String sendRequest(String[] tokenizedRequest) {
 
         String response = "";
 
@@ -246,6 +243,7 @@ public class Client extends Application {
                 response = manager.depart(Integer.parseInt(tokenizedRequest[1]));
                 break;
             case "info": //info,title,{authors},[isbn, [publisher,[sort order]]],bool;
+            case "search":
 
                 String title = tokenizedRequest[1], authorList = tokenizedRequest[2];
                 if (authorList.charAt(0) == '{')
@@ -265,42 +263,10 @@ public class Client extends Application {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
                 }else if(length == 6) {
                     bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
-                    strategy = getBookSortStrategy(tokenizedRequest, strategy);
+                    strategy = getBookSortStrategy(tokenizedRequest[5]);
                 }
 
-                response = manager.infoSearch(bookToFind, true, strategy);
-                break;
-            case "search":
-                title = tokenizedRequest[1];
-
-                length = tokenizedRequest.length;
-
-                bookToFind = new Book(null, null, null, null, null, 0, 0, 0);
-                strategy = null;
-
-                if(length == 2) {
-                    bookToFind = new Book(null, title, null, null, null, 0, 0, 0);
-                } else {
-
-                    authorList = tokenizedRequest[2];
-
-                    if (authorList.charAt(0) == '{')
-                        authorList = authorList.substring(1, authorList.length() - 1);
-                    authors = authorList.split(",");
-
-                    if(length == 3) {
-                        bookToFind = new Book(null, title, authors, null, null, 0, 0, 0);
-                    } else if (length == 4) {
-                        bookToFind = new Book(tokenizedRequest[3], title, authors, null, null, 0, 0, 0);
-                    } else if (length == 5) {
-                        bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
-                    }else if(length == 6) {
-                        strategy = getBookSortStrategy(tokenizedRequest, strategy);
-                        bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
-                    }
-                }
-
-                response = manager.infoSearch(bookToFind, false, strategy);
+                response = manager.infoSearch(bookToFind, tokenizedRequest[0].equals("info"), strategy);
                 break;
             case "borrow":
 
@@ -365,29 +331,23 @@ public class Client extends Application {
         return response;
     }
 
-    private static BookSortStrategy getBookSortStrategy(String[] tokenizedRequest, BookSortStrategy strategy) {
-        String strat = tokenizedRequest[5];
-
+    private BookSortStrategy getBookSortStrategy(String strat) {
         switch (strat) {
             case "author":
-                strategy = new AuthorSortStrategy();
-                break;
+                return new AuthorSortStrategy();
             case "checkedcopies":
-                strategy = new CheckedCopiesSortStrategy();
-                break;
+                return new CheckedCopiesSortStrategy();
             case "copies":
-                strategy = new CopiesSortStrategy();
-                break;
+                return new CopiesSortStrategy();
             case "publishdate":
-                strategy = new PublishDateSortStrategy();
-                break;
+                return new PublishDateSortStrategy();
             case "title":
-                strategy = new TitleSortStrategy();
+                return new TitleSortStrategy();
         }
-        return strategy;
+        return null;
     }
 
-    private static boolean isNumeric(String str) {
+    private boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
             return true;
