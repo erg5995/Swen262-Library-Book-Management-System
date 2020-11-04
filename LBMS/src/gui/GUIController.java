@@ -40,7 +40,7 @@ public class GUIController
         label4.setText("Publisher*:");
         label5.setText("Sort Order*:");
         setVisible(5);
-        clearPressed(e);
+        clearInput();
     }
     public void buyPressed(ActionEvent e)
     {
@@ -48,28 +48,28 @@ public class GUIController
         label1.setText("Quantity:");
         label2.setText("Book IDs:");
         setVisible(2);
-        clearPressed(e);
+        clearInput();
     }
     public void arrivePressed(ActionEvent e)
     {
         state = State.ARRIVE;
         label1.setText("Visitor ID:");
         setVisible(1);
-        clearPressed(e);
+        clearInput();
     }
     public void departPressed(ActionEvent e)
     {
         state = State.DEPART;
         label1.setText("Visitor ID:");
         setVisible(1);
-        clearPressed(e);
+        clearInput();
     }
     public void borrowedPressed(ActionEvent e)
     {
         state = State.BORROWED;
         label1.setText("Visitor ID:");
         setVisible(1);
-        clearPressed(e);
+        clearInput();
     }
     public void returnPressed(ActionEvent e)
     {
@@ -77,7 +77,7 @@ public class GUIController
         label1.setText("Visitor ID:");
         label2.setText("Book IDs:");
         setVisible(2);
-        clearPressed(e);
+        clearInput();
     }
     public void infoPressed(ActionEvent e)
     {
@@ -88,7 +88,7 @@ public class GUIController
         label4.setText("Publisher*:");
         label5.setText("Sort Order*:");
         setVisible(5);
-        clearPressed(e);
+        clearInput();
     }
     public void borrowPressed(ActionEvent e)
     {
@@ -96,7 +96,7 @@ public class GUIController
         label1.setText("Visitor ID:");
         label2.setText("Books IDs:");
         setVisible(2);
-        clearPressed(e);
+        clearInput();
     }
     public void advancePressed(ActionEvent e)
     {
@@ -104,13 +104,13 @@ public class GUIController
         label1.setText("Num. of Days:");
         label2.setText("Num. of Hours*:");
         setVisible(2);
-        clearPressed(e);
+        clearInput();
     }
     public void datetimePressed(ActionEvent e)
     {
         state = State.DATETIME;
         setVisible(0);
-        clearPressed(e);
+        clearInput();
     }
     public void payPressed(ActionEvent e)
     {
@@ -118,14 +118,14 @@ public class GUIController
         label1.setText("Visitor ID:");
         label2.setText("Amount:");
         setVisible(2);
-        clearPressed(e);
+        clearInput();
     }
     public void reportPressed(ActionEvent e)
     {
         state = State.REPORT;
         label1.setText("Num. of Days*:");
         setVisible(1);
-        clearPressed(e);
+        clearInput();
     }
     public void registerPressed(ActionEvent e)
     {
@@ -135,15 +135,10 @@ public class GUIController
         label3.setText("Address:");
         label4.setText("Phone Number:");
         setVisible(4);
-        clearPressed(e);
+        clearInput();
     }
-    public void clearPressed(ActionEvent e)
-    {
-        text1.setText("");
-        text2.setText("");
-        text3.setText("");
-        text4.setText("");
-        text5.setText("");
+    public void clearPressed(ActionEvent e) {
+        labelOut.clear();
     }
     public void submitPressed(ActionEvent e)
     {
@@ -226,5 +221,12 @@ public class GUIController
                 }
             }
         }
+    }
+    private void clearInput() {
+        text1.clear();
+        text2.clear();
+        text3.clear();
+        text4.clear();
+        text5.clear();
     }
 }
