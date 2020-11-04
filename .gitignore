@@ -1,2 +1,4 @@
 /LBMS.iml
 .gitignore
+out
+LBMS/resources
