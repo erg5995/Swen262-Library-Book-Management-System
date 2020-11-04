@@ -17,8 +17,8 @@ class ChangeLibraryStateTask extends TimerTask {
 
     public void run() {
         LocalDateTime currentTime = calendar.getCurrentTime();
-        LocalDateTime closingTime = calendar.getClosingTime();
-        LocalDateTime openingTime = calendar.getOpeningTime();
+        LocalTime closingTime = calendar.getClosingTime();
+        LocalTime openingTime = calendar.getOpeningTime();
 
         if (currentTime.getHour() >= closingTime.getHour() || currentTime.getHour() < openingTime.getHour()) {
             manager.setState(1); // close
@@ -31,8 +31,8 @@ class ChangeLibraryStateTask extends TimerTask {
 
 public class Calendar {
     private Timer timer;
-    private final LocalDateTime openingTime;
-    private final LocalDateTime closingTime;
+    private final LocalTime openingTime;
+    private final LocalTime closingTime;
     private Manager manager;
     private final long MILLISECOND_DAY = 86400 * 1000;
     private Clock clock;
@@ -41,8 +41,8 @@ public class Calendar {
         this.timer = new Timer();
         clock = Clock.systemDefaultZone();
         // the date is just to start the recurring timer
-        this.openingTime = LocalDateTime.of(2020, Month.OCTOBER, 4, 8, 0, 0);
-        this.closingTime = LocalDateTime.of(2020, Month.OCTOBER, 4, 19, 0, 0);
+        this.openingTime = LocalTime.of(8, 0, 0);
+        this.closingTime = LocalTime.of(19, 0, 0);
     }
 
     public void setManager(Manager manage) {
@@ -76,24 +76,21 @@ public class Calendar {
     }
 
     public void open() {
-        timer.schedule(new ChangeLibraryStateTask(manager, this), Date.from(Instant.from(openingTime.atZone(ZoneId.systemDefault()))),
-                MILLISECOND_DAY);
+        timer.schedule(new ChangeLibraryStateTask(manager, this), new Date(), MILLISECOND_DAY);
     }
 
     public void close() {
-        timer.schedule(new ChangeLibraryStateTask(manager, this), Date.from(Instant.from(closingTime.atZone(ZoneId.systemDefault()))),
-                MILLISECOND_DAY);
+        timer.schedule(new ChangeLibraryStateTask(manager, this), new Date(), MILLISECOND_DAY);
     }
 
     public LocalDateTime getCurrentTime() {
         return clock.instant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
-    public LocalDateTime getOpeningTime() {
+    public LocalTime getOpeningTime() {
         return openingTime;
     }
-
-    public LocalDateTime getClosingTime() {
+    public LocalTime getClosingTime() {
         return closingTime;
     }
 
