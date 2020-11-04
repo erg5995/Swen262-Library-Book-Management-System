@@ -10,13 +10,14 @@ import java.util.List;
 public class CheckedCopiesSortStrategy implements BookSortStrategy {
 
     @Override
-    public void sort(List<Book> books) {
+    public void sort(List<Book> books, boolean forLibrary) {
 
         int low = 0, high = books.size() - 1;
 
         sort((ArrayList<Book>)books, low, high);
 
-        books.removeIf(book -> book.getNumCopiesLeft() <= 0);
+        if(forLibrary)
+            books.removeIf(book -> book.getNumCopiesLeft() <= 0);
 
     }
 

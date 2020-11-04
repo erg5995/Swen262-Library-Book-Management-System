@@ -296,6 +296,7 @@ public class Client extends Application {
                         bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
                     }else if(length == 6) {
                         strategy = getBookSortStrategy(tokenizedRequest, strategy);
+                        bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
                     }
                 }
 

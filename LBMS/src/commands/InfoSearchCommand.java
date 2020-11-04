@@ -28,7 +28,7 @@ public class InfoSearchCommand implements Command{
         List<Book> toSort = database.bookInfoSearch(book, forLibrary);
 
         if(strategy != null) {
-            strategy.sort(toSort);
+            strategy.sort(toSort, forLibrary);
         }
 
         StringBuilder formatString = new StringBuilder("\n");

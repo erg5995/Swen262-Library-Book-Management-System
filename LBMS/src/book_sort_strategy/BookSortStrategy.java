@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookSortStrategy {
 
-    public void sort(List<Book> book);
+    public void sort(List<Book> book, boolean forLibrary);
 
     //True indicates that date 1 is more recent than date 2
     default boolean compareDates(String str1, String str2) {
