@@ -39,6 +39,12 @@ public class Client extends Application {
         });
     }
 
+    /**
+     * Parses input string and returns a corresponding error message if found.
+     *
+     * @param input user's input
+     * @return response
+     */
     public String input(String input) {
         try {
             String response = "";
@@ -59,6 +65,12 @@ public class Client extends Application {
         }
     }
 
+    /**
+     * Splits the user's request string.
+     *
+     * @param request user's request string
+     * @return an array of parameters passed by the user
+     */
     private String[] split(String request) {
         int commas = 0;
         boolean count = true;
@@ -88,6 +100,12 @@ public class Client extends Application {
         return tokenizedRequest;
     }
 
+    /**
+     * Checks each command for correct arguments.
+     *
+     * @param request an array of command and its arguments
+     * @return a String array of error messages
+     */
     private String[] errorCheck(String[] request) {
         if (request.length == 0 || (request.length == 1 && !"report".equals(request[0]) && !"datetime".equals(request[0]))) {
             request = new String[] {ERROR_MSG, "missing arguments"};
@@ -215,6 +233,12 @@ public class Client extends Application {
         return request;
     }
 
+    /**
+     * Calls a corresponding command based on the request received.
+     *
+     * @param tokenizedRequest an array of command and its arguments
+     * @return response from the command
+     */
     private String sendRequest(String[] tokenizedRequest) {
 
         String response = "";
@@ -331,6 +355,12 @@ public class Client extends Application {
         return response;
     }
 
+    /**
+     * Gets a book sorting strategy
+     *
+     * @param strat strategy name
+     * @return A Strategy object
+     */
     private BookSortStrategy getBookSortStrategy(String strat) {
         switch (strat) {
             case "author":
@@ -347,6 +377,12 @@ public class Client extends Application {
         return null;
     }
 
+    /**
+     * Checks of the string is numeric
+     *
+     * @param str string to check
+     * @return true if the string is numeric or false
+     */
     private boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
