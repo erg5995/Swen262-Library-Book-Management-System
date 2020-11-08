@@ -27,7 +27,7 @@ public class GUIController
     public GUIController()
     {
         client = new Client();
-//        registerPressed(new ActionEvent()); throws null pointer?
+        state = State.REGISTER;
     }
 
     /** Methods for user input */
