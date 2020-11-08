@@ -26,15 +26,12 @@ public class Database
         librarySearch = new ArrayList<>();
         storeSearch = new ArrayList<>();
         borrowSearch = new ArrayList<>();
-        fileNames = new String[]{"LBMS/resources/booksOwned.ser",
-                                 "LBMS/resources/booksInStore.ser",
-                                 "LBMS/resources/checkedOutBooks.ser",
-                                 "LBMS/resources/returnedBooks.ser",
-                                 "LBMS/resources/visits.ser",
-                                 "LBMS/resources/users.ser",
-                                 "LBMS/resources/numBooksBought.ser",
-                                 "LBMS/resources/fines.ser",
-                                 "LBMS/resources/payments.ser"};
+        String dir = "LBMS/resources/";
+        fileNames = new String[]{dir + "booksOwned.ser",      dir + "booksInStore.ser",
+                                 dir + "checkedOutBooks.ser", dir + "returnedBooks.ser",
+                                 dir + "visits.ser",          dir + "users.ser",
+                                 dir + "numUsers.txt",        dir + "numBooksBought.ser",
+                                 dir + "fines.ser",           dir + "payments.ser"};
         readData();
     }
 
@@ -264,47 +261,54 @@ public class Database
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[0]));
             booksOwned = (Map<String,Book>) in.readObject();
             in.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("Couldn't read in books owned by library."); }
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[1]));
             booksInStore = (Map<String,Book>) in.readObject();
             in.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("Couldn't read in books in the store."); }
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[2]));
             checkedOutBooks = (List<Transaction>) in.readObject();
             in.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("Couldn't read in books that are currently checked out."); }
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[3]));
             returnedBooks = (List<Transaction>) in.readObject();
             in.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("Couldn't read in the transactions for returned books."); }
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[4]));
             visits = (List<Visit>) in.readObject();
             in.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("Couldn't read in the visits."); }
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[5]));
             users = (Map<Integer, User>) in.readObject();
             in.close();
-        } catch (Exception e) { e.printStackTrace(); }
-        try {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[6]));
-            numBooksBought = (List<Integer>) in.readObject();
-            in.close();
-        } catch (Exception e) { e.printStackTrace(); }
+            if (!users.isEmpty()) {
+                BufferedReader numUsers = new BufferedReader(new FileReader(fileNames[6]));
+                User[] temp = users.values().toArray(new User[0]);
+                String line = numUsers.readLine();
+                System.out.println(line);
+                temp[0].setIdCounter(Integer.parseInt(line));
+            }
+        } catch (Exception e) { System.out.println("Couldn't read in the users."); }
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[7]));
-            fines = (List<Double>) in.readObject();
+            numBooksBought = (List<Integer>) in.readObject();
             in.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("Couldn't read in the number of books bought."); }
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[8]));
+            fines = (List<Double>) in.readObject();
+            in.close();
+        } catch (Exception e) { System.out.println("Couldn't read in the amount of fines applied."); }
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[9]));
             payments = (List<Double>) in.readObject();
             in.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("Couldn't read in the amount of payments received."); }
     }
     public void saveData()
     {
@@ -314,9 +318,16 @@ public class Database
         writeObject(returnedBooks, 3);
         writeObject(visits, 4);
         writeObject(users, 5);
-        writeObject(numBooksBought, 6);
-        writeObject(fines, 7);
-        writeObject(payments, 8);
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(fileNames[6]));
+            User[] temp = users.values().toArray(new User[0]);
+            out.write(String.valueOf(temp[0].getNumVisitors()));
+            out.flush();
+            out.close();
+        } catch (Exception e) { System.out.println("Couldn't save number of users."); }
+        writeObject(numBooksBought, 7);
+        writeObject(fines, 8);
+        writeObject(payments, 9);
     }
     private void writeObject(Object object, int index)
     {

@@ -40,6 +40,13 @@ public class InitDatabase
         writeObject(doubleList, "fines.ser");
         writeObject(doubleList, "payments.ser");
 
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter("LBMS/resources/numUsers.txt"));
+            out.write('0');
+            out.flush();
+            out.close();
+        } catch (Exception e) { e.printStackTrace(); }
+
         HashMap<String, Book> booksInStore = new HashMap<>();
         try {
             FileReader file = new FileReader("LBMS/resources/books.txt");

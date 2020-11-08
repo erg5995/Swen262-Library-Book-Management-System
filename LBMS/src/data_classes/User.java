@@ -50,8 +50,9 @@ public class User implements Serializable {
     }
 
     /**
-     * Getter methods that return each attribute excluding idCounter
+     * Getter methods that return each attribute
      */
+    public int getNumVisitors() { return idCounter; }
     public int getId() { return id; }
     public int getNumBooksChecked() { return numBooksChecked; }
     public String getFirstName() { return firstName; }
@@ -62,6 +63,9 @@ public class User implements Serializable {
     public UserRole getType() { return type; }
     public double getDebt() { return debt; }
     public boolean hasDebt() { return debt > 0; }
+
+    /** Set idCounter on system startup */
+    public void setIdCounter(int count) { idCounter = count; }
 
     /**
      * methods for altering the debt of the user
