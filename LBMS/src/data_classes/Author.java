@@ -2,26 +2,29 @@ package data_classes;
 
 public class Author implements java.io.Serializable {
 
-    String[] authorList;
+    String firstName;
+    String lastName;
 
-    public Author(String[] authorList) {
-        this.authorList = authorList;
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    public String[] getAuthorList() {
-        return this.authorList;
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
     }
 
     @Override
     public String toString(){
-        StringBuilder builder = new StringBuilder();
-
-        for(String author: this.authorList) {
-            builder.append(author).append(",");
-        }
-        builder.deleteCharAt(builder.length() - 1);
-        return builder.toString();
-
+        return getFullName();
     }
 
 

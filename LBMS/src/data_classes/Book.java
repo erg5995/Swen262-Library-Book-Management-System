@@ -17,7 +17,7 @@ public class Book implements Serializable {
 
     private String isbn;
     private String title;
-    private Author author;
+    private Author[] author;
     private Publisher publisher;
     private String publishDate;
     private int pageCount;
@@ -28,7 +28,11 @@ public class Book implements Serializable {
     public Book(String theIsbn, String theTitle, String[] theAuthor, String thePublisher, String thePublishDate, int thePageCount, int theNumCopies, int theNumCopiesOut){
         isbn = theIsbn;
         title = theTitle;
-        author = new Author(theAuthor);
+        this.author = new Author[theAuthor.length];
+        for (int i = 0; i < theAuthor.length; i++) {
+            String author = theAuthor[i];
+            this.author[i] = new Author(author.substring(0, author.indexOf(' ')), author.substring(author.indexOf(' ') + 1));
+        }
         publisher = new Publisher(thePublisher);
         publishDate = thePublishDate;
         pageCount = thePageCount;
@@ -47,10 +51,14 @@ public class Book implements Serializable {
     }
 
     public String[] getAuthorList(){
-        return author.getAuthorList();
+        String authorList[] = new String[author.length];
+        for(int i = 0; i < authorList.length; i++) {
+            authorList[i] = author[i].getFullName();
+        }
+        return authorList;
     }
 
-    public Author getAuthor() {
+    public Author[] getAuthor() {
         return this.author;
     }
 
@@ -90,8 +98,8 @@ public class Book implements Serializable {
         title = newTitle;
     }
 
-    public void setAuthor(String[] newAuthor){
-        author = new Author(newAuthor);
+    public void setAuthor(Author[] newAuthor){
+        this.author = newAuthor;
     }
 
     public void setPublisher(String newPublisher){
