@@ -15,6 +15,9 @@ class ChangeLibraryStateTask extends TimerTask {
         this.calendar = calendar;
     }
 
+    /**
+     * Opens or closes the library at a scheduled time
+     */
     public void run() {
         LocalDateTime currentTime = calendar.getCurrentTime();
         LocalTime closingTime = calendar.getClosingTime();
@@ -45,11 +48,22 @@ public class Calendar {
         this.closingTime = LocalTime.of(19, 0, 0);
     }
 
+    /**
+     * Set the manager for this class. This method gets called in the Manager class after Calendar is initialized
+     * to avoid timing issue.
+     *
+     * @param manage Manager
+     */
     public void setManager(Manager manage) {
         this.manager = manage;
         startScheduledTasks(false);
     }
 
+    /**
+     * Starts an opening and closing scheduled tasks depending on the time of the day the system first begins.
+     *
+     * @param isDayDiff is it a new day
+     */
     public void startScheduledTasks(boolean isDayDiff) {
         // if it is a new day, close the library
         if (isDayDiff) {
@@ -67,33 +81,70 @@ public class Calendar {
         }
     }
 
+    /**
+     * Advance the date by the amount of days.
+     *
+     * @param day amount of days
+     */
     public void advanceDay(long day) {
         clock = Clock.offset(clock, Duration.ofDays(day));
     }
 
+    /**
+     * Advance the time by the number of hours.
+     *
+     * @param hour number of hours
+     */
     public void advanceHour(long hour) {
         clock = Clock.offset(clock, Duration.ofHours(hour));
     }
 
+    /**
+     * Starts a scheduled task to open the library.
+     */
     public void open() {
         timer.schedule(new ChangeLibraryStateTask(manager, this), new Date(), MILLISECOND_DAY);
     }
 
+    /**
+     * Starts a scheduled task to close the library.
+     */
     public void close() {
         timer.schedule(new ChangeLibraryStateTask(manager, this), new Date(), MILLISECOND_DAY);
     }
 
+    /**
+     * Gets the current time in the system. The initial time is based on the system timezone.
+     *
+     * @return current time
+     */
     public LocalDateTime getCurrentTime() {
         return clock.instant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
+    /**
+     * Gets the library opening time
+     *
+     * @return opening time
+     */
     public LocalTime getOpeningTime() {
         return openingTime;
     }
+
+    /**
+     * Gets the library closing time
+     *
+     * @return closing time
+     */
     public LocalTime getClosingTime() {
         return closingTime;
     }
 
+    /**
+     * Pretty prints the current time in the system
+     *
+     * @return current time
+     */
     public String toString() {
         StringBuilder output = new StringBuilder();
         LocalDateTime currentTime = getCurrentTime();
