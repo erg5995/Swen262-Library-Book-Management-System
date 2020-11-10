@@ -47,9 +47,9 @@ public class Client extends Application {
      */
     public String input(String input) {
         try {
-            String response = "";
-            String[] tokenizedReq = {""};
-            String[] confirmedReq = {""};
+            String response;
+            String[] tokenizedReq;
+            String[] confirmedReq;
 
             tokenizedReq = split(input);
             confirmedReq = errorCheck(tokenizedReq);
@@ -61,6 +61,7 @@ public class Client extends Application {
 
             return response;
         } catch (Exception e) {
+            e.printStackTrace();
             return "Exception Caught: " + e + "\nPlease make sure you're input is formatted correctly.";
         }
     }
@@ -89,7 +90,7 @@ public class Client extends Application {
         String[] tokenizedRequest = new String[commas + 1];
 
         int startIdx = -1;
-        int endIdx = 0;
+        int endIdx;
         for(int i = 0; i < splitIdxs.size(); i++) {
             if(splitIdxs.get(i) == 0) break;
             endIdx = splitIdxs.get(i);
@@ -266,28 +267,25 @@ public class Client extends Application {
             case "depart":
                 response = manager.depart(Integer.parseInt(tokenizedRequest[1]));
                 break;
-            case "info": //info,title,{authors},[isbn, [publisher,[sort order]]],bool;
+            case "info": //info,title,{authors},[isbn, [publisher,[sort order]]];
             case "search":
-
-                String title = tokenizedRequest[1], authorList = tokenizedRequest[2];
-                if (authorList.charAt(0) == '{')
-                    authorList = authorList.substring(1, authorList.length() - 1);
-                String[] authors = authorList.split(",");
-
                 int length = tokenizedRequest.length;
-
-                Book bookToFind = new Book(null, null, null, null, null, 0, 0, 0);
+                Book bookToFind = new Book(null, tokenizedRequest[1], null, null, null, 0, 0, 0);
                 BookSortStrategy strategy = null;
 
-                if(length == 3) {
-                    bookToFind = new Book(null, title, authors, null, null, 0, 0, 0);
-                }else if(length == 4) {
-                    bookToFind = new Book(tokenizedRequest[3], title, authors, null, null, 0, 0, 0);
-                }else if(length == 5) {
-                    bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
-                }else if(length == 6) {
-                    bookToFind = new Book(tokenizedRequest[3], title, authors, tokenizedRequest[4], null, 0, 0, 0);
-                    strategy = getBookSortStrategy(tokenizedRequest[5]);
+                if ( length >= 3) {
+                    String authorList = tokenizedRequest[2];
+                    if (authorList.charAt(0) == '{')
+                        authorList = authorList.substring(1, authorList.length() - 1);
+                    bookToFind.setAuthor(authorList.split(","));
+                    if (length >= 4) {
+                        bookToFind.setIsbn(tokenizedRequest[3]);
+                        if (length >= 5) {
+                            bookToFind.setPublisher(tokenizedRequest[4]);
+                            if (length == 6)
+                                strategy = getBookSortStrategy(tokenizedRequest[5]);
+                        }
+                    }
                 }
 
                 response = manager.infoSearch(bookToFind, tokenizedRequest[0].equals("info"), strategy);

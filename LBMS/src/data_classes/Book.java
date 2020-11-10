@@ -28,11 +28,7 @@ public class Book implements Serializable {
     public Book(String theIsbn, String theTitle, String[] theAuthor, String thePublisher, String thePublishDate, int thePageCount, int theNumCopies, int theNumCopiesOut){
         isbn = theIsbn;
         title = theTitle;
-        this.author = new Author[theAuthor.length];
-        for (int i = 0; i < theAuthor.length; i++) {
-            String author = theAuthor[i];
-            this.author[i] = new Author(author.substring(0, author.indexOf(' ')), author.substring(author.indexOf(' ') + 1));
-        }
+        setAuthor(theAuthor);
         publisher = new Publisher(thePublisher);
         publishDate = thePublishDate;
         pageCount = thePageCount;
@@ -51,9 +47,11 @@ public class Book implements Serializable {
     }
 
     public String[] getAuthorList(){
-        String authorList[] = new String[author.length];
+        if (author == null)
+            return null;
+        String[] authorList = new String[author.length];
         for(int i = 0; i < authorList.length; i++) {
-            authorList[i] = author[i].getFullName();
+            authorList[i] = author[i].getFullName().strip();
         }
         return authorList;
     }
@@ -98,6 +96,19 @@ public class Book implements Serializable {
         title = newTitle;
     }
 
+    public void setAuthor(String[] theAuthor) {
+        if (theAuthor != null) {
+            this.author = new Author[theAuthor.length];
+            for (int i = 0; i < theAuthor.length; i++) {
+                String author = theAuthor[i];
+                int spaceIndex = author.lastIndexOf(' ');
+                if (spaceIndex != -1)
+                    this.author[i] = new Author(author.substring(0, spaceIndex), author.substring(spaceIndex + 1));
+                else
+                    this.author[i] = new Author("", author);
+            }
+        }
+    }
     public void setAuthor(Author[] newAuthor){
         this.author = newAuthor;
     }
@@ -127,7 +138,7 @@ public class Book implements Serializable {
 
     @Override
     public String toString() {
-        String authors = author.toString();
+        String authors = Arrays.toString(author);
         return "" + isbn + "," + title + ",{" + authors.substring(1, authors.length() - 1) + "}," + publisher + "," + publishDate + "," + (numCopies - numCopiesOut);
     }
 }

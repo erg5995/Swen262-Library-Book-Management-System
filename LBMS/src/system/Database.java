@@ -191,7 +191,6 @@ public class Database
         // returns a report summarizing all the statistics calculated above
         return new Report(users.size(), numBooks, booksBought, time, totPayments, totFines - totPayments);
     }
-
     public Report generateReport(int days, LocalDate day)
     {
         day = day.minusDays(days);
@@ -257,6 +256,7 @@ public class Database
     @SuppressWarnings("unchecked")
     public void readData()
     {
+        System.out.println("Reading data...");
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[0]));
             booksOwned = (Map<String,Book>) in.readObject();
@@ -290,7 +290,6 @@ public class Database
                 BufferedReader numUsers = new BufferedReader(new FileReader(fileNames[6]));
                 User[] temp = users.values().toArray(new User[0]);
                 String line = numUsers.readLine();
-                System.out.println(line);
                 temp[0].setIdCounter(Integer.parseInt(line));
             }
         } catch (Exception e) { System.out.println("Couldn't read in the users."); }
@@ -355,11 +354,9 @@ public class Database
     public boolean isValidLibraryID(int bookID) { return bookID > -1 && bookID < librarySearch.size(); }
     public boolean isValidBorrowID(int bookID) { return bookID > -1 && bookID < borrowSearch.size(); }
     public boolean isValidStoreID(int bookID) { return bookID > -1 && bookID < storeSearch.size(); }
-    public boolean userCanCheckOut(int userID, int numBooks)
-    {
+    public boolean userCanCheckOut(int userID, int numBooks) {
         return users.get(userID).getNumBooksChecked() + numBooks <= User.MAX_BOOKS_CHECKED;
     }
     public boolean isEmployee(int userID) { return users.get(userID).getType() == User.UserRole.EMPLOYEE; }
-    //might not need- if caller has reference to User than they can just call hasDebt()
     public boolean hasOutstandingFine(int userID) { return users.get(userID).hasDebt(); }
 }

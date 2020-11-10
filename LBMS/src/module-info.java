@@ -7,4 +7,6 @@ module LBMS {
 
     exports system to javafx.graphics;
     exports gui to javafx.fxml;
+
+    exports data_classes;
 }
