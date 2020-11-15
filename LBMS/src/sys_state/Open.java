@@ -3,8 +3,8 @@ package sys_state;
 import data_classes.User;
 import data_classes.Visit;
 import system.Calendar;
-import system.Database;
-import system.Manager;
+import system.DataStorage;
+import system.RequestManager;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,14 +18,14 @@ import java.util.List;
 public class Open implements SysState {
 
 
-    private Manager manager;
-    private Database database;
+    private RequestManager requestManager;
+    private DataStorage dataStorage;
     private Calendar calendar;
 
-    public Open(Manager theManager, Database theDatabase, Calendar theCalendar)
+    public Open(RequestManager theRequestManager, DataStorage theDataStorage, Calendar theCalendar)
     {
-        manager = theManager;
-        database = theDatabase;
+        requestManager = theRequestManager;
+        dataStorage = theDataStorage;
         calendar = theCalendar;
     }
 
@@ -36,7 +36,7 @@ public class Open implements SysState {
      * @return response in proper format: arrive,visitor ID,visit date, visit start time
      */
     public String startVisit(int id, LocalDateTime time){
-        User user = database.getUser(id);
+        User user = dataStorage.getUser(id);
 
         //error if user isnt registered
         if(user == null) {
@@ -45,14 +45,14 @@ public class Open implements SysState {
         //manager.addVisit(new Visit(user, time));
 
         //error if user already visiting
-        List<Visit> visits = manager.getOngoingVisits();
+        List<Visit> visits = requestManager.getOngoingVisits();
 
         for(Visit visit: visits){
             if(visit.getVisitor().getId() == user.getId()){
                 return "arrive,duplicate";
             }
         }
-        manager.addVisit(new Visit(user, time));
+        requestManager.addVisit(new Visit(user, time));
 
         //response format: arrive,visitor ID,visit date, visit start time
         return "arrive, " + id + ", " + time.toLocalDate() + ", " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond();
@@ -65,12 +65,12 @@ public class Open implements SysState {
      * @return String in proper response format: borrow,due date;
      */
     public String checkOutBook(List<Integer> books, int userID){
-        ArrayList<Integer> isbns = new ArrayList<Integer>();
+        ArrayList<Integer> isbns = new ArrayList<>();
         //response format: borrow,due date;
 
         //errors: invalid id, invalid book id, book limit exceeded, outstanding fine
 
-        User user = database.getUser(userID);
+        User user = dataStorage.getUser(userID);
         //error: invalid id
 
         if(user == null){
@@ -78,9 +78,9 @@ public class Open implements SysState {
         }
 
         //error: invalid book id
-        ArrayList<Integer> invalid = new ArrayList<Integer>();
+        ArrayList<Integer> invalid = new ArrayList<>();
         for (Integer id: books){
-            if(!database.isValidLibraryID(id)){
+            if(!dataStorage.isValidLibraryID(id)){
                 invalid.add(id + 1);
             }
         }
@@ -95,13 +95,13 @@ public class Open implements SysState {
         }
 
         //error - book limited exceeded
-        if(!database.userCanCheckOut(userID,isbns.size()))
+        if(!dataStorage.userCanCheckOut(userID,isbns.size()))
         {
             return "borrow,book-limit-exceeded";
         }
-        database.checkOutBooks(userID, books);
+        dataStorage.checkOutBooks(userID, books);
         for(Integer id: books) {
-            database.addTransaction(id, userID, calendar.getCurrentTime().toLocalDate(), calendar.getCurrentTime().toLocalDate().plusDays(7));
+            dataStorage.addTransaction(id, userID, calendar.getCurrentTime().toLocalDate(), calendar.getCurrentTime().toLocalDate().plusDays(7));
         }
         return "borrow," + calendar.getCurrentTime().toLocalDate().plusDays(7);
     }
@@ -120,7 +120,7 @@ public class Open implements SysState {
         //errors: invalid user id, invalid book ids
 
         //alternate response: overdue + fine applied
-        User user = database.getUser(userID);
+        User user = dataStorage.getUser(userID);
        if(user == null) {
            return "return,invalid-visitor-id";
        }
@@ -128,7 +128,7 @@ public class Open implements SysState {
            ArrayList<Integer> invalid = new ArrayList<>();
            //if invalid book
            for(Integer id: books){
-               if(!database.isValidBorrowID(id)){
+               if(dataStorage.isNotValidBorrowID(id)){
                    invalid.add(id + 1);
                }
            }
@@ -136,7 +136,7 @@ public class Open implements SysState {
                //whole transaction is invalid if any books aren't valid
                return "return,invalid-book-id," + invalid;
             }
-           String result = database.returnBooks(user.getId(),books,calendar.getCurrentTime().toLocalDate());
+           String result = dataStorage.returnBooks(user.getId(),books,calendar.getCurrentTime().toLocalDate());
            //returned books and it succeeded
            if (result.equals("success")){
                return "return,success";

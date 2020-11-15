@@ -1,25 +1,25 @@
 package commands;
 
 import data_classes.Visit;
-import system.Manager;
+import system.RequestManager;
 import java.time.LocalTime;
 
 public class DepartCommand implements Command{
 
     private int userId;
-    private Manager manager;
+    private RequestManager requestManager;
 
-    public DepartCommand(int userID, Manager manage){
+    public DepartCommand(int userID, RequestManager manage){
         userId = userID;
-        manager = manage;
+        requestManager = manage;
     }
     public String execute() {
-        if(!manager.isVisiting(userId)){
+        if(!requestManager.isVisiting(userId)){
             return "depart,invalid-id;";
         }
         else{
-            Visit visit = manager.getVisit(userId);
-            manager.endVisit(visit);
+            Visit visit = requestManager.getVisit(userId);
+            requestManager.endVisit(visit);
 
             LocalTime exit = visit.getExitTime();
             String formatTime = "" + exit.getHour() + ":" + exit.getMinute() + ":" + exit.getSecond() + "";

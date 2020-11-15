@@ -19,10 +19,10 @@ public class Client extends Application {
     private static String WRONG_PARAM = "wrong parameters";
     private static String NOT_INTEGER = "must be an integer value";
 
-    private static system.Manager manager;
+    private static RequestManager requestManager;
 
     public static void main(String[] args) {
-        manager = new system.Manager();
+        requestManager = new RequestManager();
         launch(args);
     }
 
@@ -34,7 +34,7 @@ public class Client extends Application {
         primaryStage.show();
         primaryStage.setOnCloseRequest(windowEvent -> {
             Platform.exit();
-            manager.shutdownSystem();
+            requestManager.shutdownSystem();
             System.exit(0);
         });
     }
@@ -117,7 +117,7 @@ public class Client extends Application {
                 if(request.length < 3) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
-                }else if(!isNumeric(request[1])) {
+                }else if(isNotNumeric(request[1])) {
                     request[0] = ERROR_MSG;
                     request[1] = "parameter 1 " + NOT_INTEGER;
                 }
@@ -134,7 +134,7 @@ public class Client extends Application {
                 if(request.length != 2) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
-                }else if(!isNumeric(request[1])) {
+                }else if(isNotNumeric(request[1])) {
                     request[0] = ERROR_MSG;
                     request[1] = "parameter 1 " + NOT_INTEGER;
                 }
@@ -155,7 +155,7 @@ public class Client extends Application {
                 if(request.length != 3) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
-                }else if(!isNumeric(request[1])) {
+                }else if(isNotNumeric(request[1])) {
                     request[0] = ERROR_MSG;
                     request[1] = "parameter 1 " + NOT_INTEGER;
                 }
@@ -163,7 +163,7 @@ public class Client extends Application {
                     request[2] = request[2].substring(1, request[2].length() - 1);
                 String[] bookIds = request[2].split(",");
                 for(String str: bookIds) {
-                    if(!isNumeric(str)) {
+                    if(isNotNumeric(str)) {
                         request[0] = ERROR_MSG;
                         request[1] = "parameter 2 " + NOT_INTEGER;
                         break;
@@ -177,7 +177,7 @@ public class Client extends Application {
                 }
 
                 for(int i = 1; i < request.length; i++) {
-                    if(!isNumeric(request[i])) {
+                    if(isNotNumeric(request[i])) {
                         request[0] = ERROR_MSG;
                         request[1] = "parameter " + i + " " + NOT_INTEGER;
                         break;
@@ -188,10 +188,10 @@ public class Client extends Application {
                 if(request.length != 3) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
-                }else if(!isNumeric(request[1])) {
+                }else if(isNotNumeric(request[1])) {
                     request[0] = ERROR_MSG;
                     request[1] = "parameter 1 " + NOT_INTEGER;
-                }else if(!isNumeric(request[2])) {
+                }else if(isNotNumeric(request[2])) {
                     request[0] = ERROR_MSG;
                     request[1] = "parameter 2 " + NOT_INTEGER;
                 }
@@ -202,7 +202,7 @@ public class Client extends Application {
                     request[1] = WRONG_PARAM;
                 }else{
                     for(int i = 1; i < request.length; i++) {
-                        if(!isNumeric(request[i])) {
+                        if(isNotNumeric(request[i])) {
                             request[0] = ERROR_MSG;
                             request[1] = "parameter " + i + " " + NOT_INTEGER;
                             break;
@@ -217,7 +217,7 @@ public class Client extends Application {
                 } else if (request.length == 2) {
                     if (request[1].isEmpty()) {
                         request = new String[] {"report"};
-                    } else if (!isNumeric(request[1])) {
+                    } else if (isNotNumeric(request[1])) {
                         request[0] = ERROR_MSG;
                         request[1] = "parameter " + request[1] + " " + NOT_INTEGER;
                         break;
@@ -252,20 +252,20 @@ public class Client extends Application {
                 for(int i = 2; i < tokenizedRequest.length; i++) {
                     books.add(Integer.parseInt(tokenizedRequest[i]) - 1);
                 }
-                response = manager.buy(quantity, books);
+                response = requestManager.buy(quantity, books);
                 break;
             case "register":
                 String firstName = tokenizedRequest[1];
                 String lastName = tokenizedRequest[2];
                 String address = tokenizedRequest[3];
                 String phone = tokenizedRequest[4];
-                response = manager.register(firstName, lastName, address, phone);
+                response = requestManager.register(firstName, lastName, address, phone);
                 break;
             case "arrive":
-                response = manager.startVisit(Integer.parseInt(tokenizedRequest[1]));
+                response = requestManager.startVisit(Integer.parseInt(tokenizedRequest[1]));
                 break;
             case "depart":
-                response = manager.depart(Integer.parseInt(tokenizedRequest[1]));
+                response = requestManager.depart(Integer.parseInt(tokenizedRequest[1]));
                 break;
             case "info": //info,title,{authors},[isbn, [publisher,[sort order]]];
             case "search":
@@ -288,7 +288,7 @@ public class Client extends Application {
                     }
                 }
 
-                response = manager.infoSearch(bookToFind, tokenizedRequest[0].equals("info"), strategy);
+                response = requestManager.infoSearch(bookToFind, tokenizedRequest[0].equals("info"), strategy);
                 break;
             case "borrow":
 
@@ -302,10 +302,10 @@ public class Client extends Application {
                     ids.add(Integer.parseInt(str) - 1);
                 }
 
-                response = manager.checkOutBook(userId, ids);
+                response = requestManager.checkOutBook(userId, ids);
                 break;
             case "borrowed":
-                response = manager.borrowed(Integer.parseInt(tokenizedRequest[1]));
+                response = requestManager.borrowed(Integer.parseInt(tokenizedRequest[1]));
                 break;
             case "return":
                 userId = Integer.parseInt(tokenizedRequest[1]);
@@ -316,7 +316,7 @@ public class Client extends Application {
                     bookIds.add(Integer.parseInt(tokenizedRequest[i]) - 1);
                 }
 
-                response = manager.checkInBook(userId, bookIds);
+                response = requestManager.checkInBook(userId, bookIds);
 
                 break;
             case "pay":
@@ -324,7 +324,7 @@ public class Client extends Application {
                 userId = Integer.parseInt(tokenizedRequest[1]);
                 int amount = Integer.parseInt(tokenizedRequest[2]);
 
-                response = manager.pay(userId, amount);
+                response = requestManager.pay(userId, amount);
                 break;
             case "advance":
 
@@ -334,7 +334,7 @@ public class Client extends Application {
                     numHours = Integer.parseInt(tokenizedRequest[2]);
                 }
 
-                response = manager.advance(numDays, numHours);
+                response = requestManager.advance(numDays, numHours);
                 break;
             case "report":
                 int days = 0;
@@ -342,10 +342,10 @@ public class Client extends Application {
                     days = Integer.parseInt(tokenizedRequest[1]);
                 }
 
-                response = manager.report(days);
+                response = requestManager.report(days);
                 break;
             case "datetime":
-                response = manager.dateTime();
+                response = requestManager.dateTime();
             default:
                 break;
         }
@@ -381,12 +381,12 @@ public class Client extends Application {
      * @param str string to check
      * @return true if the string is numeric or false
      */
-    private boolean isNumeric(String str) {
+    private boolean isNotNumeric(String str) {
         try {
             Double.parseDouble(str);
-            return true;
-        } catch(NumberFormatException e){
             return false;
+        } catch(NumberFormatException e){
+            return true;
         }
     }
 }

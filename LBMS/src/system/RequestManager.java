@@ -3,13 +3,11 @@ package system;
 import book_sort_strategy.BookSortStrategy;
 import commands.*;
 import data_classes.Book;
-import data_classes.User;
 import data_classes.Visit;
 import sys_state.Closed;
 import sys_state.Open;
 import sys_state.SysState;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +17,11 @@ import java.util.List;
  *
  * Author: Michael Driscoll
  */
-public class Manager implements IManager{
+public class RequestManager implements IManager{
 
     private Calendar calendar;
 
-    private Database database;
+    private DataStorage dataStorage;
 
     private SysState state;
 
@@ -36,12 +34,12 @@ public class Manager implements IManager{
      * Constructor for the Manager object
      * Creates states and puts them into an array for easy switching.
      */
-    public Manager(){
-        database = new Database();
+    public RequestManager(){
+        dataStorage = new DataStorage();
         calendar = new Calendar();
-        Open open = new Open(this, database,calendar);
+        Open open = new Open(this, dataStorage,calendar);
 
-        Closed closed = new Closed(this, database,calendar);
+        Closed closed = new Closed(this, dataStorage,calendar);
 
         states = new SysState[2];
 
@@ -49,9 +47,9 @@ public class Manager implements IManager{
 
         states[1] = closed;
 
-        calendar.setManager(this);
+        calendar.setRequestManager(this);
 
-        ongoingVisits = new ArrayList<Visit>();
+        ongoingVisits = new ArrayList<>();
     }
 
     /**
@@ -106,11 +104,11 @@ public class Manager implements IManager{
         for(Visit visit: ongoingVisits){
             LocalDateTime exitTime = calendar.getCurrentTime();
             visit.setExitTime(exitTime);
-            database.addVisit(visit);
+            dataStorage.addVisit(visit);
         }
         ongoingVisits.clear();
         //saves data into database for safe shutdown
-        database.saveData();
+        dataStorage.saveData();
 
     }
 
@@ -119,7 +117,7 @@ public class Manager implements IManager{
      */
     public void startUpSystem(){
         //initialize data from database
-        database.readData();
+        dataStorage.readData();
     }
 
     /**
@@ -137,15 +135,15 @@ public class Manager implements IManager{
     public void setState(int index){
 
         if(index == 1){
-            database.nightlyUpdate(calendar.getCurrentTime().toLocalDate().plusDays(1));
+            dataStorage.nightlyUpdate(calendar.getCurrentTime().toLocalDate().plusDays(1));
             for(Visit visit: ongoingVisits){
                 LocalDateTime exitTime = calendar.getCurrentTime();
                 visit.setExitTime(exitTime);
-                database.addVisit(visit);
+                dataStorage.addVisit(visit);
             }
             ongoingVisits.clear();
 
-            database.saveData();
+            dataStorage.saveData();
 
         }
         state = states[index];
@@ -166,7 +164,7 @@ public class Manager implements IManager{
      * @return String in response format
      */
     public String buy(int numCopiesEach, List<Integer> bookIds){
-        Command buyCommand = new BuyCommand(numCopiesEach,bookIds, database);
+        Command buyCommand = new BuyCommand(numCopiesEach,bookIds, dataStorage);
         return buyCommand.execute();
     }
 
@@ -177,7 +175,7 @@ public class Manager implements IManager{
      * @return String in response format
      */
     public String pay(int userId, double amount){
-        Command payCommand = new PayCommand(userId, amount, database);
+        Command payCommand = new PayCommand(userId, amount, dataStorage);
         return payCommand.execute();
     }
 
@@ -187,7 +185,7 @@ public class Manager implements IManager{
      * @return String in response format
      */
     public String borrowed(int userId){
-        Command borrowedCommand = new BorrowedCommand(userId, database);
+        Command borrowedCommand = new BorrowedCommand(userId, dataStorage);
         return borrowedCommand.execute();
     }
 
@@ -201,7 +199,7 @@ public class Manager implements IManager{
      */
     public String register(String firstName, String lastName, String address, String phone)
     {
-        Command registerCommand = new RegisterCommand(firstName,lastName,address,phone, calendar,database);
+        Command registerCommand = new RegisterCommand(firstName,lastName,address,phone, calendar, dataStorage);
         return registerCommand.execute();
     }
 
@@ -225,7 +223,7 @@ public class Manager implements IManager{
      * @return String in response format
      */
     public String infoSearch(Book book, boolean forLibrary, BookSortStrategy strategy){
-        Command infoSearch = new InfoSearchCommand(book, forLibrary, database, strategy);
+        Command infoSearch = new InfoSearchCommand(book, forLibrary, dataStorage, strategy);
         return infoSearch.execute();
     }
 
@@ -245,7 +243,7 @@ public class Manager implements IManager{
      * @return String in response format
      */
     public String report(int days){
-        Command reportCommand = new ReportCommand(days, database, calendar);
+        Command reportCommand = new ReportCommand(days, dataStorage, calendar);
         return reportCommand.execute();
     }
 
@@ -260,9 +258,9 @@ public class Manager implements IManager{
         String result = advanceCommand.execute();
 
         if (numDays > 0) {
-            database.advanceUpdate(numDays, calendar.getCurrentTime().toLocalDate());
+            dataStorage.advanceUpdate(numDays, calendar.getCurrentTime().toLocalDate());
         }
-        database.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
+        dataStorage.nightlyUpdate(calendar.getCurrentTime().toLocalDate());
 
         return result;
     }
@@ -291,7 +289,7 @@ public class Manager implements IManager{
         ongoingVisits.remove(visit);
         LocalDateTime exitTime = calendar.getCurrentTime();
         visit.setExitTime(exitTime);
-        database.addVisit(visit);
+        dataStorage.addVisit(visit);
 
     }
 
@@ -314,7 +312,7 @@ public class Manager implements IManager{
         return calendar;
     }
 
-    public Database getDatabase() {
-        return database;
+    public DataStorage getDataStorage() {
+        return dataStorage;
     }
 }

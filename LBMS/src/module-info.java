@@ -9,4 +9,6 @@ module LBMS {
     exports gui to javafx.fxml;
 
     exports data_classes;
+    exports sys_state;
+    exports book_sort_strategy;
 }

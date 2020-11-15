@@ -2,7 +2,7 @@ package commands;
 
 import book_sort_strategy.BookSortStrategy;
 import data_classes.Book;
-import system.Database;
+import system.DataStorage;
 
 import java.util.List;
 
@@ -12,20 +12,20 @@ public class InfoSearchCommand implements Command{
 
     private boolean forLibrary;
 
-    private Database database;
+    private DataStorage dataStorage;
 
     private BookSortStrategy strategy;
 
 
 
-    public InfoSearchCommand(Book theBook, boolean forTheLibrary, Database data, BookSortStrategy strat){
+    public InfoSearchCommand(Book theBook, boolean forTheLibrary, DataStorage data, BookSortStrategy strat){
         book = theBook;
         forLibrary = forTheLibrary;
-        database = data;
+        dataStorage = data;
         strategy = strat;
     }
     public String execute() {
-        List<Book> toSort = database.bookInfoSearch(book, forLibrary);
+        List<Book> toSort = dataStorage.bookInfoSearch(book, forLibrary);
 
         if(strategy != null) {
             strategy.sort(toSort, forLibrary);

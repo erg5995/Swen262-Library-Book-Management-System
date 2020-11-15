@@ -1,7 +1,7 @@
 package commands;
 import data_classes.User;
 import system.Calendar;
-import system.Database;
+import system.DataStorage;
 
 /**
  * register,first name,last name,address, phone-number;
@@ -18,24 +18,24 @@ public class RegisterCommand implements Command{
     private String phone;
 
     private Calendar calendar;
-    private Database database;
+    private DataStorage dataStorage;
 
-    public RegisterCommand(String first, String last, String addy, String phoneNum, Calendar cal, Database data){
+    public RegisterCommand(String first, String last, String addy, String phoneNum, Calendar cal, DataStorage data){
         firstName = first;
         lastName = last;
         address = addy;
         phone = phoneNum;
 
         calendar = cal;
-        database = data;
+        dataStorage = data;
     }
     public String execute() {
-        if(database.hasUser(firstName,lastName,address,phone)){
+        if(dataStorage.hasUser(firstName,lastName,address,phone)){
             return "register,duplicate;";
         }
         else {
             User user = new User(firstName, lastName, address, phone);
-            database.addUser(user);
+            dataStorage.addUser(user);
             return "register," + String.format("%010d", user.getId()) + "," + calendar.getCurrentTime().toLocalDate() + ";";
         }
     }

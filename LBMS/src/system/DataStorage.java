@@ -10,7 +10,7 @@ import java.util.*;
  * system.Database class that stores all required info
  * Author: Thomas Linse
  */
-public class Database
+public class DataStorage
 {
     private Map<String, Book> booksOwned, booksInStore;
     private List<Book> librarySearch, storeSearch;
@@ -21,7 +21,7 @@ public class Database
     private List<Double> fines, payments;
     private String[] fileNames;
 
-    public Database()
+    public DataStorage()
     {
         librarySearch = new ArrayList<>();
         storeSearch = new ArrayList<>();
@@ -349,10 +349,10 @@ public class Database
                 return true;
         return false;
     }
-    public boolean isValidUser(int userID) { return users.get(userID) != null; }
+    public boolean isNotValidUser(int userID) { return users.get(userID) == null; }
     public boolean isValidBookISBN(String bookISBN) { return booksOwned.get(bookISBN) != null; }
     public boolean isValidLibraryID(int bookID) { return bookID > -1 && bookID < librarySearch.size(); }
-    public boolean isValidBorrowID(int bookID) { return bookID > -1 && bookID < borrowSearch.size(); }
+    public boolean isNotValidBorrowID(int bookID) { return bookID <= -1 || bookID >= borrowSearch.size(); }
     public boolean isValidStoreID(int bookID) { return bookID > -1 && bookID < storeSearch.size(); }
     public boolean userCanCheckOut(int userID, int numBooks) {
         return users.get(userID).getNumBooksChecked() + numBooks <= User.MAX_BOOKS_CHECKED;

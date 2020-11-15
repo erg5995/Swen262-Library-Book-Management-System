@@ -7,11 +7,11 @@ import java.util.TimerTask;
 
 class ChangeLibraryStateTask extends TimerTask {
 
-    private Manager manager;
+    private RequestManager requestManager;
     private Calendar calendar;
 
-    public ChangeLibraryStateTask(Manager manager, Calendar calendar) {
-        this.manager = manager;
+    public ChangeLibraryStateTask(RequestManager requestManager, Calendar calendar) {
+        this.requestManager = requestManager;
         this.calendar = calendar;
     }
 
@@ -24,9 +24,9 @@ class ChangeLibraryStateTask extends TimerTask {
         LocalTime openingTime = calendar.getOpeningTime();
 
         if (currentTime.getHour() >= closingTime.getHour() || currentTime.getHour() < openingTime.getHour()) {
-            manager.setState(1); // close
+            requestManager.setState(1); // close
         } else {
-            manager.setState(0); // open
+            requestManager.setState(0); // open
         }
     }
 
@@ -36,7 +36,7 @@ public class Calendar {
     private Timer timer;
     private final LocalTime openingTime;
     private final LocalTime closingTime;
-    private Manager manager;
+    private RequestManager requestManager;
     private final long MILLISECOND_DAY = 86400 * 1000;
     private Clock clock;
 
@@ -54,8 +54,8 @@ public class Calendar {
      *
      * @param manage Manager
      */
-    public void setManager(Manager manage) {
-        this.manager = manage;
+    public void setRequestManager(RequestManager manage) {
+        this.requestManager = manage;
         startScheduledTasks(false);
     }
 
@@ -67,7 +67,7 @@ public class Calendar {
     public void startScheduledTasks(boolean isDayDiff) {
         // if it is a new day, close the library
         if (isDayDiff) {
-            manager.setState(1);
+            requestManager.setState(1);
         }
 
         // check if the hour is within closing time
@@ -103,14 +103,14 @@ public class Calendar {
      * Starts a scheduled task to open the library.
      */
     public void open() {
-        timer.schedule(new ChangeLibraryStateTask(manager, this), new Date(), MILLISECOND_DAY);
+        timer.schedule(new ChangeLibraryStateTask(requestManager, this), new Date(), MILLISECOND_DAY);
     }
 
     /**
      * Starts a scheduled task to close the library.
      */
     public void close() {
-        timer.schedule(new ChangeLibraryStateTask(manager, this), new Date(), MILLISECOND_DAY);
+        timer.schedule(new ChangeLibraryStateTask(requestManager, this), new Date(), MILLISECOND_DAY);
     }
 
     /**
@@ -148,9 +148,8 @@ public class Calendar {
     public String toString() {
         StringBuilder output = new StringBuilder();
         LocalDateTime currentTime = getCurrentTime();
-        output.append(currentTime.getYear() + ":" + currentTime.getMonthValue() + ":" +
-                currentTime.getDayOfMonth());
-
+        output.append(currentTime.getYear()).append(":").append(currentTime.getMonthValue()).append(":")
+                .append(currentTime.getDayOfMonth());
         return output.toString();
     }
 }

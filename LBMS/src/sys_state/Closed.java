@@ -1,14 +1,11 @@
 package sys_state;
 
-import data_classes.Book;
-import data_classes.TimeBetween;
 import data_classes.User;
 import system.Calendar;
-import system.Database;
-import system.Manager;
+import system.DataStorage;
+import system.RequestManager;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +14,13 @@ import java.util.List;
  */
 public class Closed implements SysState {
 
-    private Manager manager;
-    private Database database;
+    private RequestManager requestManager;
+    private DataStorage dataStorage;
     private Calendar calendar;
 
-    public Closed(Manager theManager, Database theDatabase, Calendar theCalendar){
-        manager = theManager;
-        database = theDatabase;
+    public Closed(RequestManager theRequestManager, DataStorage theDataStorage, Calendar theCalendar){
+        requestManager = theRequestManager;
+        dataStorage = theDataStorage;
         calendar = theCalendar;
     }
 
@@ -66,7 +63,7 @@ public class Closed implements SysState {
         //errors: invalid user id, invalid book ids
 
         //alternate response: overdue + fine applied
-        User user = database.getUser(userID);
+        User user = dataStorage.getUser(userID);
         if(user == null) {
             return "return,invalid-visitor-id";
         }
@@ -74,7 +71,7 @@ public class Closed implements SysState {
             ArrayList<Integer> invalid = new ArrayList<>();
             //if invalid book
             for(Integer id: books){
-                if(!database.isValidBorrowID(id)){
+                if(dataStorage.isNotValidBorrowID(id)){
                     invalid.add(id + 1);
                 }
             }
@@ -85,7 +82,7 @@ public class Closed implements SysState {
             //must calculate time to check in book
             LocalDateTime endTime = calendar.getCurrentTime().plusDays(1).withHour(8);
 
-            String result = database.returnBooks(user.getId(),books,endTime.toLocalDate());
+            String result = dataStorage.returnBooks(user.getId(),books,endTime.toLocalDate());
             //returned books and it succeeded
             if (result.equals("success")){
                 return "return,success";

@@ -1,7 +1,6 @@
 package commands;
 
 import system.Calendar;
-import system.Manager;
 
 import java.time.LocalDateTime;
 
@@ -24,12 +23,8 @@ public class DatetimeCommand implements Command{
         }
 
         LocalDateTime currentTime = calendar.getCurrentTime();
-        StringBuilder output = new StringBuilder();
-        output.append("datetime,");
-        output.append(currentTime.getYear() + "/" + currentTime.getMonthValue() + "/" + currentTime.getDayOfMonth());
-        output.append(",");
-        output.append(currentTime.getHour() + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
 
-        return output.toString();
+        return "datetime," + currentTime.getYear() + "/" + currentTime.getMonthValue() + "/" + currentTime.getDayOfMonth()
+                + "," + currentTime.getHour() + ":" + currentTime.getMinute() + ":" + currentTime.getSecond();
     }
 }

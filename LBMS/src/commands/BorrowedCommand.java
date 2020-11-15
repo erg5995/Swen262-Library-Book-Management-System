@@ -1,7 +1,7 @@
 package commands;
 
 import data_classes.Transaction;
-import system.Database;
+import system.DataStorage;
 
 import java.util.List;
 
@@ -17,12 +17,12 @@ import java.util.List;
 public class BorrowedCommand implements Command{
 
     private int userId;
-    private Database database;
+    private DataStorage dataStorage;
     private List<Transaction> borrowedBooks;
 
-    public BorrowedCommand(int userID, Database database){
+    public BorrowedCommand(int userID, DataStorage dataStorage){
         this.userId = userID;
-        this.database = database;
+        this.dataStorage = dataStorage;
     }
 
     public String execute(){
@@ -30,18 +30,18 @@ public class BorrowedCommand implements Command{
         output.append("borrowed,");
 
         // check for null
-        if (database == null) {
+        if (dataStorage == null) {
             return "";
         }
 
         // check for invalid user id
-        if (!database.isValidUser(userId)) {
+        if (dataStorage.isNotValidUser(userId)) {
             output.append("invalid-visitor-id");
             return output.toString();
         }
 
         // check if the user has no books checked out
-        borrowedBooks = database.findBorrowedBooks(userId);
+        borrowedBooks = dataStorage.findBorrowedBooks(userId);
         if (borrowedBooks.size() == 0) {
             output.append("0");
             return output.toString();

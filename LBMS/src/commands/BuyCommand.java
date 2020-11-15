@@ -1,7 +1,7 @@
 package commands;
 
 import data_classes.Book;
-import system.Database;
+import system.DataStorage;
 
 import java.util.List;
 
@@ -9,23 +9,23 @@ public class BuyCommand implements Command{
 
     private int numCompiesEach;
     private List<Integer> bookIds;
-    private Database database;
-    public BuyCommand(int numCompies, List<Integer> buybookIds, Database data){
+    private DataStorage dataStorage;
+    public BuyCommand(int numCompies, List<Integer> buybookIds, DataStorage data){
         numCompiesEach = numCompies;
         bookIds = buybookIds;
-        database = data;
+        dataStorage = data;
     }
     public String execute(){
 
-        String bookString = "";
+        StringBuilder bookString = new StringBuilder();
         for (int id : bookIds)
-            if (!database.isValidStoreID(id))
+            if (!dataStorage.isValidStoreID(id))
                 return "buy,invalid-book-id [" + (id + 1) + "]";
-        List<Book> books = database.buyBooks(numCompiesEach,bookIds);
+        List<Book> books = dataStorage.buyBooks(numCompiesEach,bookIds);
 
 
         for(Book book: books){
-            bookString = bookString + book.toString()+ "," + numCompiesEach + "\n";
+            bookString.append(book.toString()).append(",").append(numCompiesEach).append("\n");
         }
 
         return "buy,success," + bookIds.size() + "\n" + bookString + ";";

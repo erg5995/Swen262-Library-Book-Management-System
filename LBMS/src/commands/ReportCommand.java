@@ -1,21 +1,21 @@
 package commands;
 
 import system.Calendar;
-import system.Database;
+import system.DataStorage;
 
 public class ReportCommand implements Command{
 
     private int numDays;
-    private Database database;
+    private DataStorage dataStorage;
     private Calendar calendar;
 
-    public ReportCommand(Database db, Calendar cal) {
+    public ReportCommand(DataStorage db, Calendar cal) {
         this(0, db, cal);
     }
 
-    public ReportCommand(int days, Database db, Calendar cal){
+    public ReportCommand(int days, DataStorage db, Calendar cal){
         this.numDays = days;
-        database = db;
+        dataStorage = db;
         calendar = cal;
     }
 
@@ -26,17 +26,17 @@ public class ReportCommand implements Command{
             return "Error: Calendar null in ReportCommand";
         }
 
-        if (database == null) {
+        if (dataStorage == null) {
             return "Error: Database null in ReportCommand";
         }
 
         // if the user did not pass a number of days, generate a report for all days
         if (numDays == 0) {
-            output.append("report," + calendar.toString()).append(",\n");
-            output.append(database.generateReport().toString());
+            output.append("report,").append(calendar.toString()).append(",\n");
+            output.append(dataStorage.generateReport().toString());
         } else {
-            output.append("report," + calendar.toString()).append(",\n");
-            output.append(database.generateReport(numDays,
+            output.append("report,").append(calendar.toString()).append(",\n");
+            output.append(dataStorage.generateReport(numDays,
                     calendar.getCurrentTime().toLocalDate()).toString());
         }
 
