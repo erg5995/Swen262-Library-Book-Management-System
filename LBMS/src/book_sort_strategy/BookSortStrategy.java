@@ -25,21 +25,31 @@ public interface BookSortStrategy {
      * @return true if the first date comes before the second one
      */
     default boolean compareDates(String str1, String str2) {
-        //Dates are in MM/DD/YYYY format (probably)
+        //Dates are in YYYY-MM-DD format (probably)
         String[] date1 = str1.split("[/-]");
         String[] date2 = str2.split("[/-]");
+
+        if(Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
+            return false;
+        } else if(Integer.parseInt(date1[0]) > Integer.parseInt(date2[0])) {
+            return true;
+        }
+
+        if(date1.length == 1 || date2.length == 1)
+            return true;
+
+        if(Integer.parseInt(date1[1]) < Integer.parseInt(date2[1])) {
+            return false;
+        } else if(Integer.parseInt(date1[1]) > Integer.parseInt(date2[1])) {
+            return true;
+        }
+
+        if(date1.length == 2 || date2.length == 2)
+            return true;
 
         if(Integer.parseInt(date1[2]) < Integer.parseInt(date2[2])) {
             return false;
         } else if(Integer.parseInt(date1[2]) > Integer.parseInt(date2[2])) {
-            return true;
-        } else if(Integer.parseInt(date1[0]) < Integer.parseInt(date2[0])) {
-            return false;
-        } else if(Integer.parseInt(date1[0]) > Integer.parseInt(date2[0])) {
-            return true;
-        } else if(Integer.parseInt(date1[1]) < Integer.parseInt(date2[1])) {
-            return false;
-        } else if(Integer.parseInt(date1[1]) > Integer.parseInt(date2[1])) {
             return true;
         } else {
             return true;
@@ -54,6 +64,8 @@ public interface BookSortStrategy {
      * @return true if the first string comes before the second
      */
     default boolean compareStringsAlphabetically(String str1, String str2) {
+        if(str1.equals("")) return false;
+        if(str2.equals("")) return true;
         if((int)str1.charAt(0) < (int)str2.charAt(0)) {
             return true;
         }else if ((int)str1.charAt(0) > (int)str2.charAt(0)){
