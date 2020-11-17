@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Client extends Application {
@@ -76,7 +77,6 @@ public class Client extends Application {
         int commas = 0;
         boolean count = true;
         List<Integer> splitIdxs = new ArrayList<>();
-        int splitIdx = 0;
         for(int i = 0; i < request.length(); i++) {
             if(request.charAt(i) == (',') && count) {
                 splitIdxs.add(i);
@@ -144,12 +144,14 @@ public class Client extends Application {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }
+                checkSort(request);
                 break;
             case "search":
                 if(request.length > 6) {
                     request[0] = ERROR_MSG;
                     request[1] = WRONG_PARAM;
                 }
+                checkSort(request);
                 break;
             case "borrow":
                 if(request.length != 3) {
@@ -387,6 +389,14 @@ public class Client extends Application {
             return false;
         } catch(NumberFormatException e){
             return true;
+        }
+    }
+
+    private void checkSort(String[] request) {
+        ArrayList<String> sorts = new ArrayList<>(Arrays.asList("author","title","publishdate","copies","checkedcopies"));
+        if (request.length == 6 && !sorts.contains(request[5])) {
+            request[0] = ERROR_MSG;
+            request[1] = "Invalid sorting order.";
         }
     }
 }
