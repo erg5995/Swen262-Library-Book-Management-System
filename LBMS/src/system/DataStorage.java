@@ -35,6 +35,11 @@ public class DataStorage
         readData();
     }
 
+    /**
+     * Registers a new user into the database.
+     *
+     * @param user user to be put in the database
+     */
     public void addUser(User user) { users.put(user.getId(), user); }
     public int addUser(String fname, String lname, String address, String phone)
     {
@@ -44,8 +49,20 @@ public class DataStorage
     }
     public User getUser(int id) { return users.get(id); }
 
+    /**
+     * Adds a new visit to the library.
+     *
+     * @param visit visit to be added
+     */
     public void addVisit(Visit visit) { visits.add(visit); }
 
+    /**
+     * Gets a list of books in the store or the library.
+     *
+     * @param param Book parameters
+     * @param forLibrary if the search is for the library or the store
+     * @return A list of books
+     */
     public List<Book> bookInfoSearch(Book param, boolean forLibrary)
     {
         if (forLibrary) {
@@ -55,6 +72,14 @@ public class DataStorage
         searchBooks(param, booksInStore.values(), storeSearch);
         return storeSearch;
     }
+
+    /**
+     * Searches for books in the library or the store.
+     *
+     * @param param
+     * @param search
+     * @param found
+     */
     private void searchBooks(Book param, Collection<Book> search, List<Book> found)
     {
         found.clear();
@@ -70,6 +95,14 @@ public class DataStorage
             found.add(book);
         }
     }
+
+    /**
+     * Checks if the user has permission to execute the command.
+     *
+     * @param pAuth
+     * @param bAuth
+     * @return
+     */
     private boolean checkAuth(String[] pAuth, String[] bAuth)
     {
         if (pAuth == null)
@@ -89,6 +122,13 @@ public class DataStorage
         return true;
     }
 
+    /**
+     * Checks out books that a user requested.
+     *
+     * @param userID user checking out the book
+     * @param books books being checked out
+     * @return whether the operation was a success
+     */
     public boolean checkOutBooks(int userID, List<Integer> books)
     {
         users.get(userID).checkOutBooks(books.size());
@@ -99,16 +139,46 @@ public class DataStorage
             librarySearch.get(id).checkOutCopy();
         return true;
     }
+
+    /**
+     * Adds a transaction to the database.
+     *
+     * @param trans transaction to be added
+     */
     public void addTransaction(Transaction trans) { checkedOutBooks.add(trans); }
+
+    /**
+     * Adds a transaction to the database.
+     *
+     * @param book book
+     * @param user user
+     * @param dateChecked date checked out
+     * @param dueDate due date
+     */
     public void addTransaction(Book book, User user, LocalDate dateChecked, LocalDate dueDate)
     {
         addTransaction(new Transaction(book, user, dateChecked, dueDate));
     }
+
+    /**
+     * Adds a transaction to the database.
+     *
+     * @param bookID book
+     * @param userID user
+     * @param dateChecked date checked out
+     * @param dueDate due date
+     */
     public void addTransaction(int bookID, int userID, LocalDate dateChecked, LocalDate dueDate)
     {
         addTransaction(librarySearch.get(bookID), users.get(userID), dateChecked, dueDate);
     }
 
+    /**
+     * Finds a list of borrowed books for a user.
+     *
+     * @param user user
+     * @return a list of books the user has borrowed
+     */
     public List<Transaction> findBorrowedBooks(User user)
     {
         borrowSearch.clear();
@@ -117,8 +187,23 @@ public class DataStorage
                 borrowSearch.add(item);
         return borrowSearch;
     }
+
+    /**
+     * Finds a list of borrowed books for a user.
+     *
+     * @param userId user id
+     * @return a list of books the user has borrowed
+     */
     public List<Transaction> findBorrowedBooks(int userId) { return findBorrowedBooks(users.get(userId)); }
 
+    /**
+     * Returns books that have been lent out to the library.
+     *
+     * @param userID user who borrowed the book
+     * @param bookIDs the list of book ids to be returned
+     * @param date the date returning
+     * @return success or overdue fee if the books are returned late
+     */
     public String returnBooks(int userID, List<Integer> bookIDs, LocalDate date)
     {
         users.get(userID).checkInBooks(bookIDs.size());
@@ -144,6 +229,13 @@ public class DataStorage
         return ret.toString();
     }
 
+    /**
+     * Manages user payment and subtract the amount from the user's debt.
+     *
+     * @param userID user making the payment
+     * @param amount amount being paid
+     * @return the user's current debt
+     */
     public double pay(int userID, double amount)
     {
         User user = users.get(userID);
@@ -153,6 +245,13 @@ public class DataStorage
         return user.addPayment(amount);
     }
 
+    /**
+     * Purchases a list of books from the store.
+     *
+     * @param quantity quantity being bought
+     * @param bookIDs list of books to purchase
+     * @return a list of books bought
+     */
     public List<Book> buyBooks(int quantity, List<Integer> bookIDs)
     {
         List<Book> books = new ArrayList<>();
@@ -167,6 +266,11 @@ public class DataStorage
         return books;
     }
 
+    /**
+     * Generates a standard report
+     *
+     * @return report
+     */
     public Report generateReport()
     {
         int numBooks = 0, booksBought = 0, v;
@@ -191,6 +295,14 @@ public class DataStorage
         // returns a report summarizing all the statistics calculated above
         return new Report(users.size(), numBooks, booksBought, time, totPayments, totFines - totPayments);
     }
+
+    /**
+     * Generates a report based on the number of days.
+     *
+     * @param days number of days
+     * @param day start date
+     * @return report
+     */
     public Report generateReport(int days, LocalDate day)
     {
         day = day.minusDays(days);
@@ -218,6 +330,13 @@ public class DataStorage
         // returns a report summarizing all the statistics calculated above
         return new Report(users.size(), numBooks, booksBought, time, totPayments, totFines - totPayments);
     }
+
+    /**
+     * A helper function to divide time.
+     *
+     * @param time time
+     * @param size size to be divided
+     */
     private void divideTime(int[] time, int size)
     {
         if (size != 0) {
@@ -309,6 +428,10 @@ public class DataStorage
             in.close();
         } catch (Exception e) { System.out.println("Couldn't read in the amount of payments received."); }
     }
+
+    /**
+     * Save the data locally
+     */
     public void saveData()
     {
         writeObject(booksOwned, 0);
@@ -340,7 +463,14 @@ public class DataStorage
     }
 
     /**
-     * check methods
+     * Checks if DataStorage has a specific user.
+     *
+     * @param fname User's first name
+     * @param lname User's last name
+     * @param address User's address
+     * @param phone User's phone number
+     *
+     * @return the user
      */
     public boolean hasUser(String fname, String lname, String address, String phone)
     {
@@ -349,14 +479,71 @@ public class DataStorage
                 return true;
         return false;
     }
+
+    /**
+     * Checks if the user is valid.
+     *
+     * @param userID user id
+     * @return true if valid, false if not
+     */
     public boolean isNotValidUser(int userID) { return users.get(userID) == null; }
+
+    /**
+     * Checks if the ISBN is valid.
+     *
+     * @param bookISBN isbn
+     * @return true is valid, false if not
+     */
     public boolean isValidBookISBN(String bookISBN) { return booksOwned.get(bookISBN) != null; }
+
+    /**
+     * Checks if the book is in the library
+     *
+     * @param bookID book id
+     * @return true if valid, false if not
+     */
     public boolean isValidLibraryID(int bookID) { return bookID > -1 && bookID < librarySearch.size(); }
+
+    /**
+     * Checks if the book has been borrowed.
+     *
+     * @param bookID book id
+     * @return true if borrowed, false if not
+     */
     public boolean isNotValidBorrowID(int bookID) { return bookID <= -1 || bookID >= borrowSearch.size(); }
+
+    /**
+     * Checks if the book exists in the store.
+     *
+     * @param bookID book id
+     * @return true if exists, false if not
+     */
     public boolean isValidStoreID(int bookID) { return bookID > -1 && bookID < storeSearch.size(); }
+
+    /**
+     * checks if the user can checkout more books
+     *
+     * @param userID user id
+     * @param numBooks number of books
+     * @return true if the user can borrow more books, false if not
+     */
     public boolean userCanCheckOut(int userID, int numBooks) {
         return users.get(userID).getNumBooksChecked() + numBooks <= User.MAX_BOOKS_CHECKED;
     }
+
+    /**
+     * checks if the user is an employee
+     *
+     * @param userID user id
+     * @return true if the user is an employee, false if not
+     */
     public boolean isEmployee(int userID) { return users.get(userID).getType() == User.UserRole.EMPLOYEE; }
+
+    /**
+     * checks if the user has any outstanding fines
+     *
+     * @param userID user id
+     * @return the user's fine
+     */
     public boolean hasOutstandingFine(int userID) { return users.get(userID).hasDebt(); }
 }

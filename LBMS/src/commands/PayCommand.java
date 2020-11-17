@@ -3,6 +3,11 @@ package commands;
 import data_classes.User;
 import system.DataStorage;
 
+/**
+ * pay,success,balance;
+ * balance
+ * is the remaining balance of fines due for this visitor.
+ */
 public class PayCommand implements Command{
 
 
@@ -17,6 +22,11 @@ public class PayCommand implements Command{
         dataStorage = data;
     }
 
+    /**
+     * Executes the command
+     *
+     * @return command output
+     */
     public String execute(){
         User user = dataStorage.getUser(userId);
         if(dataStorage.isNotValidUser(userId)){

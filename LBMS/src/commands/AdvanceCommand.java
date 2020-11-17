@@ -29,14 +29,29 @@ public class AdvanceCommand implements Command {
         calendar = calend;
     }
 
+    /**
+     * Checks if the number of days is between 0-7
+     *
+     * @return true if the number is valid, false if not
+     */
     private boolean checkValidDay() {
         return numDays >= 0 && numDays <= 7;
     }
 
+    /**
+     * Checks that the number of hours is between 0-23
+     *
+     * @return true if the number is valid, false if not
+     */
     private boolean checkValidHour() {
         return numHours >= 0 && numHours <= 23;
     }
 
+    /**
+     * Executes the command
+     *
+     * @return command output
+     */
     public String execute(){
         StringBuilder output = new StringBuilder();
         output.append("advance,");

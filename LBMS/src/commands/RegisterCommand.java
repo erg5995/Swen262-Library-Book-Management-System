@@ -29,6 +29,12 @@ public class RegisterCommand implements Command{
         calendar = cal;
         dataStorage = data;
     }
+
+    /**
+     * Executes the command
+     *
+     * @return command output
+     */
     public String execute() {
         if(dataStorage.hasUser(firstName,lastName,address,phone)){
             return "register,duplicate;";

@@ -4,11 +4,26 @@ import data_classes.Book;
 
 import java.util.List;
 
+/**
+ * An interface for all sorting strategies
+ */
 public interface BookSortStrategy {
 
+    /**
+     * Sorting algorithm
+     *
+     * @param book list of books to be sorted
+     * @param forLibrary if the sorting was for the library or the store
+     */
     public void sort(List<Book> book, boolean forLibrary);
 
-    //True indicates that date 1 is more recent than date 2
+    /**
+     * Compare two dates assuming it's in the MM/DD/YYYY format
+     *
+     * @param str1 date1
+     * @param str2 date2
+     * @return true if the first date comes before the second one
+     */
     default boolean compareDates(String str1, String str2) {
         //Dates are in MM/DD/YYYY format (probably)
         String[] date1 = str1.split("[/-]");
@@ -31,6 +46,13 @@ public interface BookSortStrategy {
         }
     }
 
+    /**
+     * Compares two strings in alphabetical order
+     *
+     * @param str1 first string
+     * @param str2 second string
+     * @return true if the first string comes before the second
+     */
     default boolean compareStringsAlphabetically(String str1, String str2) {
         if((int)str1.charAt(0) < (int)str2.charAt(0)) {
             return true;

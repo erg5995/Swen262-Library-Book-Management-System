@@ -17,6 +17,11 @@ public class DatetimeCommand implements Command{
         this.calendar = calendar;
     }
 
+    /**
+     * Executes the command
+     *
+     * @return command output
+     */
     public String execute(){
         if (calendar == null) {
             return "";

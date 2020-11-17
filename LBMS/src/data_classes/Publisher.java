@@ -1,5 +1,8 @@
 package data_classes;
 
+/**
+ * A class to store publisher information
+ */
 public class Publisher implements java.io.Serializable {
 
     String publisher;

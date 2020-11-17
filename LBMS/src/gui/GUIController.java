@@ -31,6 +31,11 @@ public class GUIController
     }
 
     /** Methods for user input */
+
+    /**
+     * Changes the interface to display fields for the Search command.
+     * @param action event
+     */
     public void searchPressed(ActionEvent e)
     {
         state = State.SEARCH;
@@ -42,6 +47,11 @@ public class GUIController
         setVisible(5);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Buy command.
+     * @param action event
+     */
     public void buyPressed(ActionEvent e)
     {
         state = State.BUY;
@@ -50,6 +60,11 @@ public class GUIController
         setVisible(2);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Arrive command.
+     * @param action event
+     */
     public void arrivePressed(ActionEvent e)
     {
         state = State.ARRIVE;
@@ -57,6 +72,11 @@ public class GUIController
         setVisible(1);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Depart command.
+     * @param action event
+     */
     public void departPressed(ActionEvent e)
     {
         state = State.DEPART;
@@ -64,6 +84,11 @@ public class GUIController
         setVisible(1);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Borrowed command.
+     * @param action event
+     */
     public void borrowedPressed(ActionEvent e)
     {
         state = State.BORROWED;
@@ -71,6 +96,11 @@ public class GUIController
         setVisible(1);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Return command.
+     * @param action event
+     */
     public void returnPressed(ActionEvent e)
     {
         state = State.RETURN;
@@ -79,6 +109,11 @@ public class GUIController
         setVisible(2);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Info command.
+     * @param action event
+     */
     public void infoPressed(ActionEvent e)
     {
         state = State.INFO;
@@ -90,6 +125,11 @@ public class GUIController
         setVisible(5);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Borrow command.
+     * @param action event
+     */
     public void borrowPressed(ActionEvent e)
     {
         state = State.BORROW;
@@ -98,6 +138,11 @@ public class GUIController
         setVisible(2);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Advance command.
+     * @param action event
+     */
     public void advancePressed(ActionEvent e)
     {
         state = State.ADVANCE;
@@ -106,12 +151,22 @@ public class GUIController
         setVisible(2);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Datetime command.
+     * @param action event
+     */
     public void datetimePressed(ActionEvent e)
     {
         state = State.DATETIME;
         setVisible(0);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Pay command.
+     * @param action event
+     */
     public void payPressed(ActionEvent e)
     {
         state = State.PAY;
@@ -120,6 +175,11 @@ public class GUIController
         setVisible(2);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Report command.
+     * @param action event
+     */
     public void reportPressed(ActionEvent e)
     {
         state = State.REPORT;
@@ -127,6 +187,11 @@ public class GUIController
         setVisible(1);
         clearInput();
     }
+
+    /**
+     * Changes the interface to display fields for the Register command.
+     * @param action event
+     */
     public void registerPressed(ActionEvent e)
     {
         state = State.REGISTER;
@@ -137,9 +202,19 @@ public class GUIController
         setVisible(4);
         clearInput();
     }
+
+    /**
+     * Clear all pressed buttons - remove input fields
+     * @param e action event
+     */
     public void clearPressed(ActionEvent e) {
         labelOut.clear();
     }
+
+    /**
+     * Submit button pressed - executes the command
+     * @param e action event
+     */
     public void submitPressed(ActionEvent e)
     {
         String request = "";
@@ -189,6 +264,10 @@ public class GUIController
         labelOut.setText(client.input(state.toString().toLowerCase() + "," + request) + "\n\n" + labelOut.getText());
     }
 
+    /**
+     * Set how many labels should be visible
+     * @param num number of labels to be visible
+     */
     private void setVisible(int num)
     {
         label1.setVisible(false);
@@ -222,6 +301,10 @@ public class GUIController
             }
         }
     }
+
+    /**
+     * Clear input
+     */
     private void clearInput() {
         text1.clear();
         text2.clear();

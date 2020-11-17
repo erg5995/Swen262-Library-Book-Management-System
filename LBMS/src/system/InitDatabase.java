@@ -87,12 +87,25 @@ public class InitDatabase
         } catch (IOException e) { e.printStackTrace(); }
         writeObject(booksInStore, "booksInStore.ser");
     }
+
+    /**
+     * Gets the next field split by the comma
+     *
+     * @return the next field
+     */
     private static String nextField()
     {
         String ret = line.substring(0, line.indexOf(','));
         line = line.substring(line.indexOf(',') + 1);
         return ret;
     }
+
+    /**
+     * Write data from a file to an object
+     *
+     * @param object object to write to
+     * @param fileName data file
+     */
     private static void writeObject(Object object, String fileName)
     {
         try {

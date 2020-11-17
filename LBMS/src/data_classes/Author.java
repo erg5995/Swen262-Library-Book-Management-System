@@ -1,5 +1,8 @@
 package data_classes;
 
+/**
+ * A class to store book author information
+ */
 public class Author implements java.io.Serializable {
 
     String firstName;

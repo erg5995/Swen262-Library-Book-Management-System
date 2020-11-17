@@ -25,6 +25,11 @@ public class BorrowedCommand implements Command{
         this.dataStorage = dataStorage;
     }
 
+    /**
+     * Executes the command
+     *
+     * @return command output
+     */
     public String execute(){
         StringBuilder output = new StringBuilder();
         output.append("borrowed,");
