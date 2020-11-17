@@ -126,18 +126,19 @@ public class DataStorage
      * Checks out books that a user requested.
      *
      * @param userID user checking out the book
-     * @param books books being checked out
-     * @return whether the operation was a success
+     * @param bookIDs books being checked out
+     * @return the IDs of the books that had no available copies
      */
-    public boolean checkOutBooks(int userID, List<Integer> books)
+    public List<Integer> checkOutBooks(int userID, List<Integer> bookIDs)
     {
-        users.get(userID).checkOutBooks(books.size());
-        for (int id : books)
-            if (librarySearch.get(id).getNumCopiesLeft() == 0)
-                return false;
-        for (int id : books)
-            librarySearch.get(id).checkOutCopy();
-        return true;
+        List<Integer> unavailableBooks = new ArrayList<>();
+        for (int i = 0; i < bookIDs.size(); i++)
+            if (librarySearch.get(bookIDs.get(i)).getNumCopiesLeft() > 0)
+                librarySearch.get(bookIDs.get(i)).checkOutCopy();
+            else
+                unavailableBooks.add(bookIDs.remove(i--) + 1);
+        users.get(userID).checkOutBooks(bookIDs.size() - unavailableBooks.size());
+        return unavailableBooks;
     }
 
     /**

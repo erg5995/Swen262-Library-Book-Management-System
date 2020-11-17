@@ -65,7 +65,6 @@ public class Open implements SysState {
      * @return String in proper response format: borrow,due date;
      */
     public String checkOutBook(List<Integer> books, int userID){
-        ArrayList<Integer> isbns = new ArrayList<>();
         //response format: borrow,due date;
 
         //errors: invalid id, invalid book id, book limit exceeded, outstanding fine
@@ -95,15 +94,16 @@ public class Open implements SysState {
         }
 
         //error - book limited exceeded
-        if(!dataStorage.userCanCheckOut(userID,isbns.size()))
+        if(!dataStorage.userCanCheckOut(userID,books.size()))
         {
             return "borrow,book-limit-exceeded";
         }
-        dataStorage.checkOutBooks(userID, books);
+        List<Integer> unavailable = dataStorage.checkOutBooks(userID, books);
         for(Integer id: books) {
             dataStorage.addTransaction(id, userID, calendar.getCurrentTime().toLocalDate(), calendar.getCurrentTime().toLocalDate().plusDays(7));
         }
-        return "borrow," + calendar.getCurrentTime().toLocalDate().plusDays(7);
+        return (unavailable.isEmpty() ? "" : unavailable.toString() + " were unable to be checked out since there were" +
+                " no copies available.\n") + "borrow," + calendar.getCurrentTime().toLocalDate().plusDays(7);
     }
 
 
