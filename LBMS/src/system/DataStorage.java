@@ -207,25 +207,32 @@ public class DataStorage
      */
     public String returnBooks(int userID, List<Integer> bookIDs, LocalDate date)
     {
-        users.get(userID).checkInBooks(bookIDs.size());
+        ArrayList<Integer> overdue = new ArrayList<>();
+        int attempted = bookIDs.size();
         double totFines = 0;
         for (int i = 0; i < bookIDs.size(); i++) {
             Transaction trans = borrowSearch.get(bookIDs.get(i));
-            checkedOutBooks.remove(trans);
-            trans.getBook().returnCopy();
-            trans.close(date);
-            if (trans.isOverdue())
-                totFines += trans.getFine();
-            else
+            if (trans != null && trans.getUser().getId() == userID) {
+                checkedOutBooks.remove(trans);
+                borrowSearch.set(bookIDs.get(i), null);
+                trans.getBook().returnCopy();
+                trans.close(date);
+                if (trans.isOverdue()) {
+                    totFines += trans.getFine();
+                    overdue.add(bookIDs.get(i));
+                }
                 bookIDs.remove(i--);
-            returnedBooks.add(trans);
+                returnedBooks.add(trans);
+            } else
+                bookIDs.set(i, bookIDs.get(i) + 1);
         }
+        users.get(userID).checkInBooks(attempted - bookIDs.size());
         if (totFines == 0)
             return "success";
         fines.set(0, fines.get(0) + totFines);
         users.get(userID).addFine(totFines);
         StringBuilder ret = new StringBuilder("overdue,$" + String.format("%.00f", totFines));
-        for (int bookID : bookIDs)
+        for (int bookID : overdue)
             ret.append(",").append(bookID);
         return ret.toString();
     }
@@ -354,8 +361,9 @@ public class DataStorage
      */
     public void nightlyUpdate(LocalDate today)
     {
-        for (Transaction trans : checkedOutBooks)
-            trans.update(today);
+        if (checkedOutBooks != null)
+            for (Transaction trans : checkedOutBooks)
+                trans.update(today);
         numBooksBought.add(0, 0);
         fines.add(0, 0.);
         payments.add(0, 0.);
@@ -435,6 +443,7 @@ public class DataStorage
      */
     public void saveData()
     {
+        System.out.println("Saving data...");
         writeObject(booksOwned, 0);
         writeObject(booksInStore, 1);
         writeObject(checkedOutBooks, 2);
@@ -460,7 +469,7 @@ public class DataStorage
             out.writeObject(object);
             out.close();
             file.close();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("Couldn't save to " + fileNames[index] + "."); }
     }
 
     /**
