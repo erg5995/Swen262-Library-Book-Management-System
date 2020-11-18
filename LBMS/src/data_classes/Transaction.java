@@ -12,7 +12,7 @@ public class Transaction implements Serializable
 {
     private Book book;
     private User user;
-    private LocalDate dueDate, dateChecked;
+    private LocalDate dueDate, dateCheckedOut, dateCheckedIn;
     private double fine;
 
     /**
@@ -25,7 +25,7 @@ public class Transaction implements Serializable
         this.book = book;
         this.user = user;
         this.dueDate = dueDate;
-        this.dateChecked = dateChecked;
+        this.dateCheckedOut = dateChecked;
         fine = 0;
     }
     public Transaction(Book book, User user, LocalDateTime dateChecked, LocalDateTime dueDateTime)
@@ -39,7 +39,8 @@ public class Transaction implements Serializable
     public Book getBook() { return book; }
     public User getUser() { return user; }
     public LocalDate dueDate() { return dueDate; }
-    public LocalDate getDateChecked() { return dateChecked; }
+    public LocalDate getDateCheckedOut() { return dateCheckedOut; }
+    public LocalDate getDateCheckedIn() { return dateCheckedIn; }
     public double getFine() { return fine; }
     public boolean isOverdue() { return fine > 0; }
 
@@ -57,5 +58,5 @@ public class Transaction implements Serializable
                 fine += 2 * (daysPastDue - 1) / 7;
         }
     }
-    public void close(LocalDate date) { dateChecked = date; }
+    public void close(LocalDate date) { dateCheckedIn = date; }
 }

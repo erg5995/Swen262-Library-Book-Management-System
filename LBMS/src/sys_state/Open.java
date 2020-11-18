@@ -15,18 +15,15 @@ import java.util.List;
  */
 
 
-public class Open implements SysState {
+public class Open extends SysState {
 
 
     private RequestManager requestManager;
-    private DataStorage dataStorage;
-    private Calendar calendar;
 
     public Open(RequestManager theRequestManager, DataStorage theDataStorage, Calendar theCalendar)
     {
+        super(theDataStorage, theCalendar);
         requestManager = theRequestManager;
-        dataStorage = theDataStorage;
-        calendar = theCalendar;
     }
 
     /**
@@ -65,7 +62,6 @@ public class Open implements SysState {
      * @return String in proper response format: borrow,due date;
      */
     public String checkOutBook(List<Integer> books, int userID){
-        ArrayList<Integer> isbns = new ArrayList<>();
         //response format: borrow,due date;
 
         //errors: invalid id, invalid book id, book limit exceeded, outstanding fine
@@ -78,12 +74,7 @@ public class Open implements SysState {
         }
 
         //error: invalid book id
-        ArrayList<Integer> invalid = new ArrayList<>();
-        for (Integer id: books){
-            if(!dataStorage.isValidLibraryID(id)){
-                invalid.add(id + 1);
-            }
-        }
+        List<Integer> invalid = validate(new ArrayList<>(books), false);
         if(!invalid.isEmpty())
         {
             return "borrow,invalid-book-id," + invalid;
@@ -95,15 +86,16 @@ public class Open implements SysState {
         }
 
         //error - book limited exceeded
-        if(!dataStorage.userCanCheckOut(userID,isbns.size()))
+        if(!dataStorage.userCanCheckOut(userID,books.size()))
         {
             return "borrow,book-limit-exceeded";
         }
-        dataStorage.checkOutBooks(userID, books);
+        List<Integer> unavailable = dataStorage.checkOutBooks(userID, books);
         for(Integer id: books) {
             dataStorage.addTransaction(id, userID, calendar.getCurrentTime().toLocalDate(), calendar.getCurrentTime().toLocalDate().plusDays(7));
         }
-        return "borrow," + calendar.getCurrentTime().toLocalDate().plusDays(7);
+        return (unavailable.isEmpty() ? "" : unavailable.toString() + " were unable to be checked out since there were" +
+                " no copies available.\n") + "borrow," + calendar.getCurrentTime().toLocalDate().plusDays(7);
     }
 
 
@@ -123,31 +115,18 @@ public class Open implements SysState {
         User user = dataStorage.getUser(userID);
        if(user == null) {
            return "return,invalid-visitor-id";
-       }
-       else{
-           ArrayList<Integer> invalid = new ArrayList<>();
-           //if invalid book
-           for(Integer id: books){
-               if(dataStorage.isNotValidBorrowID(id)){
-                   invalid.add(id + 1);
-               }
-           }
+       } else {
+           List<Integer> invalid = validate(new ArrayList<>(books), true);
            if(!invalid.isEmpty()){
                //whole transaction is invalid if any books aren't valid
-               return "return,invalid-book-id," + invalid;
-            }
+               return "return,invalid-book-id," + invalid.toString();
+           }
            String result = dataStorage.returnBooks(user.getId(),books,calendar.getCurrentTime().toLocalDate());
-           //returned books and it succeeded
-           if (result.equals("success")){
-               return "return,success";
-           }
-           else{
-               //this will happen if there is a fine due to overdue books
-               return "return," + result;
-           }
+           return (books.isEmpty() ? "" : books.toString() + " were unable to be returned because either they've been " +
+                   "returned already, or you do not have them checked out.\n") + "return," + result;
 
-           }
        }
     }
+}
 
 

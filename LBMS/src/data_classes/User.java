@@ -89,7 +89,7 @@ public class User implements Serializable {
     }
     public boolean checkInBooks(int num)
     {
-        if (num > numBooksChecked)return false;
+        if (num > numBooksChecked) return false;
         numBooksChecked -= num;
         return true;
     }

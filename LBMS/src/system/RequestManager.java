@@ -39,7 +39,7 @@ public class RequestManager implements IManager{
         calendar = new Calendar();
         Open open = new Open(this, dataStorage,calendar);
 
-        Closed closed = new Closed(this, dataStorage,calendar);
+        Closed closed = new Closed(dataStorage,calendar);
 
         states = new SysState[2];
 
