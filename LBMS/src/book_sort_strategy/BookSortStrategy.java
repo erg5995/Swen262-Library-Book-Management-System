@@ -64,6 +64,10 @@ public interface BookSortStrategy {
      * @return true if the first string comes before the second
      */
     default boolean compareStringsAlphabetically(String str1, String str2) {
+
+        str1 = str1.toUpperCase();
+        str2 = str2.toUpperCase();
+
         if(str1.equals("")) return false;
         if(str2.equals("")) return true;
         if((int)str1.charAt(0) < (int)str2.charAt(0)) {
