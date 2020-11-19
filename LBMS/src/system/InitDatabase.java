@@ -41,7 +41,7 @@ public class InitDatabase
         writeObject(doubleList, "payments.ser");
 
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter("resources/numUsers.txt"));
+            BufferedWriter out = new BufferedWriter(new FileWriter("LBMS/resources/numUsers.txt"));
             out.write('0');
             out.flush();
             out.close();
@@ -49,7 +49,7 @@ public class InitDatabase
 
         HashMap<String, Book> booksInStore = new HashMap<>();
         try {
-            FileReader file = new FileReader("resources/books.txt");
+            FileReader file = new FileReader("LBMS/resources/books.txt");
             BufferedReader in = new BufferedReader(file);
 
             String temp, isbn, title, publisher;
@@ -109,7 +109,7 @@ public class InitDatabase
     private static void writeObject(Object object, String fileName)
     {
         try {
-            FileOutputStream file = new FileOutputStream("resources/" + fileName);
+            FileOutputStream file = new FileOutputStream("LBMS/resources/" + fileName);
             ObjectOutputStream out = new ObjectOutputStream(file);
             out.writeObject(object);
             out.close();

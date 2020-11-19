@@ -26,7 +26,7 @@ public class DataStorage
         librarySearch = new ArrayList<>();
         storeSearch = new ArrayList<>();
         borrowSearch = new ArrayList<>();
-        String dir = "resources/";
+        String dir = "LBMS/resources/";
         fileNames = new String[]{dir + "booksOwned.ser",      dir + "booksInStore.ser",
                                  dir + "checkedOutBooks.ser", dir + "returnedBooks.ser",
                                  dir + "visits.ser",          dir + "users.ser",
