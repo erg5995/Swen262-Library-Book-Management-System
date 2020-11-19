@@ -62,7 +62,6 @@ public class Client extends Application {
 
             return response;
         } catch (Exception e) {
-            e.printStackTrace();
             return "Exception Caught: " + e + "\nPlease make sure you're input is formatted correctly.";
         }
     }

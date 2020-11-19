@@ -26,7 +26,7 @@ public class DataStorage
         librarySearch = new ArrayList<>();
         storeSearch = new ArrayList<>();
         borrowSearch = new ArrayList<>();
-        String dir = "LBMS/resources/";
+        String dir = "resources/";
         fileNames = new String[]{dir + "booksOwned.ser",      dir + "booksInStore.ser",
                                  dir + "checkedOutBooks.ser", dir + "returnedBooks.ser",
                                  dir + "visits.ser",          dir + "users.ser",
@@ -394,8 +394,10 @@ public class DataStorage
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[1]));
             booksInStore = (Map<String,Book>) in.readObject();
             in.close();
-        } catch (Exception e) { System.out.println("Couldn't read in books in the store."); }
-        try {
+        } catch (Exception e) {
+
+            System.out.println("Couldn't read in books in the store.");
+        }try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileNames[2]));
             checkedOutBooks = (List<Transaction>) in.readObject();
             in.close();
