@@ -47,9 +47,9 @@ public class RequestManager implements IManager{
 
         states[1] = closed;
 
-        calendar.setRequestManager(this);
-
         ongoingVisits = new ArrayList<>();
+
+        calendar.setRequestManager(this);
     }
 
     /**

@@ -119,6 +119,9 @@ public class Client extends Application {
                 }else if(isNotNumeric(request[1])) {
                     request[0] = ERROR_MSG;
                     request[1] = "parameter 1 " + NOT_INTEGER;
+                } else if (Integer.parseInt(request[1]) < 1) {
+                    request[0] = ERROR_MSG;
+                    request[1] = "Quantity must be one or more.";
                 }
                 break;
             case "register":
@@ -221,7 +224,9 @@ public class Client extends Application {
                     } else if (isNotNumeric(request[1])) {
                         request[0] = ERROR_MSG;
                         request[1] = "parameter " + request[1] + " " + NOT_INTEGER;
-                        break;
+                    } else if (Integer.parseInt(request[1]) < 1) {
+                        request[0] = ERROR_MSG;
+                        request[1] = "Number of days must be one or more.";
                     }
                 }
             case "datetime":
@@ -229,7 +234,6 @@ public class Client extends Application {
             default:
                 request[0] = ERROR_MSG;
                 request[1] = "unrecognized command";
-                break;
         }
 
         return request;
